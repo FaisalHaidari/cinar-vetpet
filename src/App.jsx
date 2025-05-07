@@ -1,40 +1,43 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import AuthPage from './pages/AuthPage';
-import StoreHomePage from './pages/StoreHomePage';
-// ایمپورت کردن کامپوننت‌های صفحات
+import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import ClinicIntroductionPage from './pages/ClinicIntroductionPage';
 import ClinicMissionPage from './pages/ClinicMissionPage';
 import OnlinePaymentPage from './pages/OnlinePaymentPage';
 import AdminPanelPage from './admin/pages/AdminPanelPage';
+import StoreHomePage from './pages/StoreHomePage';
+import AuthPage from './pages/AuthPage';
+import PrivateRoute from './components/layout/PrivateRoute';
+import NavigationBar from './components/layout/NavigationBar';
+import ProductDetailsPage from './pages/ProductDetailsPage';
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        {/* مسیر اصلی */}
-        <Route path="/" element={<HomePage />} />
-
-        {/* مسیرهای مربوط به معرفی کلینیک و ماموریت */}
-        <Route path="/clinic/introduction" element={<ClinicIntroductionPage />} />
-        <Route path="/clinic/mission" element={<ClinicMissionPage />} />
-
-        {/* مسیر مربوط به سیستم پرداخت آنلاین */}
-        <Route path="/payment/online" element={<OnlinePaymentPage />} />
-
-        {/* مسیرهای مربوط به پنل مدیریت */}
-        <Route path="/admin/*" element={<AdminPanelPage />} />
-      </Routes>
-      <Routes>
-  {/* ... سایر مسیرها */}
-  <Route path="/auth" element={<AuthPage />} />
-</Routes>
-<Routes>
-  {/* ... سایر Route های قبلی شما */}
-  <Route path="/store" element={<StoreHomePage />} /> {/* اضافه کردن این خط */}
-</Routes>
+      <AppContent />
     </BrowserRouter>
+  );
+}
+
+function AppContent() {
+  const location = useLocation();
+
+  return (
+    <>
+      {location.pathname !== '/auth' && <NavigationBar />}
+      <Routes>
+        <Route path="/auth" element={<AuthPage />} />
+        <Route element={<PrivateRoute />}>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/store" element={<StoreHomePage />} />
+          <Route path="/store/product/:id" element={<ProductDetailsPage />} />
+          <Route path="/clinic/introduction" element={<ClinicIntroductionPage />} />
+          <Route path="/clinic/mission" element={<ClinicMissionPage />} />
+          <Route path="/payment/online" element={<OnlinePaymentPage />} />
+          <Route path="/admin/*" element={<AdminPanelPage />} />
+        </Route>
+      </Routes>
+    </>
   );
 }
 
