@@ -1,35 +1,41 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import AuthPage from './pages/AuthPage';
+import StoreHomePage from './pages/StoreHomePage';
+// ایمپورت کردن کامپوننت‌های صفحات
+import HomePage from './pages/HomePage';
+import ClinicIntroductionPage from './pages/ClinicIntroductionPage';
+import ClinicMissionPage from './pages/ClinicMissionPage';
+import OnlinePaymentPage from './pages/OnlinePaymentPage';
+import AdminPanelPage from './admin/pages/AdminPanelPage';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <BrowserRouter>
+      <Routes>
+        {/* مسیر اصلی */}
+        <Route path="/" element={<HomePage />} />
+
+        {/* مسیرهای مربوط به معرفی کلینیک و ماموریت */}
+        <Route path="/clinic/introduction" element={<ClinicIntroductionPage />} />
+        <Route path="/clinic/mission" element={<ClinicMissionPage />} />
+
+        {/* مسیر مربوط به سیستم پرداخت آنلاین */}
+        <Route path="/payment/online" element={<OnlinePaymentPage />} />
+
+        {/* مسیرهای مربوط به پنل مدیریت */}
+        <Route path="/admin/*" element={<AdminPanelPage />} />
+      </Routes>
+      <Routes>
+  {/* ... سایر مسیرها */}
+  <Route path="/auth" element={<AuthPage />} />
+</Routes>
+<Routes>
+  {/* ... سایر Route های قبلی شما */}
+  <Route path="/store" element={<StoreHomePage />} /> {/* اضافه کردن این خط */}
+</Routes>
+    </BrowserRouter>
+  );
 }
 
-export default App
+export default App;

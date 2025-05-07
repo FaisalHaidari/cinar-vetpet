@@ -1,0 +1,40 @@
+.card {
+    border: 1px solid #e0b4a9; /* قهوه‌ای روشن */
+    border-radius: 5px;
+    padding: 10px;
+    margin-bottom: 15px;
+    width: 200px;
+    text-align: center;
+  }
+  
+  .image {
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 10px;
+  }
+  
+  .name {
+    font-size: 1.2em;
+    margin-bottom: 5px;
+    color: #a34a29; /* قهوه‌ای تیره */
+  }
+  
+  .price {
+    color: #d47451; /* نارنجی */
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .addToCart {
+    background-color: #d47451; /* نارنجی */
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-size: 0.9em;
+  }
+  
+  .addToCart:hover {
+    background-color: #a34a29; /* قهوه‌ای تیره */
+  }

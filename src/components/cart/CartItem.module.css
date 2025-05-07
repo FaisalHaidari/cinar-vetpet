@@ -1,0 +1,49 @@
+.cartItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #b0c4de; /* آبی روشن */
+    background-color: #fff; /* سفید */
+    border-radius: 4px;
+  }
+  
+  .itemName {
+    flex-grow: 1;
+    margin-right: 15px;
+    color: #1e3a8a; /* آبی تیره */
+  }
+  
+  .quantityControl {
+    display: flex;
+    align-items: center;
+  }
+  
+  .quantityButton {
+    background-color: #e0f2f7; /* آبی خیلی روشن */
+    border: 1px solid #64b5f6; /* آبی متوسط */
+    color: #1e3a8a; /* آبی تیره */
+    padding: 6px 10px;
+    margin: 0 8px;
+    cursor: pointer;
+    border-radius: 4px;
+  }
+  
+  .quantity {
+    margin: 0 12px;
+    color: #1e3a8a; /* آبی تیره */
+    font-weight: bold;
+  }
+  
+  .itemPrice {
+    margin-left: auto;
+    margin-right: 15px;
+    color: #1976d2; /* آبی متوسط تیره */
+    font-weight: bold;
+  }
+  
+  .itemTotalPrice {
+    color: #1976d2; /* آبی متوسط تیره */
+    font-weight: bold;
+  }
