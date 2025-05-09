@@ -1,28 +1,96 @@
-.nav {
-    background-color: #f0f0f0;
-    padding: 10px 20px;
-    border-bottom: 1px solid #ccc;
-  }
-  
-  .navList {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-    display: flex;
-    align-items: center;
-  }
-  
-  .navItem {
-    margin: 0 15px;
-  }
-  
-  .navLink {
-    text-decoration: none;
-    color: #333;
-    font-weight: bold;
-    font-size: 16px;
-  }
-  
-  .navLink:hover {
-    color: #007bff;
-  }
+.navbar {
+  display: flex;
+  justify-content: space-between; /* برای پخش کردن عناصر */
+  align-items: center;
+  padding: 15px 20px;
+  background-color: #f8f8f8;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+}
+
+.logoLink {
+  text-decoration: none;
+}
+
+.logo {
+  height: 50px; /* ارتفاع لوگو را تنظیم کنید */
+}
+
+.navList {
+  list-style: none;
+  display: flex;
+  margin: 0 auto; /* برای قرارگیری در وسط */
+  padding: 0;
+}
+
+.navItem {
+  margin: 0 15px; /* فاصله بین لینک‌ها */
+}
+
+.navLink {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.navLink:hover {
+  color: #e67e22;
+}
+
+.rightSection {
+  display: flex;
+  align-items: center;
+}
+
+.searchContainer {
+  display: flex;
+  margin-left: 20px;
+}
+
+.searchInput {
+  padding: 8px 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px 0 0 5px;
+  font-size: 1rem;
+}
+
+.searchButton {
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  border-left: none;
+  padding: 8px 10px;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+}
+
+.searchButton svg {
+  fill: #555;
+}
+
+.authLink {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  margin-left: 20px;
+  transition: color 0.3s ease;
+}
+
+.authLink:hover {
+  color: #e67e22;
+}
+
+/* اگر می‌خواهید شماره تلفن را هم اضافه کنید، استایل‌های زیر را در صورت نیاز تنظیم کنید */
+/*.phoneContainer {
+  margin-left: 20px;
+}
+
+.phoneLink {
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}*/

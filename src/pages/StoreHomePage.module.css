@@ -1,0 +1,9 @@
+.storeHomePage {
+    padding: 20px;
+  }
+  
+  .productsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+  }

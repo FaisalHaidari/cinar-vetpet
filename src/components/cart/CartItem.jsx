@@ -10,8 +10,8 @@ function CartItem({ item, increaseQuantity, decreaseQuantity }) {
         <span className={styles.quantity}>{item.quantity}</span>
         <button className={styles.quantityButton} onClick={() => increaseQuantity(item.id)}>+</button>
       </div>
-      <span className={styles.itemPrice}>قیمت واحد: {item.price} تومان</span>
-      <span className={styles.itemTotalPrice}>قیمت کل: {item.price * item.quantity} تومان</span>
+      <span className={styles.itemPrice}>Birim Fiyat: {item.price} TL</span>
+      <span className={styles.itemTotalPrice}>Toplam Fiyat: {item.price * item.quantity} TL</span>
     </li>
   );
 }

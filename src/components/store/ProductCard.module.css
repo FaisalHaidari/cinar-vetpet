@@ -1,40 +1,98 @@
-.card {
-    border: 1px solid #e0b4a9; /* قهوه‌ای روشن */
-    border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 15px;
-    width: 200px;
-    text-align: center;
-  }
-  
-  .image {
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 10px;
-  }
-  
-  .name {
-    font-size: 1.2em;
-    margin-bottom: 5px;
-    color: #a34a29; /* قهوه‌ای تیره */
-  }
-  
-  .price {
-    color: #d47451; /* نارنجی */
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .addToCart {
-    background-color: #d47451; /* نارنجی */
-    color: white;
-    border: none;
-    border-radius: 3px;
-    padding: 8px 15px;
-    cursor: pointer;
-    font-size: 0.9em;
-  }
-  
-  .addToCart:hover {
-    background-color: #a34a29; /* قهوه‌ای تیره */
-  }
+.productCard {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 20px;
+  width: 300px; /* تنظیم عرض دلخواه */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.discountBadge {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #5cb85c; /* سبز */
+  color: white;
+  padding: 5px 8px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.productImage {
+  width: 100%;
+  height: auto;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.productName {
+  font-size: 1.2em;
+  margin-bottom: 8px;
+}
+
+.priceContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.oldPrice {
+  text-decoration: line-through;
+  color: #777;
+  margin-left: 5px;
+  font-size: 0.9em;
+}
+
+.currentPrice {
+  font-weight: bold;
+  color: #d9534f; /* قرمز */
+  font-size: 1.1em;
+}
+
+.quantityControl {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.quantityButton {
+  background-color: #f8f8f8;
+  border: 1px solid #ddd;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.quantityInput {
+  width: 50px;
+  text-align: center;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin: 0 10px;
+}
+
+.addToCartButton {
+  background-color: #5cb85c; /* سبز */
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.addToCartButton:hover {
+  background-color: #4cae4c;
+}
+
+.freeShipping {
+  background-color: #007bff; /* آبی */
+  color: white;
+  padding: 5px 8px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  text-align: center;
+  margin-top: 10px;
+}

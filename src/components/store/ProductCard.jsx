@@ -1,19 +1,49 @@
-import React from 'react';
-import styles from './ProductCard.module.css';
+import React, { useState } from 'react';
+import styles from './ProductCard.module.css'; // ایجاد این فایل در کنار کامپوننت
 
 function ProductCard({ product, onAddToCart }) {
-  const { name, price, imageUrl } = product;
+  const [quantity, setQuantity] = useState(1);
+
+  const handleIncrement = () => {
+    setQuantity(quantity + 1);
+  };
+
+  const handleDecrement = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
+  };
 
   const handleAddToCartClick = () => {
-    onAddToCart(product);
+    onAddToCart({ ...product, quantity }); // ارسال محصول با تعداد
   };
 
   return (
-    <div className={styles.card}>
-      <img src={imageUrl || 'https://via.placeholder.com/150'} alt={name} className={styles.image} />
-      <h3 className={styles.name}>{name}</h3>
-      <p className={styles.price}>قیمت: {price} تومان</p>
-      <button className={styles.addToCart} onClick={handleAddToCartClick}>افزودن به سبد خرید</button>
+    <div className={styles.productCard}>
+      {product.discount && (
+        <div className={styles.discountBadge}>
+          %{product.discount}
+        </div>
+      )}
+      <img src={product.imageUrl} alt={product.name} className={styles.productImage} />
+      <h3 className={styles.productName}>{product.name}</h3>
+      <div className={styles.priceContainer}>
+        {product.oldPrice && (
+          <span className={styles.oldPrice}>{product.oldPrice.toLocaleString()} TL</span>
+        )}
+        <span className={styles.currentPrice}>{product.price.toLocaleString()} TL</span>
+      </div>
+      <div className={styles.quantityControl}>
+        <button onClick={handleDecrement} className={styles.quantityButton}>-</button>
+        <input type="number" value={quantity} readOnly className={styles.quantityInput} />
+        <button onClick={handleIncrement} className={styles.quantityButton}>+</button>
+      </div>
+      <button onClick={handleAddToCartClick} className={styles.addToCartButton}>
+        Sepete {product.discount ? `₺${(product.price * (1 - product.discount / 100)).toFixed(2)}` : `₺${product.price.toLocaleString()}`} Ekle
+      </button>
+      {product.freeShipping && (
+        <div className={styles.freeShipping}>ÜCRETSİZ KARGO</div>
+      )}
     </div>
   );
 }
