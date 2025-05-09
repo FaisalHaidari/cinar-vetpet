@@ -1,62 +1,109 @@
-.container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    width: 300px;
-    margin: 20px auto;
-  }
-  
-  h2 {
-    margin-bottom: 20px;
-    color: #333;
-  }
-  
-  form {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    margin-bottom: 15px;
-  }
-  
-  label {
-    margin-bottom: 5px;
-    color: #555;
-  }
-  
-  input[type='email'],
-  input[type='password'] {
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    border-radius: 3px;
-  }
-  
-  button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 3px;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
-  .toggleButton {
-    background: none;
-    border: none;
-    color: #007bff;
-    cursor: pointer;
-    text-decoration: underline;
-    font-size: 14px;
-  }
-  
-  .toggleButton:hover {
-    color: #0056b3;
-  }
+
+.authPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-image: url('F:\cinar-vetpet\src\images\tran-mau-tri-tam-7QjU_u2vGDs-unsplash.jpg'); /* مسیر عکس تمام صفحه */
+  background-size: cover; /* پوشش کامل صفحه */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.formContainer {
+  background-color: rgba(255, 255, 255, 0.5); /* پس‌زمینه نیمه‌شفاف سفید (50% opacity) */
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  width: 350px;
+  text-align: center;
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 30px;
+  font-size: 2.5em;
+  font-weight: bold;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form div {
+  display: flex;
+  flex-direction: column;
+}
+
+label {
+  display: none; /* مخفی کردن لیبل‌ها و استفاده از placeholder */
+}
+
+input {
+  padding: 12px 15px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+input:focus {
+  outline: none;
+  border-color: #007bff;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+button {
+  padding: 12px 20px;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:focus {
+  outline: none;
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+}
+
+button[type="submit"]:first-of-type { /* دکمه ورود */
+  background-color: #007bff;
+  color: white;
+  border: none;
+}
+
+button[type="submit"]:first-of-type:hover {
+  background-color: #0056b3;
+}
+
+button[type="submit"]:last-of-type { /* دکمه ثبت‌نام */
+  background-color: #28a745;
+  color: white;
+  border: none;
+}
+
+button[type="submit"]:last-of-type:hover {
+  background-color: #1e7e34;
+}
+
+.error {
+  color: #dc3545;
+  margin-top: 10px;
+  font-size: 0.9em;
+}
+
+.toggleButton {
+  background: none;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 14px;
+  margin-top: 20px;
+}
+
+.toggleButton:hover {
+  color: #0056b3;
+}
