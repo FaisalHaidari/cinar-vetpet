@@ -1,0 +1,118 @@
+/* styles/StoreHomePage.module.css */
+
+.storeHomePage {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+
+}
+
+.productsContainer {
+  display: flex;
+  flex-wrap: wrap; /* اجازه می‌دهد عناصر به خط بعد بروند */
+  gap: 16px; /* فاصله بین کارت‌ها */
+  justify-content: center; /* یا space-between / space-around */
+}
+
+
+.cartTitle {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  font-size: 1.5em;
+}
+
+.cartGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  width: 90%;
+  max-width: 900px;
+  margin-bottom: 20px;
+}
+
+.cartGridItem {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.cartItemDetails {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.quantityControl {
+  display: flex;
+  align-items: center;
+}
+
+.quantityButton {
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.quantityInput {
+  width: 50px;
+  text-align: center;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.removeButton {
+  background: none;
+  border: none;
+  color: #dc3545;
+  cursor: pointer;
+  font-size: 1.2em;
+  align-self: flex-end;
+}
+
+.removeButton:hover {
+  color: #c82333;
+}
+
+.totalPrice {
+  margin-top: 20px;
+  font-size: 1.2em;
+  font-weight: bold;
+}
+
+.goToCartContainer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: 30px;
+}
+
+.goToCartButton {
+  display: inline-block;
+  padding: 15px 30px;
+  background-color: #28a745;
+  color: white;
+  text-decoration: none;
+  border-radius: 10px;
+  font-size: 1.1em;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.goToCartButton:hover {
+  background-color: #218838;
+}
+
+.emptyCart {
+  margin-top: 20px;
+  font-style: italic;
+  color: #777;
+}

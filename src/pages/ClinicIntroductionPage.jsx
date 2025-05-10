@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './ClinicIntroductionPage.module.css';
+import styles from '../styles/ClinicIntroductionPage.module.css';
 
 function ClinicIntroductionPage() {
   return (

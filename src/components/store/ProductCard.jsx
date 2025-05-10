@@ -15,16 +15,11 @@ function ProductCard({ product, onAddToCart }) {
   };
 
   const handleAddToCartClick = () => {
-    onAddToCart({ ...product, quantity }); // ارسال محصول با تعداد
+    onAddToCart(product, quantity); // ارسال محصول و تعداد به تابع
   };
 
   return (
     <div className={styles.productCard}>
-      {product.discount && (
-        <div className={styles.discountBadge}>
-          %{product.discount}
-        </div>
-      )}
       <img src={product.imageUrl} alt={product.name} className={styles.productImage} />
       <h3 className={styles.productName}>{product.name}</h3>
       <div className={styles.priceContainer}>
@@ -39,11 +34,8 @@ function ProductCard({ product, onAddToCart }) {
         <button onClick={handleIncrement} className={styles.quantityButton}>+</button>
       </div>
       <button onClick={handleAddToCartClick} className={styles.addToCartButton}>
-        Sepete {product.discount ? `₺${(product.price * (1 - product.discount / 100)).toFixed(2)}` : `₺${product.price.toLocaleString()}`} Ekle
+        افزودن به سبد خرید {product.discount ? `(${Math.round(product.discount)}% تخفیف)` : ''}
       </button>
-      {product.freeShipping && (
-        <div className={styles.freeShipping}>ÜCRETSİZ KARGO</div>
-      )}
     </div>
   );
 }

@@ -10,6 +10,7 @@ import AuthPage from './pages/AuthPage';
 import PrivateRoute from './components/layout/PrivateRoute';
 import NavigationBar from './components/layout/NavigationBar';
 import ProductDetailsPage from './pages/ProductDetailsPage';
+import ShippingInfoPage from './pages/ShippingInfoPage';
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function AppContent() {
           <Route path="/clinic/mission" element={<ClinicMissionPage />} />
           <Route path="/payment/online" element={<OnlinePaymentPage />} />
           <Route path="/admin/*" element={<AdminPanelPage />} />
+          <Route path="/shipping-info" element={<ShippingInfoPage />} /> {/* انتقال مسیر ShippingInfoPage به سطح PrivateRoute */}
         </Route>
       </Routes>
     </>

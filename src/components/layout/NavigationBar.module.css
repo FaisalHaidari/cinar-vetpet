@@ -1,15 +1,22 @@
+/* components/layout/NavigationBar.module.css */
+
 .navbar {
   display: flex;
-  justify-content: space-between; /* برای پخش کردن عناصر */
+  justify-content: space-around; /* عناصر را با فضای مساوی در اطراف پخش می‌کند */
   align-items: center;
-  padding: 15px 20px;
-  background-color: #f8f8f8;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 15px 30px; /* کمی padding بیشتر در طرفین */
+  background-color: #fff; /* پس‌زمینه سفید برای وضوح بیشتر */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); /* سایه نرم و مدرن */
+  border-bottom: 1px solid #eee; /* خط جداکننده ظریف در پایین */
 }
 
 .logoContainer {
   display: flex;
   align-items: center;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05); /* سایه ملایم برای لوگو */
+  padding: 8px 12px;
+  border-radius: 6px;
+  background-color: #f9f9f9;
 }
 
 .logoLink {
@@ -17,29 +24,35 @@
 }
 
 .logo {
-  height: 50px; /* ارتفاع لوگو را تنظیم کنید */
+  height: 60px; /* ارتفاع کمی بزرگتر برای برجستگی */
 }
 
 .navList {
   list-style: none;
   display: flex;
-  margin: 0 auto; /* برای قرارگیری در وسط */
+  margin: 0; /* حذف margin اضافی */
   padding: 0;
 }
 
 .navItem {
-  margin: 0 15px; /* فاصله بین لینک‌ها */
+  margin: 0 20px; /* فاصله بیشتر بین لینک‌ها */
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05); /* سایه ملایم برای هر آیتم */
+  border-radius: 6px;
+  background-color: #f9f9f9;
 }
 
 .navLink {
+  display: block; /* برای اینکه سایه و پس‌زمینه کل ناحیه لینک را بگیرد */
+  padding: 10px 15px;
   text-decoration: none;
-  color: #333;
-  font-weight: bold;
-  transition: color 0.3s ease;
+  color: #444; /* رنگ متن کمی تیره‌تر */
+  font-weight: 500; /* وزن فونت نیمه‌bold */
+  transition: color 0.3s ease, box-shadow 0.3s ease; /* transition برای تغییر رنگ و سایه */
 }
 
 .navLink:hover {
   color: #e67e22;
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.1); /* سایه بیشتر هنگام هاور */
 }
 
 .rightSection {
@@ -49,48 +62,63 @@
 
 .searchContainer {
   display: flex;
-  margin-left: 20px;
+  margin-left: 30px; /* فاصله بیشتر از بخش‌های دیگر */
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05); /* سایه ملایم */
+  border-radius: 5px;
+  overflow: hidden; /* برای جلوگیری از بیرون زدن بوردر-ردیوس */
+  background-color: #f9f9f9;
 }
 
 .searchInput {
-  padding: 8px 10px;
-  border: 1px solid #ddd;
+  padding: 10px 12px;
+  border: none;
+  border-right: 1px solid #ddd; /* جداکننده از دکمه */
   border-radius: 5px 0 0 5px;
   font-size: 1rem;
+  outline: none; /* حذف outline پیش‌فرض فوکوس */
 }
 
 .searchButton {
-  background-color: #f8f8f8;
-  border: 1px solid #ddd;
-  border-left: none;
-  padding: 8px 10px;
+  background-color: #f9f9f9;
+  border: none;
+  padding: 10px 12px;
   border-radius: 0 5px 5px 0;
   cursor: pointer;
+  outline: none; /* حذف outline پیش‌فرض فوکوس */
 }
 
 .searchButton svg {
-  fill: #555;
+  fill: #666;
 }
 
 .authLink {
   text-decoration: none;
-  color: #333;
-  font-weight: bold;
-  margin-left: 20px;
-  transition: color 0.3s ease;
+  color: #444;
+  font-weight: 500;
+  margin-left: 30px; /* فاصله بیشتر از بخش‌های دیگر */
+  transition: color 0.3s ease, box-shadow 0.3s ease; /* transition برای تغییر رنگ و سایه */
+  padding: 10px 15px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
+  background-color: #f9f9f9;
 }
 
 .authLink:hover {
   color: #e67e22;
+  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* اگر می‌خواهید شماره تلفن را هم اضافه کنید، استایل‌های زیر را در صورت نیاز تنظیم کنید */
+/* استایل‌های شماره تلفن (در صورت نیاز) */
 /*.phoneContainer {
-  margin-left: 20px;
+  margin-left: 30px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
+  border-radius: 6px;
+  background-color: #f9f9f9;
+  padding: 10px 15px;
 }
 
 .phoneLink {
   text-decoration: none;
-  color: #333;
-  font-weight: bold;
+  color: #444;
+  font-weight: 500;
 }*/

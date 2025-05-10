@@ -1,0 +1,82 @@
+/* src/pages/ShippingInfoPage.module.css */
+.shippingInfoPage {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.shippingForm {
+  width: 90%;
+  max-width: 600px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.shippingForm h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.shippingForm div {
+  display: flex;
+  flex-direction: column;
+}
+
+.shippingForm label {
+  margin-bottom: 5px;
+  color: #555;
+  font-size: 0.9em;
+}
+
+.shippingForm input[type="text"],
+.shippingForm input[type="tel"],
+.shippingForm textarea {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 1em;
+}
+
+.shippingForm textarea {
+  min-height: 100px;
+}
+
+.shippingForm button[type="submit"] {
+  background-color: #007bff;
+  color: white;
+  padding: 12px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1.1em;
+  transition: background-color 0.3s ease;
+}
+
+.shippingForm button[type="submit"]:hover {
+  background-color: #0056b3;
+}
+/* src/pages/ShippingInfoPage.module.css */
+/* ... استایل‌های قبلی ... */
+
+.goBackButton {
+  background-color: #f0f0f0;
+  color: #333;
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+  margin-top: 20px;
+  transition: background-color 0.3s ease;
+}
+
+.goBackButton:hover {
+  background-color: #e0e0e0;
+}
