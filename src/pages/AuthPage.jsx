@@ -1,14 +1,15 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import styles from '../styles/AuthPage.module.css';
-import { AuthContext } from '../context/AuthContext'; // اگر از Context API استفاده می‌کنید
+import { AuthContext } from '../context/AuthContext';
 
 function AuthPage() {
   const [isSignIn, setIsSignIn] = useState(true);
   const navigate = useNavigate();
-  const { login } = useContext(AuthContext); // فقط اگر از Context API استفاده می‌کنید
+  const { login } = useContext(AuthContext);
   const [signInEmail, setSignInEmail] = useState('');
   const [signInPassword, setSignInPassword] = useState('');
+  const [signUpName, setSignUpName] = useState(''); // ✅ New state for name
   const [signUpEmail, setSignUpEmail] = useState('');
   const [signUpPassword, setSignUpPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -16,15 +17,12 @@ function AuthPage() {
 
   const toggleAuthMode = () => {
     setIsSignIn(!isSignIn);
-    setError(''); // پاک کردن خطا هنگام تغییر حالت
+    setError('');
   };
 
   const handleSignInSubmit = (event) => {
     event.preventDefault();
-    // در اینجا باید منطق ارسال اطلاعات ورود به بک‌اند قرار بگیرد
-    // پس از دریافت پاسخ موفقیت‌آمیز:
     console.log('ورود با ایمیل:', signInEmail);
-    // اگر از Context API استفاده می‌کنید:
     login({ email: signInEmail });
     navigate('/');
   };
@@ -35,11 +33,14 @@ function AuthPage() {
       setError('رمز عبور و تایید آن مطابقت ندارند.');
       return;
     }
-    // در اینجا باید منطق ارسال اطلاعات ثبت‌نام به بک‌اند قرار بگیرد
-    // پس از دریافت پاسخ موفقیت‌آمیز:
-    console.log('ثبت‌نام با ایمیل:', signUpEmail);
-    // اگر از Context API استفاده می‌کنید:
-    login({ email: signUpEmail });
+
+    const userData = {
+      name: signUpName,
+      email: signUpEmail,
+    };
+
+    console.log('ثبت‌نام با اطلاعات:', userData);
+    login(userData);
     navigate('/');
   };
 
@@ -75,6 +76,17 @@ function AuthPage() {
           </form>
         ) : (
           <form onSubmit={handleSignUpSubmit} className={styles.form}>
+            <div>
+              <label htmlFor="signUpName">Name:</label>
+              <input
+                type="text"
+                id="signUpName"
+                name="signUpName"
+                value={signUpName}
+                onChange={(e) => setSignUpName(e.target.value)}
+                placeholder="Enter your name"
+              />
+            </div>
             <div>
               <label htmlFor="signUpEmail">Email:</label>
               <input

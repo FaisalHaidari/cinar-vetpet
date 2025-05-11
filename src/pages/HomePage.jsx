@@ -4,7 +4,7 @@ import styles from '../styles/HomePage.module.css';
 function HomePage() {
   return (
     <div className={styles.container}>
-      <h1 className={styles.heading}>صفحه اصلی فروشگاه حیوانات خانگی و کلینیک</h1>
+      <h1 className={styles.heading}>Anasayfamiz</h1>
       <p className={styles.paragraph}>
         به وبسایت ما خوش آمدید! ما بهترین محصولات و خدمات را برای حیوانات خانگی شما ارائه می‌دهیم.
         در فروشگاه ما می‌توانید انواع غذای حیوانات، اسباب‌بازی‌ها، لوازم بهداشتی و دیگر ملزومات مورد نیاز حیوانات خانگی خود را پیدا کنید.

@@ -3,16 +3,13 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    min-height: calc(100vh - 60px); /* تنظیم حداقل ارتفاع با فرض ارتفاع تقریبی نوار ناوبری */
+    min-height: calc(100vh - 60px - 300px); /* ارتفاع کل منهای نوار ناوبری و تصویر */
+    background-image: url('../../src/images/cinar.jpeg');
+    width: 100%;            /* گرفتن تمام عرض صفحه */
     padding: 20px;
     text-align: center;
-    background-image: url('F:\cinar-vetpet\src\images\photo-1511044568932-338cba0ad803.avif'); /* مسیر عکس پس‌زمینه را تنظیم کنید */
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
     color: white;
-  }
-  
+}
   .heading {
     margin-bottom: 20px;
     color: white;
