@@ -1,29 +1,53 @@
 import React, { useState, useEffect } from 'react';
-import ProductCard from '../components/store/ProductCard';
 import styles from '../styles/StoreHomePage.module.css';
 import { Link } from 'react-router-dom';
-import { FaTimes } from 'react-icons/fa';
+import { FaTimes, FaSearch, FaShoppingCart } from 'react-icons/fa';
 
 const products = [
-  { id: 1, name: 'Mera Insect Sensitive Larva Proteinli Tahılsız Yetişkin Kedi Maması', price: 3000, imageUrl: '/src/images/da228978-8c95-47b8-afe5-8b08d08287e9.webp', discount: 20, freeShipping: true },
-  { id: 2, name: 'Kemik Şeklinde Köpek Oyuncağı', price: 3500, imageUrl: 'src/images/image_1296.webp' },
+  {
+    id: 1,
+    name: 'Proteinli Tahılsız Yetişkin Kedi Maması',
+    price: 3000,
+    imageUrl: '/src/images/da228978-8c95-47b8-afe5-8b08d08287e9.webp',
+    discount: 20,
+    freeShipping: true,
+    description: 'Yüksek proteinli, tahılsız yetişkin kedi maması',
+    stock: 50,
+    rating: 4.5,
+    reviews: 128
+  },
+  {
+    id: 2,
+    name: 'Kemik Şeklinde Köpek Oyuncağı',
+    price: 3500,
+    imageUrl: 'src/images/image_1296.webp',
+    description: 'Dayanıklı ve eğlenceli köpek oyuncağı',
+    stock: 30,
+    rating: 4.2,
+    reviews: 85
+  },
   { id: 3, name: 'Deri Köpek Boyun Tasması', price: 2500, imageUrl: '/src/images/image_1296.webp', discount: 10 },
   { id: 4, name: 'Köpekler İçin Özel Şampuan', price: 4500, imageUrl: 'src/images/image_1296.webp', freeShipping: true },
   { id: 5, name: 'Kedi Taşıma Kutusu', price: 2200, imageUrl: 'src/images/image_1296.webp' },
   { id: 6, name: 'Tavuk Aromalı Köpek Ödül Maması', price: 1000, imageUrl: '/src/images/da228978-8c95-47b8-afe5-8b08d08287e9.webp', discount: 5 },
   { id: 7, name: 'Tavuk Aromalı Köpek Ödül Maması', price: 1000, imageUrl: '/src/images/da228978-8c95-47b8-afe5-8b08d08287e9.webp', discount: 5 },
   { id: 8, name: 'Tavuk Aromalı Köpek Ödül Maması', price: 1000, imageUrl: '/src/images/da228978-8c95-47b8-afe5-8b08d08287e9.webp', discount: 5 },
-
 ];
 
 function StoreHomePage() {
   const [cart, setCart] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   useEffect(() => {
     const newTotalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
     setTotalPrice(newTotalPrice);
   }, [cart]);
+
+  const filteredProducts = products.filter(product => 
+    product.name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const addToCart = (product, quantity) => {
     const existingItem = cart.find(item => item.id === product.id);
@@ -54,48 +78,110 @@ function StoreHomePage() {
 
   return (
     <div className={styles.storeHomePage}>
-      <h2>Evcil Hayvan Mağazası</h2>
-      <div className={styles.productsContainer}>
-        {products.map(product => (
-          <ProductCard
-            key={product.id}
-            product={product}
-            onAddToCart={addToCart}
+      <header className={styles.storeHeader}>
+        <h1>Evcil Hayvan Mağazası</h1>
+        <div className={styles.searchBar}>
+          <FaSearch className={styles.searchIcon} />
+          <input
+            type="text"
+            placeholder="Ürün ara..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
           />
-        ))}
-      </div>
+        </div>
+        <button 
+          className={styles.cartButton}
+          onClick={() => setIsCartOpen(!isCartOpen)}
+        >
+          <FaShoppingCart />
+          <span className={styles.cartCount}>{cart.length}</span>
+        </button>
+      </header>
 
-      <h3 className={styles.cartTitle}>Sepet</h3>
-      <div className={styles.cartGrid}>
-        {cart.map(item => (
-          <div key={item.id} className={styles.cartGridItem}>
-            <div className={styles.cartItemDetails}>
-              <span>{item.name}</span>
-              <div className={styles.quantityControl}>
-                <button onClick={() => decreaseQuantity(item.id)} className={styles.quantityButton}>-</button>
-                <input type="number" value={item.quantity} readOnly className={styles.quantityInput} />
-                <button onClick={() => increaseQuantity(item.id)} className={styles.quantityButton}>+</button>
+      <main className={styles.productsSection}>
+        <div className={styles.productsGrid}>
+          {filteredProducts.map(product => {
+            const [quantity, setQuantity] = useState(1);
+            return (
+              <div key={product.id} className={styles.productCard}>
+                {product.discount && (
+                  <span className={styles.productDiscount}>%{product.discount} İndirim</span>
+                )}
+                {product.freeShipping && (
+                  <span className={styles.productFreeShipping}>Ücretsiz Kargo</span>
+                )}
+                <img src={product.imageUrl} alt={product.name} className={styles.productImage} />
+                <div className={styles.productName}>{product.name}</div>
+                <div className={styles.productPrice}>{product.price.toLocaleString()} TL</div>
+                <div className={styles.quantityControl}>
+                  <button onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}>-</button>
+                  <span>{quantity}</span>
+                  <button onClick={() => setQuantity(quantity + 1)}>+</button>
+                </div>
+                <button className={styles.addToCartButton} onClick={() => addToCart(product, quantity)}>
+                  Sepete Ekle
+                </button>
               </div>
-              <span>قیمت واحد: {item.price.toLocaleString()} TL</span>
-              <span>قیمت کل: {(item.price * item.quantity).toLocaleString()} TL</span>
-            </div>
-            <button onClick={() => removeFromCart(item.id)} className={styles.removeButton}>
+            );
+          })}
+        </div>
+      </main>
+
+      {isCartOpen && (
+        <div className={styles.cartSidebar}>
+          <div className={styles.cartHeader}>
+            <h3>Sepetim</h3>
+            <button onClick={() => setIsCartOpen(false)} className={styles.closeCart}>
               <FaTimes />
             </button>
           </div>
-        ))}
-      </div>
 
-      <h3 className={styles.totalPrice}>Toplam Sepet Tutarı: {totalPrice.toLocaleString()} TL</h3>
-      {cart.length > 0 && (
-        <div className={styles.goToCartContainer}>
-          <Link to="/shipping-info" state={{ cartItems: cart, totalPrice: totalPrice }} className={styles.goToCartButton}>
-            برو به سبد خرید
-          </Link>
+          <div className={styles.cartItems}>
+            {cart.map(item => (
+              <div key={item.id} className={styles.cartItem}>
+                <img src={item.imageUrl} alt={item.name} className={styles.cartItemImage} />
+                <div className={styles.cartItemDetails}>
+                  <h4>{item.name}</h4>
+                  <div className={styles.quantityControl}>
+                    <button onClick={() => decreaseQuantity(item.id)}>-</button>
+                    <span>{item.quantity}</span>
+                    <button onClick={() => increaseQuantity(item.id)}>+</button>
+                  </div>
+                  <div className={styles.priceInfo}>
+                    <span className={styles.unitPrice}>{item.price.toLocaleString()} TL</span>
+                    <span className={styles.totalPrice}>
+                      {(item.price * item.quantity).toLocaleString()} TL
+                    </span>
+                  </div>
+                </div>
+                <button 
+                  onClick={() => removeFromCart(item.id)}
+                  className={styles.removeItem}
+                >
+                  <FaTimes />
+                </button>
+              </div>
+            ))}
+          </div>
+
+          <div className={styles.cartFooter}>
+            <div className={styles.cartTotal}>
+              <span>Toplam:</span>
+              <span>{totalPrice.toLocaleString()} TL</span>
+            </div>
+            {cart.length > 0 ? (
+              <Link 
+                to="/shipping-info" 
+                state={{ cartItems: cart, totalPrice: totalPrice }}
+                className={styles.checkoutButton}
+              >
+                Ödemeye Geç
+              </Link>
+            ) : (
+              <p className={styles.emptyCart}>Sepetiniz boş</p>
+            )}
+          </div>
         </div>
-      )}
-      {cart.length === 0 && (
-        <p className={styles.emptyCart}>Sepetiniz boş.</p>
       )}
     </div>
   );

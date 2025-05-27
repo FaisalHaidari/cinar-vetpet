@@ -6,7 +6,7 @@
     min-height: calc(100vh - 60px); /* تنظیم حداقل ارتفاع با فرض ارتفاع تقریبی نوار ناوبری */
     padding: 20px;
     text-align: center;
-    background-image: url('/images/clinic_background.jpg'); /* مسیر عکس پس‌زمینه را تنظیم کنید */
+    background-image: url('../../src/images/clinic_background.jpg'); /* مسیر عکس پس‌زمینه را تنظیم کنید */
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;

@@ -1,124 +1,142 @@
-/* components/layout/NavigationBar.module.css */
-
+/* Modern NavigationBar.module.css */
 .navbar {
   display: flex;
-  justify-content: space-around; /* عناصر را با فضای مساوی در اطراف پخش می‌کند */
   align-items: center;
-  padding: 15px 30px; /* کمی padding بیشتر در طرفین */
-  background-color: #fff; /* پس‌زمینه سفید برای وضوح بیشتر */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08); /* سایه نرم و مدرن */
-  border-bottom: 1px solid #eee; /* خط جداکننده ظریف در پایین */
+  justify-content: space-between;
+  padding: 1.2rem 2.5rem;
+  background: #fff;
+  box-shadow: 0 2px 12px rgba(44, 62, 80, 0.07);
+  position: sticky;
+  top: 0;
+  z-index: 200;
 }
 
 .logoContainer {
   display: flex;
   align-items: center;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05); /* سایه ملایم برای لوگو */
-  padding: 8px 12px;
-  border-radius: 6px;
-  background-color: #f9f9f9;
 }
 
 .logoLink {
+  display: flex;
+  align-items: center;
   text-decoration: none;
 }
 
 .logo {
-  height: 60px; /* ارتفاع کمی بزرگتر برای برجستگی */
+  height: 48px;
+  width: auto;
+  display: block;
 }
 
 .navList {
   list-style: none;
   display: flex;
-  margin: 0; /* حذف margin اضافی */
+  gap: 2.5rem;
+  margin: 0;
   padding: 0;
 }
 
 .navItem {
-  margin: 0 20px; /* فاصله بیشتر بین لینک‌ها */
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05); /* سایه ملایم برای هر آیتم */
-  border-radius: 6px;
-  background-color: #f9f9f9;
+  display: flex;
+  align-items: center;
 }
 
 .navLink {
-  display: block; /* برای اینکه سایه و پس‌زمینه کل ناحیه لینک را بگیرد */
-  padding: 10px 15px;
   text-decoration: none;
-  color: #444; /* رنگ متن کمی تیره‌تر */
-  font-weight: 500; /* وزن فونت نیمه‌bold */
-  transition: color 0.3s ease, box-shadow 0.3s ease; /* transition برای تغییر رنگ و سایه */
+  color: #2c3e50;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.5rem 1.2rem;
+  border-radius: 8px;
+  transition: background 0.2s, color 0.2s;
 }
 
-.navLink:hover {
-  color: #e67e22;
-  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.1); /* سایه بیشتر هنگام هاور */
+.navLink:hover, .navLink.active {
+  background: #f0f4fa;
+  color: #3498db;
 }
 
 .rightSection {
   display: flex;
   align-items: center;
+  gap: 1.2rem;
 }
 
-.searchContainer {
-  display: flex;
-  margin-left: 30px; /* فاصله بیشتر از بخش‌های دیگر */
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05); /* سایه ملایم */
-  border-radius: 5px;
-  overflow: hidden; /* برای جلوگیری از بیرون زدن بوردر-ردیوس */
-  background-color: #f9f9f9;
-}
-
-.searchInput {
-  padding: 10px 12px;
+.cartButton {
+  position: relative;
+  background: none;
   border: none;
-  border-right: 1px solid #ddd; /* جداکننده از دکمه */
-  border-radius: 5px 0 0 5px;
-  font-size: 1rem;
-  outline: none; /* حذف outline پیش‌فرض فوکوس */
-}
-
-.searchButton {
-  background-color: #f9f9f9;
-  border: none;
-  padding: 10px 12px;
-  border-radius: 0 5px 5px 0;
+  color: #2c3e50;
+  font-size: 1.6rem;
   cursor: pointer;
-  outline: none; /* حذف outline پیش‌فرض فوکوس */
+  display: flex;
+  align-items: center;
+  transition: color 0.2s;
 }
 
-.searchButton svg {
-  fill: #666;
+.cartButton:hover {
+  color: #3498db;
 }
 
-.authLink {
-  text-decoration: none;
-  color: #444;
-  font-weight: 500;
-  margin-left: 30px; /* فاصله بیشتر از بخش‌های دیگر */
-  transition: color 0.3s ease, box-shadow 0.3s ease; /* transition برای تغییر رنگ و سایه */
-  padding: 10px 15px;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
-  border-radius: 6px;
-  background-color: #f9f9f9;
+.cartCount {
+  position: absolute;
+  top: -8px;
+  right: -10px;
+  background: #e74c3c;
+  color: #fff;
+  border-radius: 50%;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  min-width: 20px;
+  text-align: center;
+  border: 2px solid #fff;
 }
 
-.authLink:hover {
-  color: #e67e22;
-  box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.1);
+.avatarButton {
+  background: none;
+  border: none;
+  color: #2c3e50;
+  font-size: 1.7rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  border-radius: 50%;
+  padding: 0.2rem;
+  transition: color 0.2s, background 0.2s;
 }
 
-/* استایل‌های شماره تلفن (در صورت نیاز) */
-/*.phoneContainer {
-  margin-left: 30px;
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
-  border-radius: 6px;
-  background-color: #f9f9f9;
-  padding: 10px 15px;
+.avatarButton:hover {
+  color: #3498db;
+  background: #f0f4fa;
 }
 
-.phoneLink {
-  text-decoration: none;
-  color: #444;
-  font-weight: 500;
-}*/
+@media (max-width: 900px) {
+  .navbar {
+    padding: 1rem 1.2rem;
+  }
+  .navList {
+    gap: 1.2rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .navbar {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 0.7rem 0.5rem;
+  }
+  .logoContainer {
+    justify-content: center;
+    margin-bottom: 0.5rem;
+  }
+  .navList {
+    justify-content: center;
+    gap: 0.7rem;
+  }
+  .rightSection {
+    justify-content: center;
+    gap: 0.7rem;
+    margin-top: 0.5rem;
+  }
+}

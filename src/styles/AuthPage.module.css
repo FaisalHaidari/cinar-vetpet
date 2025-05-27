@@ -5,7 +5,7 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-image: url('F:\cinar-vetpet\src\images\tran-mau-tri-tam-7QjU_u2vGDs-unsplash.jpg'); /* مسیر عکس تمام صفحه */
+  background-image: url('../../src/images/bg_3.jpg.webp'); /* مسیر عکس تمام صفحه */
   background-size: cover; /* پوشش کامل صفحه */
   background-repeat: no-repeat;
   background-position: center;

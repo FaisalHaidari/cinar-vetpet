@@ -1,88 +1,124 @@
 // src/pages/CheckoutPage.jsx
-import React from 'react';
+import React, { useState } from 'react';
 import styles from '../styles/OnlinePaymentPage.module.css'; // فایل CSS برای این صفحه
 import { useLocation, useNavigate } from 'react-router-dom';
 
-function CheckoutPage() {
+function OnlinePaymentPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const cartItems = location.state?.cartItems || [];
-  const totalPrice = location.state?.totalPrice || 0;
+  const { cartItems = [], totalPrice = 0, address, city, province, postalCode, phoneNumber } = location.state || {};
 
-  const handleGoBack = () => {
-    navigate(-1); // با -1 به صفحه قبلی در تاریخچه مرورگر برمی‌گردد
-  };
+  const [cardNumber, setCardNumber] = useState('');
+  const [expiry, setExpiry] = useState('');
+  const [cvv, setCvv] = useState('');
+  const [cardName, setCardName] = useState('');
+  const [error, setError] = useState('');
+  const [isPaying, setIsPaying] = useState(false);
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    // در اینجا منطق پرداخت نهایی را پیاده‌سازی کنید
-    console.log('اطلاعات پرداخت ثبت شد:', {
-      cardNumber: event.target.cardNumber.value,
-      expiryDate: event.target.expiryDate.value,
-      cvv: event.target.cvv.value,
-      address: event.target.address.value,
-      cartItems,
-      totalPrice,
-    });
-    // پس از پرداخت موفقیت‌آمیز، می‌توانید کاربر را به صفحه تشکر یا صفحه پیگیری سفارش هدایت کنید
-    // navigate('/order-successful');
+  const handlePay = (e) => {
+    e.preventDefault();
+    if (!cardNumber || !expiry || !cvv || !cardName) {
+      setError('Lütfen tüm kart bilgilerini doldurun.');
+      return;
+    }
+    setError('');
+    setIsPaying(true);
+    setTimeout(() => {
+      setIsPaying(false);
+      navigate('/order-success', { state: { cartItems, totalPrice } });
+    }, 2000);
   };
 
   return (
-    <div className={styles.checkoutPage}>
-      <h2>صفحه پرداخت</h2>
-
-      {cartItems.length > 0 && (
-        <div className={styles.cartSummary}>
-          <h3>خلاصه سبد خرید:</h3>
-          <ul>
+    <div className={styles.paymentPage}>
+      <div className={styles.paymentContainer}>
+        <div className={styles.orderSummary}>
+          <h3>Sipariş Özeti</h3>
+          <ul className={styles.cartList}>
             {cartItems.map(item => (
               <li key={item.id} className={styles.cartItem}>
-                <span>{item.name}</span>
-                <span>تعداد: {item.quantity}</span>
-                <span>قیمت واحد: {item.price.toLocaleString()} TL</span>
-                <span>قیمت کل: {(item.price * item.quantity).toLocaleString()} TL</span>
+                <img src={item.imageUrl} alt={item.name} className={styles.cartItemImage} />
+                <div>
+                  <div className={styles.cartItemName}>{item.name}</div>
+                  <div className={styles.cartItemDetails}>
+                    <span>{item.quantity} x {item.price.toLocaleString()} TL</span>
+                    {item.discount && <span className={styles.discount}>%{item.discount} indirim</span>}
+                  </div>
+                </div>
               </li>
             ))}
           </ul>
-          <div className={styles.totalPrice}>
-            <span>جمع کل:</span>
+          <div className={styles.cartTotal}>
+            <span>Toplam:</span>
             <span>{totalPrice.toLocaleString()} TL</span>
           </div>
+          <div className={styles.shippingInfo}>
+            <h4>Teslimat Bilgileri</h4>
+            <div>{address}</div>
+            <div>{city}, {province}</div>
+            <div>{postalCode}</div>
+            <div>{phoneNumber}</div>
+          </div>
         </div>
-      )}
-
-      {cartItems.length === 0 && (
-        <p>سبد خرید شما خالی است.</p>
-      )}
-
-      <form onSubmit={handleSubmit} className={styles.checkoutForm}>
-        <h3>اطلاعات پرداخت:</h3>
-        <div>
-          <label htmlFor="cardNumber">شماره کارت:</label>
-          <input type="text" id="cardNumber" name="cardNumber" />
-        </div>
-        <div>
-          <label htmlFor="expiryDate">تاریخ انقضا:</label>
-          <input type="text" id="expiryDate" name="expiryDate" placeholder="MM/YY" />
-        </div>
-        <div>
-          <label htmlFor="cvv">CVV:</label>
-          <input type="text" id="cvv" name="cvv" />
-        </div>
-        <div>
-          <label htmlFor="address">آدرس:</label>
-          <textarea id="address" name="address"></textarea>
-        </div>
-        {/* ... فیلدهای دیگر پرداخت */}
-        <button type="submit">پرداخت</button>
-      </form>
-
-      <button type="button" onClick={handleGoBack} className={styles.goBackButton}>
-        بازگشت
-      </button>
+        <form className={styles.paymentForm} onSubmit={handlePay} autoComplete="off">
+          <h2>Ödeme Bilgileri</h2>
+          <div className={styles.formGroup}>
+            <label>Kart Üzerindeki İsim</label>
+            <input
+              type="text"
+              value={cardName}
+              onChange={e => setCardName(e.target.value)}
+              placeholder="Ad Soyad"
+              required
+            />
+          </div>
+          <div className={styles.formGroup}>
+            <label>Kart Numarası</label>
+            <input
+              type="text"
+              value={cardNumber}
+              onChange={e => setCardNumber(e.target.value.replace(/[^0-9]/g, '').slice(0, 16))}
+              placeholder="•••• •••• •••• ••••"
+              maxLength={16}
+              required
+            />
+          </div>
+          <div className={styles.formRow}>
+            <div className={styles.formGroup}>
+              <label>Son Kullanma</label>
+              <input
+                type="text"
+                value={expiry}
+                onChange={e => setExpiry(e.target.value.replace(/[^0-9/]/g, '').slice(0, 5))}
+                placeholder="AA/YY"
+                maxLength={5}
+                required
+              />
+            </div>
+            <div className={styles.formGroup}>
+              <label>CVV</label>
+              <input
+                type="password"
+                value={cvv}
+                onChange={e => setCvv(e.target.value.replace(/[^0-9]/g, '').slice(0, 4))}
+                placeholder="•••"
+                maxLength={4}
+                required
+              />
+            </div>
+          </div>
+          {error && <div className={styles.error}>{error}</div>}
+          <button type="submit" className={styles.payButton} disabled={isPaying}>
+            {isPaying ? 'Ödeme Yapılıyor...' : 'Şimdi Öde'}
+          </button>
+          <div className={styles.trustBadges}>
+            <img src="/src/images/secure-payment.png" alt="Güvenli Ödeme" />
+            <span>256-bit SSL ile korunmaktadır</span>
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
 
-export default CheckoutPage;
+export default OnlinePaymentPage;
