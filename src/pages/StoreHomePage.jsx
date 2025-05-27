@@ -78,54 +78,56 @@ function StoreHomePage() {
 
   return (
     <div className={styles.storeHomePage}>
-      <header className={styles.storeHeader}>
-        <h1>Evcil Hayvan Mağazası</h1>
-        <div className={styles.searchBar}>
-          <FaSearch className={styles.searchIcon} />
-          <input
-            type="text"
-            placeholder="Ürün ara..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
-        <button 
-          className={styles.cartButton}
-          onClick={() => setIsCartOpen(!isCartOpen)}
-        >
-          <FaShoppingCart />
-          <span className={styles.cartCount}>{cart.length}</span>
-        </button>
-      </header>
+      <div className={styles.mainWrapper}>
+        <header className={styles.storeHeader}>
+          <h1>Evcil Hayvan Mağazası</h1>
+          <div className={styles.searchBar}>
+            <FaSearch className={styles.searchIcon} />
+            <input
+              type="text"
+              placeholder="Ürün ara..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+          </div>
+          <button 
+            className={styles.cartButton}
+            onClick={() => setIsCartOpen(!isCartOpen)}
+          >
+            <FaShoppingCart />
+            <span className={styles.cartCount}>{cart.length}</span>
+          </button>
+        </header>
 
-      <main className={styles.productsSection}>
-        <div className={styles.productsGrid}>
-          {filteredProducts.map(product => {
-            const [quantity, setQuantity] = useState(1);
-            return (
-              <div key={product.id} className={styles.productCard}>
-                {product.discount && (
-                  <span className={styles.productDiscount}>%{product.discount} İndirim</span>
-                )}
-                {product.freeShipping && (
-                  <span className={styles.productFreeShipping}>Ücretsiz Kargo</span>
-                )}
-                <img src={product.imageUrl} alt={product.name} className={styles.productImage} />
-                <div className={styles.productName}>{product.name}</div>
-                <div className={styles.productPrice}>{product.price.toLocaleString()} TL</div>
-                <div className={styles.quantityControl}>
-                  <button onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}>-</button>
-                  <span>{quantity}</span>
-                  <button onClick={() => setQuantity(quantity + 1)}>+</button>
+        <main className={styles.productsSection}>
+          <div className={styles.productsGrid}>
+            {filteredProducts.map(product => {
+              const [quantity, setQuantity] = useState(1);
+              return (
+                <div key={product.id} className={styles.productCard}>
+                  {product.discount && (
+                    <span className={styles.productDiscount}>%{product.discount} İndirim</span>
+                  )}
+                  {product.freeShipping && (
+                    <span className={styles.productFreeShipping}>Ücretsiz Kargo</span>
+                  )}
+                  <img src={product.imageUrl} alt={product.name} className={styles.productImage} />
+                  <div className={styles.productName}>{product.name}</div>
+                  <div className={styles.productPrice}>{product.price.toLocaleString()} TL</div>
+                  <div className={styles.quantityControl}>
+                    <button onClick={() => setQuantity(quantity > 1 ? quantity - 1 : 1)}>-</button>
+                    <span>{quantity}</span>
+                    <button onClick={() => setQuantity(quantity + 1)}>+</button>
+                  </div>
+                  <button className={styles.addToCartButton} onClick={() => addToCart(product, quantity)}>
+                    Sepete Ekle
+                  </button>
                 </div>
-                <button className={styles.addToCartButton} onClick={() => addToCart(product, quantity)}>
-                  Sepete Ekle
-                </button>
-              </div>
-            );
-          })}
-        </div>
-      </main>
+              );
+            })}
+          </div>
+        </main>
+      </div>
 
       {isCartOpen && (
         <div className={styles.cartSidebar}>

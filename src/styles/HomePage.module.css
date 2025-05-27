@@ -1,63 +1,75 @@
+:root {
+  --blueberry: #6B7A8F;
+  --apricot: #F7882F;
+  --citrus: #F7C331;
+  --apple-core: #DCC7AA;
+}
+
 .homePage {
   min-height: 100vh;
+  background: var(--apple-core);
+  margin: 0;
+  padding: 0;
 }
 
 /* Hero Section */
-.hero {
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-              url('/src/images/hero-bg.jpg') center/cover;
-  height: 600px;
+.heroSection {
+  background: var(--apple-core);
+  padding: 4rem 2rem 2.5rem 2rem;
+  margin: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  color: white;
-  padding: 0 20px;
 }
 
-.heroContent {
+.heroTitle {
+  color: var(--blueberry);
+  font-size: 2.7rem;
+  font-weight: 800;
+  margin-bottom: 1.2rem;
+  text-align: center;
   max-width: 800px;
 }
 
-.heroContent h1 {
-  font-size: 3.5rem;
-  margin-bottom: 1rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+.heroSubtitle {
+  color: var(--apricot);
+  font-size: 1.3rem;
+  margin-bottom: 2.2rem;
+  text-align: center;
+  max-width: 600px;
 }
 
-.heroContent p {
+.ctaButton {
+  background: var(--apricot);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 1.1rem 2.5rem;
   font-size: 1.2rem;
-  margin-bottom: 2rem;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  box-shadow: 0 2px 8px rgba(247, 136, 47, 0.07);
 }
 
-.heroButton {
-  display: inline-block;
-  padding: 1rem 2rem;
-  background-color: #4a90e2;
-  color: white;
-  text-decoration: none;
-  border-radius: 30px;
-  font-weight: 600;
-  transition: transform 0.2s, background-color 0.2s;
-}
-
-.heroButton:hover {
-  background-color: #357abd;
-  transform: translateY(-2px);
+.ctaButton:hover {
+  background: var(--citrus);
+  color: var(--blueberry);
 }
 
 /* Categories Section */
 .categories {
   padding: 4rem 2rem;
-  background-color: #f8f9fa;
+  background-color: var(--apple-core);
+  width: 100%;
 }
 
 .categories h2 {
   text-align: center;
   margin-bottom: 3rem;
   font-size: 2.5rem;
-  color: #333;
+  color: var(--blueberry);
 }
 
 .categoryGrid {
@@ -66,6 +78,7 @@
   gap: 2rem;
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 1rem;
 }
 
 .categoryCard {
@@ -74,18 +87,22 @@
   border-radius: 10px;
   text-align: center;
   text-decoration: none;
-  color: #333;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
+  color: var(--blueberry);
+  box-shadow: 0 4px 6px rgba(107, 122, 143, 0.08);
+  transition: transform 0.2s, background 0.2s;
+  border: 2px solid var(--apple-core);
 }
 
 .categoryCard:hover {
   transform: translateY(-5px);
+  background: var(--citrus);
+  color: var(--blueberry);
+  border-color: var(--citrus);
 }
 
 .categoryIcon {
   font-size: 3rem;
-  color: #4a90e2;
+  color: var(--apricot);
   margin-bottom: 1rem;
 }
 
@@ -97,13 +114,15 @@
 /* Featured Products Section */
 .featuredProducts {
   padding: 4rem 2rem;
+  background: #fff;
+  width: 100%;
 }
 
 .featuredProducts h2 {
   text-align: center;
   margin-bottom: 3rem;
   font-size: 2.5rem;
-  color: #333;
+  color: var(--blueberry);
 }
 
 .productGrid {
@@ -112,24 +131,29 @@
   gap: 2rem;
   max-width: 1200px;
   margin: 0 auto;
+  padding: 0 1rem;
 }
 
 .productCard {
-  background: white;
-  border-radius: 10px;
+  background: var(--apple-core);
+  border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s;
+  box-shadow: 0 4px 12px rgba(107, 122, 143, 0.10);
+  transition: transform 0.2s, box-shadow 0.2s;
+  border: 2px solid #fff;
 }
 
 .productCard:hover {
-  transform: translateY(-5px);
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 8px 24px rgba(107, 122, 143, 0.18);
+  border-color: var(--apricot);
 }
 
 .productImage {
   position: relative;
   height: 250px;
   overflow: hidden;
+  background: #fff;
 }
 
 .productImage img {
@@ -142,29 +166,33 @@
   position: absolute;
   top: 10px;
   left: 10px;
-  background-color: #ff4d4f;
-  color: white;
+  background-color: var(--citrus);
+  color: var(--blueberry);
   padding: 0.5rem 1rem;
   border-radius: 20px;
   font-weight: 600;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px rgba(247, 195, 49, 0.13);
 }
 
 .shippingBadge {
   position: absolute;
   top: 10px;
   right: 10px;
-  background-color: #52c41a;
-  color: white;
+  background-color: var(--apricot);
+  color: #fff;
   padding: 0.5rem 1rem;
   border-radius: 20px;
   font-weight: 600;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px rgba(247, 136, 47, 0.13);
 }
 
 .favoriteButton {
   position: absolute;
   bottom: 10px;
   right: 10px;
-  background: white;
+  background: var(--citrus);
   border: none;
   width: 40px;
   height: 40px;
@@ -173,13 +201,15 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  color: #ff4d4f;
+  color: var(--blueberry);
   font-size: 1.2rem;
-  transition: transform 0.2s;
+  transition: transform 0.2s, background 0.2s;
 }
 
 .favoriteButton:hover {
   transform: scale(1.1);
+  background: var(--apricot);
+  color: #fff;
 }
 
 .productInfo {
@@ -189,7 +219,7 @@
 .productInfo h3 {
   margin: 0 0 1rem 0;
   font-size: 1.2rem;
-  color: #333;
+  color: var(--blueberry);
 }
 
 .priceContainer {
@@ -203,50 +233,52 @@
 }
 
 .discountedPrice {
-  color: #ff4d4f;
+  color: var(--apricot);
   font-weight: 600;
   font-size: 1.2rem;
 }
 
 .price {
-  color: #333;
+  color: var(--blueberry);
   font-weight: 600;
   font-size: 1.2rem;
 }
 
 .addToCartButton {
   width: 100%;
-  padding: 0.75rem;
-  background-color: #4a90e2;
-  color: white;
+  padding: 0.9rem 0;
+  background: var(--apricot);
+  color: #fff;
   border: none;
-  border-radius: 5px;
-  font-weight: 600;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: 700;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  transition: background-color 0.2s;
+  margin-top: 0.5rem;
+  transition: background 0.2s, color 0.2s;
+  box-shadow: 0 2px 8px rgba(247, 136, 47, 0.07);
 }
 
 .addToCartButton:hover {
-  background-color: #357abd;
+  background: var(--citrus);
+  color: var(--blueberry);
 }
 
 /* Special Offers Section */
 .specialOffers {
   padding: 4rem 2rem;
-  background-color: #f8f9fa;
+  background-color: var(--blueberry);
+  color: #fff;
+  width: 100%;
 }
 
 .offerCard {
   max-width: 1200px;
   margin: 0 auto;
-  background: linear-gradient(45deg, #4a90e2, #357abd);
+  background: linear-gradient(45deg, var(--apricot), var(--citrus));
   border-radius: 10px;
-  padding: 3rem;
-  color: white;
+  padding: 3rem 2rem;
+  color: var(--blueberry);
   text-align: center;
 }
 
@@ -264,29 +296,33 @@
 .offerButton {
   display: inline-block;
   padding: 1rem 2rem;
-  background-color: white;
-  color: #4a90e2;
+  background-color: var(--blueberry);
+  color: #fff;
   text-decoration: none;
   border-radius: 30px;
   font-weight: 600;
-  transition: transform 0.2s;
+  transition: transform 0.2s, background 0.2s;
 }
 
 .offerButton:hover {
+  background: var(--apricot);
+  color: #fff;
   transform: translateY(-2px);
 }
 
 /* Newsletter Section */
 .newsletter {
   padding: 4rem 2rem;
-  background-color: #4a90e2;
-  color: white;
+  background-color: var(--apricot);
+  color: #fff;
+  width: 100%;
 }
 
 .newsletterContent {
   max-width: 600px;
   margin: 0 auto;
   text-align: center;
+  padding: 0 1rem;
 }
 
 .newsletterContent h2 {
@@ -304,6 +340,7 @@
   gap: 1rem;
   max-width: 500px;
   margin: 0 auto;
+  padding: 0 1rem;
 }
 
 .newsletterForm input {
@@ -316,34 +353,63 @@
 
 .newsletterForm button {
   padding: 1rem 2rem;
-  background-color: #333;
+  background-color: var(--blueberry);
   color: white;
   border: none;
   border-radius: 5px;
   font-weight: 600;
   cursor: pointer;
-  transition: background-color 0.2s;
+  transition: background 0.2s;
 }
 
 .newsletterForm button:hover {
-  background-color: #444;
+  background-color: var(--citrus);
+  color: var(--blueberry);
 }
 
 /* Responsive Design */
-@media (max-width: 768px) {
-  .heroContent h1 {
-    font-size: 2.5rem;
+@media (max-width: 900px) {
+  .heroSection {
+    padding: 2.5rem 1.5rem 1.2rem 1.5rem;
   }
-
-  .heroContent p {
-    font-size: 1rem;
+  .section {
+    padding: 1.5rem 1rem;
   }
-
+  .categories,
+  .featuredProducts,
+  .specialOffers,
+  .newsletter {
+    padding: 2.5rem 1.5rem;
+  }
+  .categoryGrid,
+  .productGrid {
+    gap: 1.5rem;
+    padding: 0 0.5rem;
+  }
+}
+@media (max-width: 600px) {
+  .heroSection {
+    padding: 1.2rem 1rem 0.7rem 1rem;
+  }
+  .section {
+    padding: 0.7rem 0.5rem;
+  }
+  .categories,
+  .featuredProducts,
+  .specialOffers,
+  .newsletter {
+    padding: 1.5rem 1rem;
+  }
+  .categoryGrid,
+  .productGrid {
+    gap: 1rem;
+    padding: 0;
+  }
+  .offerCard {
+    padding: 2rem 1rem;
+  }
   .newsletterForm {
     flex-direction: column;
-  }
-
-  .newsletterForm button {
-    width: 100%;
+    padding: 0;
   }
 }

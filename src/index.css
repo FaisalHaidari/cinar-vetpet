@@ -1,0 +1,35 @@
+/* Global index.css */
+:root {
+  --blueberry: #6B7A8F;
+  --apricot: #F7882F;
+  --citrus: #F7C331;
+  --apple-core: #DCC7AA;
+}
+
+html {
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+body {
+  overflow-x: hidden;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: var(--apple-core);
+}
+
+#root {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background: var(--apple-core);
+  box-sizing: border-box;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+} 
