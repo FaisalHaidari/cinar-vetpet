@@ -15,9 +15,10 @@ const services = [
 ];
 
 const petShopProducts = [
-  { id: 1, title: 'Oyuncaklar', image: '/src/images/petshop1.jpg', desc: 'Kedi ve köpek oyuncakları', link: '/petshop/oyuncaklar' },
-  { id: 2, title: 'Sağlık ve Veteriner Ürünleri', image: '/src/images/petshop2.jpg', desc: 'Sağlık ürünleri', link: '/petshop/saglik' },
-  { id: 3, title: 'Kafesler ve Barınaklar', image: '/src/images/petshop3.jpg', desc: 'Kafes ve barınak çeşitleri', link: '/petshop/kafesler' },
+  { id: 1, title: 'Oyuncaklar', image: '/src/images/oyuncu.jpg', desc: 'Kedi ve köpek oyuncakları', link: '/petshop/oyuncaklar' },
+  { id: 2, title: 'Sağlık ve Veteriner Ürünleri', image: '/src/images/saglik.jpg', desc: 'Sağlık ürünleri', link: '/petshop/saglik' },
+  { id: 3, title: 'Kafesler ve Barınaklar', image: '/src/images/kafesler-ve-barinaklsar-1024x680.jpg', desc: 'Kafes ve barınak çeşitleri', link: '/petshop/kafesler' },
+  { id: 4, title: 'Gıdalar', image: '/src/images/mamsi.png', desc: 'Kedi ve köpek mamaları', link: '/petshop/gidalar' },
 ];
 
 const featuredProducts = [
@@ -64,7 +65,7 @@ function HomePage() {
             <p style={{ color: '#6B7A8F', fontSize: 20, marginBottom: 32, textAlign: 'justify', lineHeight: 1.7 }}>
               Çınar Pet Veteriner Kliniği, evcil hayvanlarınızın sağlığına ve mutluluğuna değer katan, modern yaklaşımıyla öne çıkan bir veteriner sağlık merkezidir. 2022 yılında kurulan kliniğimiz, deneyimli veteriner hekimlerimiz ve teknolojik altyapımızla, minik dostlarınıza güvenilir, bireysel ve özenli hizmet sunmak üzere faaliyet göstermektedir. Her türden evcil hayvan için sunduğumuz geniş kapsamlı veterinerlik çözümleriyle, onların yaşam kalitesini en üst seviyeye taşımayı hedefliyoruz.
             </p>
-            <Link to="/about" style={{ display: 'inline-block', background: '#fff', color: '#1a237e', fontWeight: 800, fontSize: 20, borderRadius: 32, boxShadow: '0 4px 24px rgba(44,62,80,0.10)', padding: '1rem 2.5rem', textDecoration: 'none', border: '2px solid #F7882F', transition: 'all 0.2s' }}>DEVAMINI OKU</Link>
+            <Link to="/clinic/introduction" style={{ display: 'inline-block', background: '#fff', color: '#1a237e', fontWeight: 800, fontSize: 20, borderRadius: 32, boxShadow: '0 4px 24px rgba(44,62,80,0.10)', padding: '1rem 2.5rem', textDecoration: 'none', border: '2px solid #F7882F', transition: 'all 0.2s' }}>DEVAMINI OKU</Link>
           </div>
         </section>
 
@@ -88,13 +89,12 @@ function HomePage() {
         <section id="petshop" name="petshop" style={{ margin: '8rem 0 7rem 0', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <div style={{ background: '#F7882F', color: '#fff', display: 'inline-block', borderRadius: 18, fontWeight: 800, fontSize: 20, padding: '0.3em 1.2em', marginBottom: 18 }}>PET SHOP</div>
           <h2 style={{ color: '#1a237e', fontWeight: 900, fontSize: 38, margin: '0 0 2.2rem 0', letterSpacing: 1, textAlign: 'center' }}>Ürünler</h2>
-          <div style={{ width: '100%', overflowX: 'auto', display: 'flex', gap: '2.2rem', paddingBottom: '1.5rem', scrollSnapType: 'x mandatory' }} ref={petShopSliderRef}>
+          <div className={styles.productSlider} ref={petShopSliderRef}>
             {petShopProducts.map(product => (
               <div key={product.id} style={{ background: '#fff', borderRadius: 24, boxShadow: '0 4px 24px rgba(44,62,80,0.07)', padding: '2.2rem 2rem 1.5rem 2rem', minWidth: 320, maxWidth: 360, flex: '0 0 auto', display: 'flex', flexDirection: 'column', alignItems: 'center', transition: 'box-shadow 0.2s', scrollSnapAlign: 'start' }}>
                 <img src={product.image} alt={product.title} style={{ width: 220, height: 160, objectFit: 'cover', borderRadius: 18, marginBottom: 18, boxShadow: '0 2px 8px rgba(44,62,80,0.07)' }} />
                 <div style={{ color: '#1a237e', fontWeight: 800, fontSize: 22, marginBottom: 10 }}>{product.title}</div>
                 <div style={{ color: '#6B7A8F', fontSize: 16, marginBottom: 18, textAlign: 'center' }}>{product.desc}</div>
-                <Link to={product.link} style={{ background: '#F7882F', color: '#fff', borderRadius: 24, fontWeight: 700, fontSize: 16, padding: '0.6em 1.5em', textDecoration: 'none', boxShadow: '0 2px 8px rgba(44,62,80,0.07)', transition: 'background 0.2s' }}>DETAY</Link>
               </div>
             ))}
           </div>

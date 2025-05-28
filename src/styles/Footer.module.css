@@ -1,0 +1,72 @@
+.footer {
+  background: var(--apple-core);
+  color: var(--blueberry);
+  padding: 3rem 2rem;
+  margin-top: 4rem;
+  border-top: 1px solid rgba(44, 62, 80, 0.1);
+}
+
+.footerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.contactInfo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.contactItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.icon {
+  font-size: 1.5rem;
+  color: var(--apricot);
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+}
+
+.contactItem p {
+  margin: 0;
+  line-height: 1.6;
+  font-size: 1.1rem;
+  color: var(--blueberry);
+}
+
+.copyright {
+  text-align: center;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(44, 62, 80, 0.1);
+}
+
+.copyright p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--blueberry);
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .footer {
+    padding: 2rem 1rem;
+  }
+
+  .contactInfo {
+    grid-template-columns: 1fr;
+  }
+
+  .contactItem {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .icon {
+    margin-bottom: 0.5rem;
+  }
+} 

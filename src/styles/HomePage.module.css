@@ -195,6 +195,7 @@
   scroll-snap-type: x mandatory;
   scrollbar-width: none;
   -ms-overflow-style: none;
+  max-width: 1120px;
 }
 .productSlider::-webkit-scrollbar {
   display: none;

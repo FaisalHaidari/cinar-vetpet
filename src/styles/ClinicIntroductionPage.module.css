@@ -1,33 +1,172 @@
-.container {
-    display: flex;
+.clinicIntroductionPage {
+  min-height: 100vh;
+  background: var(--apple-core);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.heroImage {
+  width: 100%;
+  height: 400px;
+  overflow: hidden;
+}
+
+.heroImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  box-shadow: 0 4px 24px rgba(44, 62, 80, 0.07);
+}
+
+.contentContainer {
+  max-width: 1200px;
+  margin: 0 auto;
+  background: white;
+  padding: 3rem;
+  border-radius: 20px;
+  box-shadow: 0 4px 24px rgba(44, 62, 80, 0.07);
+  margin-top: -50px;
+  position: relative;
+  z-index: 1;
+}
+
+.contentContainer h1 {
+  color: var(--blueberry);
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.introductionText {
+  margin-bottom: 3rem;
+}
+
+.introductionText p {
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: #2c3e50;
+  margin-bottom: 1.5rem;
+  text-align: justify;
+}
+
+.visionMission {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 3rem;
+  padding-top: 3rem;
+  border-top: 2px solid var(--citrus);
+}
+
+.vision, .mission {
+  background: #f8f9fa;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 2px 12px rgba(44, 62, 80, 0.05);
+}
+
+.vision h2, .mission h2 {
+  color: var(--apricot);
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+}
+
+.vision p, .mission p {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  color: #2c3e50;
+  text-align: justify;
+}
+
+.footer {
+  background: var(--apple-core);
+  color: var(--blueberry);
+  padding: 3rem 2rem;
+  margin-top: 4rem;
+  border-top: 1px solid rgba(44, 62, 80, 0.1);
+}
+
+.footerContent {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.contactInfo {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.contactItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.icon {
+  font-size: 1.5rem;
+  color: var(--apricot);
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+}
+
+.contactItem p {
+  margin: 0;
+  line-height: 1.6;
+  font-size: 1.1rem;
+  color: var(--blueberry);
+}
+
+.copyright {
+  text-align: center;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(44, 62, 80, 0.1);
+}
+
+.copyright p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--blueberry);
+  opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+  .clinicIntroductionPage {
+    padding: 2rem 1rem;
+  }
+
+  .contentContainer {
+    padding: 2rem 1.5rem;
+  }
+
+  .contentContainer h1 {
+    font-size: 2rem;
+  }
+
+  .visionMission {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .footer {
+    padding: 2rem 1rem;
+  }
+
+  .contactInfo {
+    grid-template-columns: 1fr;
+  }
+
+  .contactItem {
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    min-height: calc(100vh - 60px); /* تنظیم حداقل ارتفاع با فرض ارتفاع تقریبی نوار ناوبری */
-    padding: 20px;
     text-align: center;
-    background-image: url('../../src/images/clinic_background.jpg'); /* مسیر عکس پس‌زمینه را تنظیم کنید */
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    color: white;
   }
-  
-  .heading {
-    margin-bottom: 20px;
-    color: white;
-    font-size: 2.5em; /* اندازه فونت عنوان را تنظیم کنید */
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6); /* سایه برای خوانایی بهتر */
+
+  .icon {
+    margin-bottom: 0.5rem;
   }
-  
-  .paragraph {
-    color: white;
-    background-color: rgba(0, 0, 0, 0.5); /* پس‌زمینه نیمه‌شفاف برای پاراگراف */
-    padding: 30px;
-    border-radius: 15px;
-    font-size: 1.1em; /* اندازه فونت پاراگراف را تنظیم کنید */
-    line-height: 1.6; /* فاصله بین خطوط برای خوانایی بهتر */
-    max-width: 800px; /* حداکثر عرض پاراگراف را تنظیم کنید */
-    margin: 0 auto; /* وسط‌چین کردن افقی پاراگراف */
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.6); /* سایه برای خوانایی بهتر */
-  }
+}

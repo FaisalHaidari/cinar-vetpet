@@ -5,7 +5,7 @@ export const AuthContext = createContext(null);
 
 // ایجاد یک Provider component
 export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false); // وضعیت ورود کاربر (پیش‌فرض: وارد نشده)
+  const [isLoggedIn, setIsLoggedIn] = useState(true); // تغییر به true برای جلوگیری از ریدایرکت به صفحه auth
   const [user, setUser] = useState(null); // اطلاعات کاربر (اختیاری)
 
   // تابع برای ورود کاربر
