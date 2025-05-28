@@ -46,12 +46,12 @@ function AuthPage() {
 
   return (
     <div className={styles.authPage}>
-      <div className={styles.formContainer}>
-        <h2>{isSignIn ? 'Login' : 'Sign Up'}</h2>
+      <div className={styles.authContainer}>
+        <h2 className={styles.authTitle}>{isSignIn ? 'Login' : 'Sign Up'}</h2>
         {isSignIn ? (
-          <form onSubmit={handleSignInSubmit} className={styles.form}>
-            <div>
-              <label htmlFor="signInEmail">Email:</label>
+          <form onSubmit={handleSignInSubmit} className={styles.authForm}>
+            <div className={styles.inputGroup}>
+              <label htmlFor="signInEmail" className={styles.authLabel}>Email:</label>
               <input
                 type="email"
                 id="signInEmail"
@@ -59,10 +59,11 @@ function AuthPage() {
                 value={signInEmail}
                 onChange={(e) => setSignInEmail(e.target.value)}
                 placeholder="Enter your email"
+                className={styles.authInput}
               />
             </div>
-            <div>
-              <label htmlFor="signInPassword">Password:</label>
+            <div className={styles.inputGroup}>
+              <label htmlFor="signInPassword" className={styles.authLabel}>Password:</label>
               <input
                 type="password"
                 id="signInPassword"
@@ -70,14 +71,15 @@ function AuthPage() {
                 value={signInPassword}
                 onChange={(e) => setSignInPassword(e.target.value)}
                 placeholder="Enter your password"
+                className={styles.authInput}
               />
             </div>
-            <button type="submit">Log In</button>
+            <button type="submit" className={styles.authButton}>Log In</button>
           </form>
         ) : (
-          <form onSubmit={handleSignUpSubmit} className={styles.form}>
-            <div>
-              <label htmlFor="signUpName">Name:</label>
+          <form onSubmit={handleSignUpSubmit} className={styles.authForm}>
+            <div className={styles.inputGroup}>
+              <label htmlFor="signUpName" className={styles.authLabel}>Name:</label>
               <input
                 type="text"
                 id="signUpName"
@@ -85,10 +87,11 @@ function AuthPage() {
                 value={signUpName}
                 onChange={(e) => setSignUpName(e.target.value)}
                 placeholder="Enter your name"
+                className={styles.authInput}
               />
             </div>
-            <div>
-              <label htmlFor="signUpEmail">Email:</label>
+            <div className={styles.inputGroup}>
+              <label htmlFor="signUpEmail" className={styles.authLabel}>Email:</label>
               <input
                 type="email"
                 id="signUpEmail"
@@ -96,10 +99,11 @@ function AuthPage() {
                 value={signUpEmail}
                 onChange={(e) => setSignUpEmail(e.target.value)}
                 placeholder="Enter your email"
+                className={styles.authInput}
               />
             </div>
-            <div>
-              <label htmlFor="signUpPassword">Password:</label>
+            <div className={styles.inputGroup}>
+              <label htmlFor="signUpPassword" className={styles.authLabel}>Password:</label>
               <input
                 type="password"
                 id="signUpPassword"
@@ -107,10 +111,11 @@ function AuthPage() {
                 value={signUpPassword}
                 onChange={(e) => setSignUpPassword(e.target.value)}
                 placeholder="Enter your password"
+                className={styles.authInput}
               />
             </div>
-            <div>
-              <label htmlFor="confirmPassword">Confirm Password:</label>
+            <div className={styles.inputGroup}>
+              <label htmlFor="confirmPassword" className={styles.authLabel}>Confirm Password:</label>
               <input
                 type="password"
                 id="confirmPassword"
@@ -118,10 +123,11 @@ function AuthPage() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 placeholder="Confirm your password"
+                className={styles.authInput}
               />
             </div>
-            {error && <p className={styles.error}>{error}</p>}
-            <button type="submit">Create Account</button>
+            {error && <p className={styles.authError}>{error}</p>}
+            <button type="submit" className={styles.authButton}>Create Account</button>
           </form>
         )}
         <button className={styles.toggleButton} onClick={toggleAuthMode}>

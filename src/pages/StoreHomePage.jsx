@@ -80,7 +80,7 @@ function StoreHomePage() {
     <div className={styles.storeHomePage}>
       <div className={styles.mainWrapper}>
         <header className={styles.storeHeader}>
-          <h1>Evcil Hayvan Mağazası</h1>
+          <h1>Pet Shop</h1>
           <div className={styles.searchBar}>
             <FaSearch className={styles.searchIcon} />
             <input

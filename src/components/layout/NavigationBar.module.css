@@ -36,9 +36,14 @@
 }
 
 .logo {
-  height: 48px;
-  width: auto;
+  height: 62px;
+  width: 62px;
   display: block;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(107,122,143,0.10);
+  border: 2.5px solid #eee;
+  object-fit: cover;
 }
 
 .navList {
@@ -126,12 +131,50 @@
   background: var(--apricot);
 }
 
+.clinicName {
+  color: var(--blueberry);
+  font-weight: 900;
+  font-size: 2.1rem;
+  margin-left: 1.3rem;
+  letter-spacing: 0.7px;
+  font-family: 'Vazirmatn', 'Segoe UI', 'Roboto', 'Quicksand', 'Montserrat', sans-serif;
+  text-shadow: 0 2px 12px rgba(0,0,0,0.13);
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+  line-height: 1.1;
+}
+
+.navIcon {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 0.7em;
+  font-size: 1.25em;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: opacity 0.25s, transform 0.25s;
+  color: var(--apricot);
+}
+
+.navLink:hover .navIcon, .navLink:focus .navIcon {
+  opacity: 1;
+  transform: translateX(0);
+}
+
 @media (max-width: 900px) {
   .navbar {
     padding: 1rem;
   }
   .navList {
     gap: 1rem;
+  }
+  .clinicName {
+    font-size: 1.3rem;
+    margin-left: 0.8rem;
+  }
+  .logo {
+    height: 48px;
+    width: 48px;
   }
 }
 
@@ -153,5 +196,15 @@
     justify-content: center;
     gap: 0.7rem;
     margin-top: 0.5rem;
+  }
+  .clinicName {
+    font-size: 1.05rem;
+    margin-left: 0.5rem;
+    justify-content: center;
+    text-align: center;
+  }
+  .logo {
+    height: 38px;
+    width: 38px;
   }
 }
