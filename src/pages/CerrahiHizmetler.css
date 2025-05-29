@@ -1,0 +1,26 @@
+.service-detail-container {
+  max-width: 800px;
+  margin: 40px auto;
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.12);
+  padding: 40px;
+  font-family: 'Poppins', sans-serif;
+}
+.service-detail-container h1 {
+  color: #1a237e;
+  margin-bottom: 32px;
+  text-align: center;
+}
+.service-section {
+  margin-bottom: 28px;
+}
+.service-section h2 {
+  color: #ff7f2a;
+  margin-bottom: 8px;
+  font-size: 1.2rem;
+}
+.service-section p {
+  color: #333;
+  line-height: 1.7;
+} 

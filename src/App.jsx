@@ -12,6 +12,12 @@ import NavigationBar from './components/layout/NavigationBar';
 import ProductDetailsPage from './pages/ProductDetailsPage';
 import ShippingInfoPage from './pages/ShippingInfoPage';
 import Footer from './components/Footer';
+import CerrahiHizmetler from './pages/CerrahiHizmetler';
+import Ortopedi from './pages/Ortopedi';
+import Dahiliye from './pages/Dahiliye';
+import Mrg from './pages/Mrg';
+import Endoskopi from './pages/Endoskopi';
+import YogunBakim from './pages/YogunBakim';
 
 function App() {
   return (
@@ -38,6 +44,12 @@ function AppContent() {
           <Route path="/payment/online" element={<OnlinePaymentPage />} />
           <Route path="/admin/*" element={<AdminPanelPage />} />
           <Route path="/shipping-info" element={<ShippingInfoPage />} />
+          <Route path="/services/1" element={<CerrahiHizmetler />} />
+          <Route path="/services/2" element={<Ortopedi />} />
+          <Route path="/services/3" element={<Dahiliye />} />
+          <Route path="/services/7" element={<Mrg />} />
+          <Route path="/services/8" element={<Endoskopi />} />
+          <Route path="/services/9" element={<YogunBakim />} />
         </Route>
       </Routes>
       {location.pathname !== '/auth' && <Footer />}

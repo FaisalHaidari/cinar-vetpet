@@ -3,22 +3,19 @@ import { Link, useNavigate } from 'react-router-dom';
 import styles from '../styles/HomePage.module.css';
 
 const services = [
-  { id: 1, title: 'Cerrahi Hizmetler', icon: '🩺', desc: 'Açıklama örneği' },
-  { id: 2, title: 'Ortopedi', icon: '🦴', desc: 'Açıklama örneği' },
-  { id: 3, title: 'Dahiliye', icon: '💊', desc: 'Açıklama örneği' },
-  { id: 4, title: 'Doğum', icon: '🐾', desc: 'Açıklama örneği' },
-  { id: 5, title: 'Onkoloji', icon: '🧬', desc: 'Açıklama örneği' },
-  { id: 6, title: 'Tomografi', icon: '🖥️', desc: 'Açıklama örneği' },
-  { id: 7, title: 'Mrg', icon: '📈', desc: 'Açıklama örneği' },
-  { id: 8, title: 'Endoskopi', icon: '💉', desc: 'Açıklama örneği' },
-  { id: 9, title: 'Yoğun Bakım', icon: '🩹', desc: 'Açıklama örneği' },
+  { id: 1, title: 'Cerrahi Hizmetler', icon: '🩺', desc: ' ' },
+  { id: 2, title: 'Ortopedi', icon: '🦴', desc: '' },
+  { id: 3, title: 'Dahiliye', icon: '💊', desc: ' ' },
+  { id: 7, title: 'Mrg', icon: '📈', desc: ' ' },
+  { id: 8, title: 'Endoskopi', icon: '💉', desc: ' ' },
+  { id: 9, title: 'Yoğun Bakım', icon: '🩹', desc: '' },
 ];
 
 const petShopProducts = [
   { id: 1, title: 'Oyuncaklar', image: '/src/images/oyuncu.jpg', desc: 'Kedi ve köpek oyuncakları', link: '/petshop/oyuncaklar' },
   { id: 2, title: 'Sağlık ve Veteriner Ürünleri', image: '/src/images/saglik.jpg', desc: 'Sağlık ürünleri', link: '/petshop/saglik' },
   { id: 3, title: 'Kafesler ve Barınaklar', image: '/src/images/kafesler-ve-barinaklsar-1024x680.jpg', desc: 'Kafes ve barınak çeşitleri', link: '/petshop/kafesler' },
-  { id: 4, title: 'Gıdalar', image: '/src/images/mamsi.png', desc: 'Kedi ve köpek mamaları', link: '/petshop/gidalar' },
+  { id: 4, title: 'Mama ve Besin Ürünleri', image: '/src/images/mamsi.png', desc: 'Kedi ve köpek mamaları', link: '/petshop/Mama ve Besin Ürünleri' },
 ];
 
 const featuredProducts = [
