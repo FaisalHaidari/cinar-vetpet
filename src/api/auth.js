@@ -85,6 +85,46 @@ app.get('/users', async (req, res) => {
   }
 });
 
+// Update user by ID (Admin only - SECURITY RISK without proper auth check)
+app.put('/users/:id', async (req, res) => {
+  const { id } = req.params;
+  const { name, phone, avatar, isAdmin } = req.body; // Include isAdmin
+
+  // TODO: Implement proper authorization check here to ensure only admins can access this endpoint
+  // and specifically prevent non-admins from setting isAdmin to true.
+
+  try {
+    const user = await prisma.user.update({
+      where: { id: Number(id) },
+      data: {
+        name: name,
+        phone: phone,
+        avatar: avatar,
+        isAdmin: isAdmin, // Allow isAdmin to be updated
+      },
+    });
+    res.json({ message: 'User updated successfully!', user });
+  } catch (err) {
+    console.error('Error updating user:', err);
+    res.status(500).json({ message: 'Failed to update user', error: err.message });
+  }
+});
+
+// Delete user by ID (Admin only - SECURITY RISK without proper auth check)
+app.delete('/users/:id', async (req, res) => {
+  const { id } = req.params;
+
+  // TODO: Implement proper authorization check here to ensure only admins can access this endpoint
+
+  try {
+    await prisma.user.delete({ where: { id: Number(id) } });
+    res.json({ message: 'User deleted successfully!' });
+  } catch (err) {
+    console.error('Error deleting user:', err);
+    res.status(500).json({ message: 'Failed to delete user', error: err.message });
+  }
+});
+
 // --- Menu Items (Urunler) API ---
 // Get all menu items (with optional category filter)
 app.get('/urunler', async (req, res) => {
@@ -132,6 +172,49 @@ app.delete('/urunler/:id', async (req, res) => {
     res.json({ message: 'Ürün silindi!' });
   } catch (err) {
     res.status(500).json({ message: 'Ürün silinemedi', error: err.message });
+  }
+});
+
+// --- Order Submission API ---
+app.post('/submit-order', async (req, res) => {
+  const { userId, address, items } = req.body;
+
+  if (!userId || !address || !items || items.length === 0) {
+    return res.status(400).json({ message: 'Order data is incomplete.' });
+  }
+
+  try {
+    // Save the address. Assuming creating a new address for simplicity.
+    const createdAddress = await prisma.address.create({
+      data: {
+        userId: userId,
+        street: address.street,
+        buildingNo: address.buildingNo,
+        floor: address.floor,
+        apartmentNo: address.apartmentNo,
+        addressNote: address.addressNote,
+        // Assuming phone number is part of address and storing it here
+        phoneNumber: address.phoneNumber, // Make sure your Address model has a phoneNumber field
+      },
+    });
+
+    // Save the cart items as order items
+    // Using create in a loop instead of createMany due to potential conflicts with @@unique
+    for (const item of items) {
+      await prisma.cartItem.create({
+        data: {
+          userId: userId,
+          urunId: item.urunId,
+          quantity: item.quantity,
+        },
+      });
+    }
+
+    res.status(201).json({ message: 'Order submitted successfully!', addressId: createdAddress.id });
+
+  } catch (err) {
+    console.error('Error submitting order:', err);
+    res.status(500).json({ message: 'Failed to submit order', error: err.message });
   }
 });
 

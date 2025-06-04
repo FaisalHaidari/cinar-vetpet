@@ -1,51 +1,72 @@
 import React, { createContext, useState, useEffect } from 'react';
+import { useCart } from '../hooks/CartContext'; // این ایمپورت را نگه می‌داریم، چون ممکن است در آینده دوباره استفاده شود
 
-// ایجاد یک Context object
 export const AuthContext = createContext(null);
 
-// ایجاد یک Provider component
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
 
-  // بازیابی اطلاعات کاربر از localStorage هنگام لود
+  // *** این خط را موقتاً حذف می‌کنیم ***
+  // const { clearCart } = useCart();
+
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
-      setUser(JSON.parse(storedUser));
+      const parsedUser = JSON.parse(storedUser);
+      // Set admin role for faisal@gmail.com on initial load
+      if (parsedUser.email === 'faisal@gmail.com') {
+        parsedUser.role = 'ADMIN';
+      }
+      setUser(parsedUser);
       setIsLoggedIn(true);
     }
-  }, []);
+  }, []); // Dependency array is empty, so this runs only once on mount
 
-  // تابع برای ورود کاربر
   const login = (userData) => {
+    // Set admin role for faisal@gmail.com during login
+    if (userData.email === 'faisal@gmail.com') {
+      userData.role = 'ADMIN';
+    }
     setIsLoggedIn(true);
     setUser(userData);
     localStorage.setItem('user', JSON.stringify(userData));
   };
 
-  // تابع برای خروج کاربر
   const logout = () => {
     setIsLoggedIn(false);
     setUser(null);
     localStorage.removeItem('user');
+    // *** این خط را هم موقتاً حذف می‌کنیم ***
+    // clearCart();
   };
 
-  // تابع برای آپدیت اطلاعات کاربر
   const updateUser = (newUser) => {
+     // Ensure admin role is not accidentally removed for faisal@gmail.com
+     if (user?.email === 'faisal@gmail.com') {
+        newUser.role = 'ADMIN';
+     }
     setUser(prev => ({ ...prev, ...newUser }));
+    // Update localStorage with the new user data including role
+    localStorage.setItem('user', JSON.stringify({ ...user, ...newUser }));
   };
 
-  // مقدار Context که در اختیار کامپوننت‌های فرزند قرار می‌گیرد
+
+  // Helper function to check if the current user is admin
+  const isAdmin = () => {
+    return user?.role === 'ADMIN';
+  };
+
+
   const authContextValue = {
     isLoggedIn,
     user,
     login,
     logout,
     updateUser,
+    isAdmin
   };
 
-  // ارائه دادن مقدار Context به کامپوننت‌های فرزند
   return (
     <AuthContext.Provider value={authContextValue}>
       {children}

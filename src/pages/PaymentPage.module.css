@@ -1,0 +1,137 @@
+/* Styles for the PaymentPage */
+
+.paymentPageContainer {
+    padding: 20px;
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: #f9fafb; /* Equivalent to bg-gray-50 */
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.paymentPageContainer h1 {
+    text-align: center;
+    color: #111827; /* Equivalent to text-gray-900 */
+    margin-bottom: 25px;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.paymentForm {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between form groups */
+}
+
+.formGroup {
+    margin-bottom: 15px; /* Space between form groups */
+}
+
+.formLabel {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #374151; /* Equivalent to text-gray-700 */
+}
+
+.formInput,
+.formTextarea {
+    width: 100%;
+    padding: 12px 15px; /* Slightly larger padding */
+    border: 1px solid #d1d5db; /* Equivalent to border-gray-300 */
+    border-radius: 6px; /* Slightly more rounded */
+    font-size: 1rem; /* Larger font size */
+    color: #1f2937; /* Equivalent to text-gray-800 */
+    box-sizing: border-box;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.formInput:focus,
+.formTextarea:focus {
+    outline: none;
+    border-color: #2563eb; /* Equivalent to focus:border-blue-600 */
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); /* Equivalent to focus:ring focus:ring-blue-200 */
+}
+
+.formTextarea {
+    min-height: 100px; /* Give textarea a minimum height */
+    resize: vertical; /* Allow vertical resize */
+}
+
+.addressRow {
+    display: flex;
+    gap: 15px; /* Space between address inputs in a row */
+}
+
+.addressRow .formGroup {
+    flex: 1; /* Distribute space equally */
+    margin-bottom: 0;
+}
+
+.paymentButton {
+    width: 100%;
+    padding: 12px 20px; /* Larger padding */
+    background-color: #f97316; /* Equivalent to bg-orange-500 */
+    color: white;
+    font-size: 1.1rem; /* Larger font size */
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.paymentButton:hover {
+    background-color: #ea580c; /* Equivalent to hover:bg-orange-600 */
+}
+
+/* Styles for card details section */
+.cardDetailsSection {
+  background-color: #fff; /* White background for card section */
+  border-radius: 8px; /* Rounded corners */
+  padding: 20px; /* Padding inside the section */
+  margin-bottom: 20px; /* Space below the card section */
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+}
+
+.cardDetailsSection h4 {
+    font-weight: 600;
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+.cardInputGroup {
+    margin-bottom: 15px; /* Space between card input groups */
+}
+
+.cardInputGroup label {
+    font-size: 13px;
+    color: #555;
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.cardInputGroup input {
+    border: 1px solid #d1d5db;
+    border-radius: 4px;
+    padding: 12px 15px; /* Padding for card inputs */
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+.cardInputRow {
+    display: flex;
+    gap: 15px; /* Space between expiry and CVV */
+}
+
+.cardInputRow > div {
+    flex: 1;
+}
+
+.cardInputRow input {
+     padding: 12px 15px; /* Padding for expiry and CVV inputs */
+} 

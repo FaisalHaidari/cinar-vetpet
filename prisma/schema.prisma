@@ -9,11 +9,15 @@ generator client {
 
 model User {
   id       Int    @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
   name     String
   email    String @unique
   password String
   phone    String?
   avatar   String?
+  cartItems CartItem[]
+  addresses Address[]
 }
 
 model Urun {
@@ -22,4 +26,30 @@ model Urun {
   price    Float
   category String
   image    String?
+  cartItems CartItem[]
+}
+
+model CartItem {
+  id       Int @id @default(autoincrement())
+  userId   Int
+  urunId   Int
+  quantity Int @default(1)
+  user     User @relation(fields: [userId], references: [id])
+  urun     Urun @relation(fields: [urunId], references: [id])
+
+  @@unique([userId, urunId])
+}
+
+model Address {
+  id          Int     @id @default(autoincrement())
+  userId      Int
+  street      String
+  buildingNo  String
+  floor       String?
+  apartmentNo String
+  addressNote String?
+  phoneNumber String?
+  user        User    @relation(fields: [userId], references: [id])
+
+  @@unique([userId, id])
 } 

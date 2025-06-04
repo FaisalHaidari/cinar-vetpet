@@ -99,18 +99,11 @@ const products = [
 ];
 
 function StoreHomePage() {
-  const [cart, setCart] = useState([]);
-  const [totalPrice, setTotalPrice] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const productsPerPage = 12;
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const newTotalPrice = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
-    setTotalPrice(newTotalPrice);
-  }, [cart]);
 
   const filteredProducts = products.filter(product => 
     product.name.toLowerCase().includes(searchQuery.toLowerCase())
@@ -127,54 +120,67 @@ function StoreHomePage() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const addToCart = (product, quantity) => {
-    const existingItem = cart.find(item => item.id === product.id);
-    if (existingItem) {
-      setCart(cart.map(item =>
-        item.id === product.id ? { ...item, quantity: item.quantity + quantity } : item
-      ));
-    } else {
-      setCart([...cart, { ...product, quantity }]);
-    }
+  // Define common button styles
+  const commonButtonStyle = {
+    flex: '1 1 auto', // Allow flex items to grow and shrink
+    maxWidth: '48%', // Approximate width for two columns with gap
+    background:'#f7882f',
+    color:'#fff',
+    fontWeight:800,
+    fontSize:20,
+    padding:'18px 28px', // Adjusted padding for size
+    border:'1px solid #f7882f', // Added border
+    borderRadius:8, // Adjusted border-radius
+    boxShadow:'0 2px 8px rgba(0,0,0,0.1)', // Adjusted shadow
+    cursor:'pointer',
+    transition:'background-color 0.2s ease, box-shadow 0.2s ease' // Added hover transition
   };
 
-  const increaseQuantity = (productId) => {
-    setCart(cart.map(item =>
-      item.id === productId ? { ...item, quantity: item.quantity + 1 } : item
-    ));
-  };
-
-  const decreaseQuantity = (productId) => {
-    setCart(cart.map(item =>
-      item.id === productId && item.quantity > 1 ? { ...item, quantity: item.quantity - 1 } : item
-    ));
-  };
-
-  const removeFromCart = (productId) => {
-    setCart(cart.filter(item => item.id !== productId));
+  // Define hover style
+  const buttonHoverStyle = {
+    backgroundColor: '#e07b2e', // Darker apricot on hover
+    boxShadow: '0 4px 12px rgba(0,0,0,0.2)' // More prominent shadow on hover
   };
 
   return (
     <div className={styles.storeHomePage} style={{background:'#fff',minHeight:'100vh'}}>
       <div className={styles.mainWrapper}>
         <header className={styles.storeHeader} style={{justifyContent:'flex-start',flexDirection:'row-reverse',background:'#fff',boxShadow:'none',border:'none',padding:'32px 0 0 0'}}>
-          <button 
-            className={styles.cartButton}
-            onClick={() => setIsCartOpen(!isCartOpen)}
-            style={{marginRight:24}}
-          >
-            <FaShoppingCart />
-            <span className={styles.cartCount}>{cart.length}</span>
-          </button>
         </header>
         {/* Category Section */}
         <div style={{textAlign:'center',margin:'32px 0 40px 0'}}>
           <h2 style={{color:'#f7882f',fontWeight:800,fontSize:32,marginBottom:28}}>Menü Kategorileri</h2>
-          <div style={{display:'flex',justifyContent:'center',gap:24,flexWrap:'wrap'}}>
-            <button onClick={()=>navigate('/store/oyuncaklar')} style={{background:'#f7882f',color:'#fff',fontWeight:800,fontSize:18,padding:'14px 28px',border:'none',borderRadius:10,boxShadow:'0 2px 8px #f6f7f9',cursor:'pointer',transition:'box-shadow 0.2s'}}>Oyuncaklar</button>
-            <button onClick={()=>navigate('/store/saglik')} style={{background:'#f7882f',color:'#fff',fontWeight:800,fontSize:18,padding:'14px 28px',border:'none',borderRadius:10,boxShadow:'0 2px 8px #f6f7f9',cursor:'pointer',transition:'box-shadow 0.2s'}}>Sağlık ve Veteriner Ürünleri</button>
-            <button onClick={()=>navigate('/store/mama')} style={{background:'#f7882f',color:'#fff',fontWeight:800,fontSize:18,padding:'14px 28px',border:'none',borderRadius:10,boxShadow:'0 2px 8px #f6f7f9',cursor:'pointer',transition:'box-shadow 0.2s'}}>Mama ve Besin Ürünleri</button>
-            <button onClick={()=>navigate('/store/kafesler')} style={{background:'#f7882f',color:'#fff',fontWeight:800,fontSize:18,padding:'14px 28px',border:'none',borderRadius:10,boxShadow:'0 2px 8px #f6f7f9',cursor:'pointer',transition:'box-shadow 0.2s'}}>Kafesler ve Barınaklar</button>
+          <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:20}}> {/* Container for rows */}
+            {/* First row of buttons */}
+            <div style={{display:'flex',justifyContent:'center',gap:24,flexWrap:'wrap',width:'100%',maxWidth:'600px'}}> {/* Row 1 container */}
+              <button 
+                  onClick={()=>navigate('/store/saglik')} 
+                  style={commonButtonStyle}
+                   onMouseOver={(e) => Object.assign(e.currentTarget.style, buttonHoverStyle)}
+                  onMouseOut={(e) => Object.assign(e.currentTarget.style, commonButtonStyle)}
+              >Sağlık ve Veteriner Ürünleri</button>
+              <button 
+                  onClick={()=>navigate('/store/mama')} 
+                  style={commonButtonStyle}
+                   onMouseOver={(e) => Object.assign(e.currentTarget.style, buttonHoverStyle)}
+                  onMouseOut={(e) => Object.assign(e.currentTarget.style, commonButtonStyle)}
+              >Mama ve Besin Ürünleri</button>
+            </div>
+            {/* Second row of buttons */}
+            <div style={{display:'flex',justifyContent:'center',gap:24,flexWrap:'wrap',width:'100%',maxWidth:'600px'}}> {/* Row 2 container */}
+               <button 
+                  onClick={()=>navigate('/store/oyuncaklar')} 
+                  style={commonButtonStyle}
+                   onMouseOver={(e) => Object.assign(e.currentTarget.style, buttonHoverStyle)}
+                  onMouseOut={(e) => Object.assign(e.currentTarget.style, commonButtonStyle)}
+              >Oyuncaklar</button>
+              <button 
+                  onClick={()=>navigate('/store/kafesler')} 
+                  style={commonButtonStyle}
+                   onMouseOver={(e) => Object.assign(e.currentTarget.style, buttonHoverStyle)}
+                  onMouseOut={(e) => Object.assign(e.currentTarget.style, commonButtonStyle)}
+              >Kafesler ve Barınaklar</button>
+            </div>
           </div>
         </div>
       </div>

@@ -4,12 +4,13 @@ import { FaShoppingCart, FaUserCircle, FaHome, FaInfoCircle, FaStethoscope, FaPa
 import styles from './NavigationBar.module.css';
 import { Link as ScrollLink } from 'react-scroll';
 import { AuthContext } from '../../context/AuthContext';
+import { useCart } from '../../hooks/CartContext';
 
 function NavigationBar() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, logout } = useContext(AuthContext);
-  const cartCount = 0;
+  const { itemCount } = useCart();
 
   const handleLogout = () => {
     logout();
@@ -49,16 +50,8 @@ function NavigationBar() {
         </li>
         <li className={styles.navItem}>
           <Link 
-            to="/" 
+            to="/store"
             className={styles.navLink}
-            onClick={(e) => {
-              if (location.pathname !== '/') {
-                e.preventDefault();
-                navigate('/?scroll=petshop');
-              } else {
-                window.scrollTo({ top: document.getElementById('petshop').offsetTop - 80, behavior: 'smooth' });
-              }
-            }}
           >
             <span className={styles.navIcon}><FaPaw /></span>
             Pet Shop
@@ -90,6 +83,12 @@ function NavigationBar() {
               }}
             >Giriş Yap</button>
           </div>
+        )}
+        {user && (
+          <Link to="/cart" className={styles.cartButton} style={{marginRight: 24}}>
+            <FaShoppingCart />
+            <span className={styles.cartCount}>{itemCount}</span>
+          </Link>
         )}
       </div>
     </nav>

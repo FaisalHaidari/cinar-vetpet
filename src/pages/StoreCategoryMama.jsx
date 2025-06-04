@@ -1,20 +1,64 @@
 import React, { useEffect, useState } from 'react';
+import { FaShoppingCart, FaHeart } from 'react-icons/fa';
+import BackButton from '../components/BackButton';
+import styles from '../styles/StorePage.module.css';
+import { useCart } from '../hooks/CartContext';
+
 export default function StoreCategoryMama() {
   const [products, setProducts] = useState([]);
+  const { addToCart } = useCart();
+
   useEffect(() => {
     fetch('http://localhost:3002/urunler?category=Mama ve Besin Ürünleri')
       .then(res => res.json())
       .then(data => setProducts(data));
   }, []);
+
+  const handleAddToCart = (product) => {
+    addToCart(product);
+  };
+
+  const toggleFavorite = (productId) => {
+    console.log('Toggle favorite for product:', productId);
+  };
+
   return (
-    <div style={{padding:40}}>
-      <h1 style={{color:'#f7882f',fontWeight:800,fontSize:32}}>Mama ve Besin Ürünleri</h1>
-      <div style={{display:'flex',flexWrap:'wrap',gap:32,marginTop:32}}>
+    <div style={{padding:40}} className={styles.storePage}>
+      <div style={{display:'flex',alignItems:'center',gap:16,marginBottom:24,justifyContent:'space-between'}}>
+        <BackButton />
+        <h1 style={{color:'#f7882f',fontWeight:800,fontSize:32,margin:0,flex:1,textAlign:'center'}}>Mama ve Besin Ürünleri</h1>
+      </div>
+      <div className={styles.productsGrid}>
         {products.map(p => (
-          <div key={p.id} style={{background:'#fff',borderRadius:14,boxShadow:'0 2px 8px #eee',padding:24,minWidth:220,maxWidth:260,textAlign:'center'}}>
-            {p.image && <img src={p.image} alt={p.name} style={{width:120,height:120,objectFit:'cover',borderRadius:10,marginBottom:12}} />}
-            <div style={{fontWeight:700,fontSize:20,marginBottom:8}}>{p.name}</div>
-            <div style={{color:'#388e3c',fontWeight:700,fontSize:18}}>{p.price} TL</div>
+          <div key={p.id} className={styles.productCard}>
+            <div className={styles.productImage}>
+              {p.image && <img src={p.image} alt={p.name} />}
+            </div>
+            <div className={styles.productInfo}>
+              <h3 style={{fontWeight:700,fontSize:20,marginBottom:8}}>{p.name}</h3>
+              <div style={{color:'#388e3c',fontWeight:700,fontSize:18}}>{p.price} TL</div>
+              <button
+                onClick={() => handleAddToCart(p)}
+                style={{
+                  background: '#f7882f',
+                  color: '#fff',
+                  border: 'none',
+                  borderRadius: '8px',
+                  padding: '10px 20px',
+                  fontSize: '1rem',
+                  fontWeight: 600,
+                  cursor: 'pointer',
+                  marginTop: '10px',
+                  transition: 'background-color 0.2s ease',
+                  width: '100%'
+                }}
+                onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#e07b2e'}
+                onMouseOut={(e) => e.currentTarget.style.backgroundColor = '#f7882f'}
+              >
+                <FaShoppingCart style={{marginRight: '8px'}} />
+                Add to Cart
+              </button>
+            </div>
           </div>
         ))}
         {products.length === 0 && <div style={{color:'#888',fontSize:18}}>Bu kategoride ürün yok.</div>}
