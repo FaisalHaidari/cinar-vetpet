@@ -1,27 +1,39 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
 
 // ایجاد یک Context object
 export const AuthContext = createContext(null);
 
 // ایجاد یک Provider component
 export const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(true); // تغییر به true برای جلوگیری از ریدایرکت به صفحه auth
-  const [user, setUser] = useState(null); // اطلاعات کاربر (اختیاری)
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
+
+  // بازیابی اطلاعات کاربر از localStorage هنگام لود
+  useEffect(() => {
+    const storedUser = localStorage.getItem('user');
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   // تابع برای ورود کاربر
   const login = (userData) => {
     setIsLoggedIn(true);
     setUser(userData);
-    // در اینجا معمولاً اطلاعات کاربر در localStorage یا sessionStorage ذخیره می‌شود
-    console.log('کاربر وارد شد:', userData); // برای تست
+    localStorage.setItem('user', JSON.stringify(userData));
   };
 
   // تابع برای خروج کاربر
   const logout = () => {
     setIsLoggedIn(false);
     setUser(null);
-    // در اینجا معمولاً اطلاعات کاربر از localStorage یا sessionStorage حذف می‌شود
-    console.log('کاربر خارج شد'); // برای تست
+    localStorage.removeItem('user');
+  };
+
+  // تابع برای آپدیت اطلاعات کاربر
+  const updateUser = (newUser) => {
+    setUser(prev => ({ ...prev, ...newUser }));
   };
 
   // مقدار Context که در اختیار کامپوننت‌های فرزند قرار می‌گیرد
@@ -30,6 +42,7 @@ export const AuthProvider = ({ children }) => {
     user,
     login,
     logout,
+    updateUser,
   };
 
   // ارائه دادن مقدار Context به کامپوننت‌های فرزند

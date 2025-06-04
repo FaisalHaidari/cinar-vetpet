@@ -1,20 +1,27 @@
-import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { FaShoppingCart, FaUserCircle, FaHome, FaInfoCircle, FaStethoscope, FaPaw } from 'react-icons/fa';
 import styles from './NavigationBar.module.css';
 import { Link as ScrollLink } from 'react-scroll';
+import { AuthContext } from '../../context/AuthContext';
 
 function NavigationBar() {
   const location = useLocation();
-  // Example: You can get cart count from context or props if needed
+  const navigate = useNavigate();
+  const { user, logout } = useContext(AuthContext);
   const cartCount = 0;
+
+  const handleLogout = () => {
+    logout();
+    navigate('/auth');
+  };
 
   return (
     <nav className={styles.navbar}>
       <div className={styles.logoContainer}>
         <Link to="/" className={styles.logoLink}>
           <img src="./src/images/1.png" alt="Logo" className={styles.logo} />
-          <span className={styles.clinicName}>Çınar Pet Veteriner Kliniği</span>
+          <span className={styles.clinicName} style={{color: '#556B2F'}}>Çınar Pet<br />Veteriner Kliniği</span>
         </Link>
       </div>
       <ul className={styles.navList}>
@@ -41,20 +48,49 @@ function NavigationBar() {
           </ScrollLink>
         </li>
         <li className={styles.navItem}>
-          <ScrollLink to="petshop" smooth={true} duration={700} offset={-80} className={styles.navLink}>
+          <Link 
+            to="/" 
+            className={styles.navLink}
+            onClick={(e) => {
+              if (location.pathname !== '/') {
+                e.preventDefault();
+                navigate('/?scroll=petshop');
+              } else {
+                window.scrollTo({ top: document.getElementById('petshop').offsetTop - 80, behavior: 'smooth' });
+              }
+            }}
+          >
             <span className={styles.navIcon}><FaPaw /></span>
             Pet Shop
-          </ScrollLink>
+          </Link>
         </li>
       </ul>
       <div className={styles.rightSection}>
-        <Link to="/store" className={styles.cartButton} title="Sepetim">
-          <FaShoppingCart />
-          {cartCount > 0 && <span className={styles.cartCount}>{cartCount}</span>}
-        </Link>
-        <Link to="/auth" className={styles.avatarButton} title="Giriş/Kaydol">
-          <FaUserCircle />
-        </Link>
+        {user ? (
+          <>
+            <Link to="/profile" style={{marginRight:8, fontWeight:600, color:'#f7882f', textDecoration:'none'}}>
+              {user.name}
+            </Link>
+            <button onClick={handleLogout} style={{marginLeft:8, background:'var(--apricot)', color:'#fff', border:'none', borderRadius:6, padding:'8px 22px', fontWeight:600, fontSize: '1.1rem', cursor:'pointer'}}>Çıkış Yap</button>
+          </>
+        ) : (
+          <div style={{display:'flex', gap:24, alignItems:'center'}}>
+            <button
+              onClick={() => navigate('/auth?tab=login')}
+              style={{
+                background: '#f7882f',
+                color: '#fff',
+                border: 'none',
+                fontWeight: 500,
+                fontSize: '1rem',
+                borderRadius: 18,
+                padding: '6px 18px',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+              }}
+            >Giriş Yap</button>
+          </div>
+        )}
       </div>
     </nav>
   );

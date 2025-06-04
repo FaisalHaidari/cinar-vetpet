@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styles from '../styles/HomePage.module.css';
 
 const services = [
@@ -30,8 +30,16 @@ const featuredProducts = [
 ];
 
 function HomePage() {
+  const location = useLocation();
   const navigate = useNavigate();
   const petShopSliderRef = React.useRef(null);
+
+  React.useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    if (params.get('scroll') === 'petshop') {
+      window.scrollTo({ top: document.getElementById('petshop').offsetTop - 80, behavior: 'smooth' });
+    }
+  }, [location]);
 
   React.useEffect(() => {
     const slider = petShopSliderRef.current;

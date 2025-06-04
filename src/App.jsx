@@ -18,31 +18,34 @@ import Dahiliye from './pages/Dahiliye';
 import Mrg from './pages/Mrg';
 import Endoskopi from './pages/Endoskopi';
 import YogunBakim from './pages/YogunBakim';
+import Profile from './pages/Profile';
+import { AuthProvider } from './context/AuthContext';
+import StoreCategoryOyuncaklar from './pages/StoreCategoryOyuncaklar';
+import StoreCategorySaglik from './pages/StoreCategorySaglik';
+import StoreCategoryMama from './pages/StoreCategoryMama';
+import StoreCategoryKafesler from './pages/StoreCategoryKafesler';
 
 function App() {
   return (
-    <BrowserRouter>
-      <AppContent />
-    </BrowserRouter>
-  );
-}
-
-function AppContent() {
-  const location = useLocation();
-
-  return (
-    <>
-      {location.pathname !== '/auth' && <NavigationBar />}
-      <Routes>
-        <Route path="/auth" element={<AuthPage />} />
-        <Route element={<PrivateRoute />}>
+    <AuthProvider>
+      <BrowserRouter>
+        <NavigationBar />
+        <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/store" element={<StoreHomePage />} />
-          <Route path="/store/product/:id" element={<ProductDetailsPage />} />
+          <Route path="/auth" element={<AuthPage />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="/profile" element={<Profile />} />
+          </Route>
           <Route path="/clinic/introduction" element={<ClinicIntroductionPage />} />
           <Route path="/clinic/mission" element={<ClinicMissionPage />} />
           <Route path="/payment/online" element={<OnlinePaymentPage />} />
           <Route path="/admin/*" element={<AdminPanelPage />} />
+          <Route path="/store" element={<StoreHomePage />} />
+          <Route path="/store/oyuncaklar" element={<StoreCategoryOyuncaklar />} />
+          <Route path="/store/saglik" element={<StoreCategorySaglik />} />
+          <Route path="/store/mama" element={<StoreCategoryMama />} />
+          <Route path="/store/kafesler" element={<StoreCategoryKafesler />} />
+          <Route path="/store/product/:id" element={<ProductDetailsPage />} />
           <Route path="/shipping-info" element={<ShippingInfoPage />} />
           <Route path="/services/1" element={<CerrahiHizmetler />} />
           <Route path="/services/2" element={<Ortopedi />} />
@@ -50,10 +53,10 @@ function AppContent() {
           <Route path="/services/7" element={<Mrg />} />
           <Route path="/services/8" element={<Endoskopi />} />
           <Route path="/services/9" element={<YogunBakim />} />
-        </Route>
-      </Routes>
-      {location.pathname !== '/auth' && <Footer />}
-    </>
+        </Routes>
+        <Footer />
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

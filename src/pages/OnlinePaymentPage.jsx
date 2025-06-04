@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 function OnlinePaymentPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { cartItems = [], totalPrice = 0, address, city, province, postalCode, phoneNumber } = location.state || {};
+  const { cartItems = [], totalPrice = 0, phoneNumber, street, buildingNo, floor, apartmentNo, addressNote } = location.state || {};
 
   const [cardNumber, setCardNumber] = useState('');
   const [expiry, setExpiry] = useState('');
@@ -54,10 +54,10 @@ function OnlinePaymentPage() {
           </div>
           <div className={styles.shippingInfo}>
             <h4>Teslimat Bilgileri</h4>
-            <div>{address}</div>
-            <div>{city}, {province}</div>
-            <div>{postalCode}</div>
-            <div>{phoneNumber}</div>
+            <div><b>Telefon:</b> {phoneNumber}</div>
+            <div><b>Mahalle/Cadde/Sokak:</b> {street}</div>
+            <div><b>Bina No:</b> {buildingNo} <b>Kat:</b> {floor} <b>Daire No:</b> {apartmentNo}</div>
+            {addressNote && <div><b>Adres Tarifi:</b> {addressNote}</div>}
           </div>
         </div>
         <form className={styles.paymentForm} onSubmit={handlePay} autoComplete="off">

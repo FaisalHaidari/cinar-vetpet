@@ -9,25 +9,25 @@ function ShippingInfoPage() {
   const cartItems = location.state?.cartItems || [];
   const totalPrice = location.state?.totalPrice || 0;
 
-  const [address, setAddress] = useState('');
-  const [postalCode, setPostalCode] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [city, setCity] = useState('');
-  const [province, setProvince] = useState('');
-  // ... سایر فیلدهای مورد نیاز
+  const [street, setStreet] = useState('');
+  const [buildingNo, setBuildingNo] = useState('');
+  const [floor, setFloor] = useState('');
+  const [apartmentNo, setApartmentNo] = useState('');
+  const [addressNote, setAddressNote] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // در اینجا می‌توانید اطلاعات وارد شده را ذخیره کنید
-    console.log('اطلاعات ارسال ثبت شد:', { address, postalCode, phoneNumber, city, province });
-    // سپس کاربر را به صفحه پرداخت آنلاین هدایت کنید
+    // اطلاعات جدید را ذخیره کنید
+    console.log('اطلاعات ارسال ثبت شد:', { phoneNumber, street, buildingNo, floor, apartmentNo, addressNote });
     navigate('/payment/online', {
       state: {
-        address,
-        postalCode,
         phoneNumber,
-        city,
-        province,
+        street,
+        buildingNo,
+        floor,
+        apartmentNo,
+        addressNote,
         cartItems,
         totalPrice
       }
@@ -44,28 +44,30 @@ function ShippingInfoPage() {
         <form onSubmit={handleSubmit} className={styles.shippingForm} autoComplete="off">
           <h2 className={styles.formTitle}>Teslimat Bilgileri</h2>
           <div className={styles.formGroup}>
-            <label htmlFor="address">Adres</label>
-            <textarea id="address" name="address" value={address} onChange={(e) => setAddress(e.target.value)} required placeholder="Açık adresinizi girin..." />
+            <label htmlFor="phoneNumber">Telefon</label>
+            <input type="tel" id="phoneNumber" name="phoneNumber" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} required placeholder="Telefon Numarası" />
+          </div>
+          <div className={styles.formGroup}>
+            <label htmlFor="street">Mahalle / Cadde / Sokak</label>
+            <input type="text" id="street" name="street" value={street} onChange={(e) => setStreet(e.target.value)} required placeholder="Mahalle / Cadde / Sokak" />
           </div>
           <div className={styles.formRow}>
             <div className={styles.formGroup}>
-              <label htmlFor="city">Şehir</label>
-              <input type="text" id="city" name="city" value={city} onChange={(e) => setCity(e.target.value)} required placeholder="Şehir" />
+              <label htmlFor="buildingNo">Bina No</label>
+              <input type="text" id="buildingNo" name="buildingNo" value={buildingNo} onChange={(e) => setBuildingNo(e.target.value)} required placeholder="Bina No" />
             </div>
             <div className={styles.formGroup}>
-              <label htmlFor="province">İl/İlçe</label>
-              <input type="text" id="province" name="province" value={province} onChange={(e) => setProvince(e.target.value)} required placeholder="İl/İlçe" />
+              <label htmlFor="floor">Kat</label>
+              <input type="text" id="floor" name="floor" value={floor} onChange={(e) => setFloor(e.target.value)} required placeholder="Kat" />
+            </div>
+            <div className={styles.formGroup}>
+              <label htmlFor="apartmentNo">Daire No</label>
+              <input type="text" id="apartmentNo" name="apartmentNo" value={apartmentNo} onChange={(e) => setApartmentNo(e.target.value)} required placeholder="Daire No" />
             </div>
           </div>
-          <div className={styles.formRow}>
-            <div className={styles.formGroup}>
-              <label htmlFor="postalCode">Posta Kodu</label>
-              <input type="text" id="postalCode" name="postalCode" value={postalCode} onChange={(e) => setPostalCode(e.target.value)} required placeholder="Posta Kodu" />
-            </div>
-            <div className={styles.formGroup}>
-              <label htmlFor="phoneNumber">Telefon</label>
-              <input type="tel" id="phoneNumber" name="phoneNumber" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} required placeholder="Telefon Numarası" />
-            </div>
+          <div className={styles.formGroup}>
+            <label htmlFor="addressNote">Adres Tarifi (örn: Taksi durağının karşısı)</label>
+            <input type="text" id="addressNote" name="addressNote" value={addressNote} onChange={(e) => setAddressNote(e.target.value)} placeholder="Adres Tarifi" />
           </div>
           <button type="submit" className={styles.submitButton}>Devam Et ve Ödeme</button>
           <button type="button" onClick={handleGoBack} className={styles.goBackButton}>Geri Dön</button>
