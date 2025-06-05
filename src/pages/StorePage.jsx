@@ -169,7 +169,7 @@ function StorePage() {
           <FaTimes />
         </button>
         <div className={styles.filterSection}>
-          <h3>Kategoriler</h3>
+          <h3>Ürün Kategorileri</h3>
           <div className={styles.categoryList}>
             {categories.map(category => (
               <button

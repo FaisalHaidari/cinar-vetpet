@@ -195,7 +195,7 @@ export default function Profile() {
             transition:'all 0.2s',
             outline:'none',
           }}
-        >Profile</button>
+        >Profil</button>
         {isAdmin() && (
           <>
             <button
@@ -212,7 +212,7 @@ export default function Profile() {
                 transition:'all 0.2s',
                 outline:'none',
               }}
-            >Menu Items</button>
+            >Ürün Yönetimi</button>
             <button
               onClick={()=>setActiveTab('users')}
               style={{
@@ -227,7 +227,7 @@ export default function Profile() {
                 transition:'all 0.2s',
                 outline:'none',
               }}
-            >Users</button>
+            >Kullanıcılar</button>
           </>
         )}
       </div>
@@ -253,7 +253,7 @@ export default function Profile() {
               left:'50%',
               transform:'translateX(-50%)',
               top:110
-            }}>Edit</label>
+            }}>Düzenle</label>
             <input id="avatar-upload" type="file" accept="image/*" onChange={handleAvatarUpload} style={{display:'none'}} />
           </div>
           <label style={{display:'block',textAlign:'left',marginBottom:4,fontWeight:600,color:'#f7882f'}}>Ad Soyad</label>
@@ -267,7 +267,7 @@ export default function Profile() {
       )}
       {activeTab === 'menu' && isAdmin() && (
         <div style={{marginTop:32}}>
-          <h3>Menu Items</h3>
+          <h3>Ürün Yönetimi</h3>
           <button
             style={{
               display:'flex',alignItems:'center',justifyContent:'center',
@@ -286,7 +286,7 @@ export default function Profile() {
             }}
             onClick={()=>setShowNewMenuModal(true)}
           >
-            <span style={{marginRight:16}}>Create new menu item</span>
+            <span style={{marginRight:16}}>Yeni Ürün Ekle</span>
             <span style={{fontSize:32,marginTop:2}}>&#8250;</span>
           </button>
           {/* Modal for new menu item */}
@@ -297,9 +297,9 @@ export default function Profile() {
                 {/* Image upload */}
                 <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:16}}>
                   <div style={{width:200,height:200,background:'#e5e7eb',borderRadius:18,display:'flex',alignItems:'center',justifyContent:'center',color:'#a0aec0',fontSize:22,marginBottom:8,overflow:'hidden'}}>
-                    {newMenu.image ? <img src={newMenu.image} alt="item" style={{width:'100%',height:'100%',objectFit:'cover'}} /> : 'No image'}
+                    {newMenu.image ? <img src={newMenu.image} alt="item" style={{width:'100%',height:'100%',objectFit:'cover'}} /> : 'Resim Yok'}
                   </div>
-                  <label htmlFor="menu-image-upload" style={{border:'1.5px solid #f7882f',color:'#f7882f',borderRadius:10,padding:'8px 38px',fontWeight:600,fontSize:18,background:'#fff',cursor:'pointer',transition:'background 0.2s, color 0.2s',textAlign:'center'}}>Edit</label>
+                  <label htmlFor="menu-image-upload" style={{border:'1.5px solid #f7882f',color:'#f7882f',borderRadius:10,padding:'8px 38px',fontWeight:600,fontSize:18,background:'#fff',cursor:'pointer',transition:'background 0.2s, color 0.2s',textAlign:'center'}}>Düzenle</label>
                   <input id="menu-image-upload" type="file" accept="image/*" style={{display:'none'}} onChange={e=>{
                     const file = e.target.files[0];
                     if(file){
@@ -337,9 +337,9 @@ export default function Profile() {
                     alert('Sunucuya bağlanılamadı!');
                   }
                 }}>
-                  <label style={{fontWeight:600,marginBottom:2}}>Item name</label>
+                  <label style={{fontWeight:600,marginBottom:2}}>Ürün Adı</label>
                   <input type="text" value={newMenu.name} onChange={e=>setNewMenu(m=>({...m,name:e.target.value}))} style={{padding:12,borderRadius:12,border:'1.5px solid #e0e0e0',background:'#f6f7f9',fontSize:18,marginBottom:2}} required />
-                  <label style={{fontWeight:600,marginBottom:2}}>Base price</label>
+                  <label style={{fontWeight:600,marginBottom:2}}>Taban Fiyat</label>
                   <input type="number" value={newMenu.price} onChange={e=>setNewMenu(m=>({...m,price:e.target.value}))} style={{padding:12,borderRadius:12,border:'1.5px solid #e0e0e0',background:'#f6f7f9',fontSize:18,marginBottom:2}} required />
                   <label style={{fontWeight:600,marginBottom:2}}>Kategori</label>
                   <select value={newMenu.category} onChange={e=>setNewMenu(m=>({...m,category:e.target.value}))} style={{padding:12,borderRadius:12,border:'1.5px solid #e0e0e0',background:'#f6f7f9',fontSize:18,marginBottom:2}} required>
@@ -349,14 +349,14 @@ export default function Profile() {
                     <option value="Mama ve Besin Ürünleri">Mama ve Besin Ürünleri</option>
                     <option value="Kafesler ve Barınaklar">Kafesler ve Barınaklar</option>
                   </select>
-                  <button type="submit" style={{marginTop:18,padding:'14px 0',background:'#f7882f',color:'#fff',border:'none',borderRadius:14,fontWeight:700,fontSize:20,cursor:'pointer',width:'100%'}}>Save</button>
+                  <button type="submit" style={{marginTop:18,padding:'14px 0',background:'#f7882f',color:'#fff',border:'none',borderRadius:14,fontWeight:700,fontSize:20,cursor:'pointer',width:'100%'}}>Kaydet</button>
                 </form>
               </div>
             </div>
           )}
           {/* Display existing menu items */}
           <div style={{ maxWidth: 420, margin: '32px auto' }}>
-            <h4 style={{ textAlign: 'left', marginBottom: 16, color: '#f7882f' }}>Edit menu item:</h4>
+            <h4 style={{ textAlign: 'left', marginBottom: 16, color: '#f7882f' }}>Ürün Düzenle:</h4>
             {Array.isArray(urunler) && urunler.map(item => (
               <div key={item.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', background: '#f6f7f9', marginBottom: 12, padding: '12px 18px', borderRadius: 12, boxShadow: '0 1px 6px rgba(0,0,0,0.08)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
@@ -384,10 +384,10 @@ export default function Profile() {
               </div>
             ))}
             {Array.isArray(urunler) && urunler.length === 0 && (
-              <div style={{ textAlign: 'center', color: '#777', marginTop: 24 }}>No menu items found.</div>
+              <div style={{ textAlign: 'center', color: '#777', marginTop: 24 }}>Ürün bulunamadı.</div>
             )}
              {!Array.isArray(urunler) && (
-              <div style={{color:'#f00',textAlign:'center',marginTop:24}}>Error loading menu items.</div>
+              <div style={{color:'#f00',textAlign:'center',marginTop:24}}>Ürünler yüklenirken hata oluştu.</div>
             )}
           </div>
         </div>
@@ -400,9 +400,9 @@ export default function Profile() {
             {/* Image upload */}
             <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:16}}>
               <div style={{width:200,height:200,background:'#e5e7eb',borderRadius:18,display:'flex',alignItems:'center',justifyContent:'center',color:'#a0aec0',fontSize:22,marginBottom:8,overflow:'hidden'}}>
-                {editMenuForm.image ? <img src={editMenuForm.image} alt="item" style={{width:'100%',height:'100%',objectFit:'cover'}} /> : 'No image'}
+                {editMenuForm.image ? <img src={editMenuForm.image} alt="item" style={{width:'100%',height:'100%',objectFit:'cover'}} /> : 'Resim Yok'}
               </div>
-              <label htmlFor="edit-menu-image-upload" style={{border:'1.5px solid #f7882f',color:'#f7882f',borderRadius:10,padding:'8px 38px',fontWeight:600,fontSize:18,background:'#fff',cursor:'pointer',transition:'background 0.2s, color 0.2s',textAlign:'center'}}>Edit</label>
+              <label htmlFor="edit-menu-image-upload" style={{border:'1.5px solid #f7882f',color:'#f7882f',borderRadius:10,padding:'8px 38px',fontWeight:600,fontSize:18,background:'#fff',cursor:'pointer',transition:'background 0.2s, color 0.2s',textAlign:'center'}}>Düzenle</label>
               <input id="edit-menu-image-upload" type="file" accept="image/*" style={{display:'none'}} onChange={e=>{
                 const file = e.target.files[0];
                 if(file){
@@ -438,10 +438,10 @@ export default function Profile() {
                 alert('Sunucuya bağlanılamadı!');
               }
             }}>
-              <h3 style={{marginBottom:8, color: '#f7882f'}}>Edit Menu Item</h3>
-              <label style={{fontWeight:600,marginBottom:2}}>Item name</label>
+              <h3 style={{marginBottom:8, color: '#f7882f'}}>Ürün Düzenle</h3>
+              <label style={{fontWeight:600,marginBottom:2}}>Ürün Adı</label>
               <input type="text" value={editMenuForm.name} onChange={e=>setEditMenuForm(m=>({...m,name:e.target.value}))} style={{padding:12,borderRadius:12,border:'1.5px solid #e0e0e0',background:'#f6f7f9',fontSize:18,marginBottom:2}} required />
-              <label style={{fontWeight:600,marginBottom:2}}>Base price</label>
+              <label style={{fontWeight:600,marginBottom:2}}>Taban Fiyat</label>
               <input type="number" value={editMenuForm.price} onChange={e=>setEditMenuForm(m=>({...m,price:e.target.value}))} style={{padding:12,borderRadius:12,border:'1.5px solid #e0e0e0',background:'#f6f7f9',fontSize:18,marginBottom:2}} required />
               <label style={{fontWeight:600,marginBottom:2}}>Kategori</label>
               <select value={editMenuForm.category} onChange={e=>setEditMenuForm(m=>({...m,category:e.target.value}))} style={{padding:12,borderRadius:12,border:'1.5px solid #e0e0e0',background:'#f6f7f9',fontSize:18,marginBottom:2}} required>
@@ -451,7 +451,7 @@ export default function Profile() {
                 <option value="Mama ve Besin Ürünleri">Mama ve Besin Ürünleri</option>
                 <option value="Kafesler ve Barınaklar">Kafesler ve Barınaklar</option>
               </select>
-              <button type="submit" style={{marginTop:18,padding:'14px 0',background:'#f7882f',color:'#fff',border:'none',borderRadius:14,fontWeight:700,fontSize:20,cursor:'pointer',width:'100%'}}>Save Changes</button>
+              <button type="submit" style={{marginTop:18,padding:'14px 0',background:'#f7882f',color:'#fff',border:'none',borderRadius:14,fontWeight:700,fontSize:20,cursor:'pointer',width:'100%'}}>Değişiklikleri Kaydet</button>
               <button
                 type="button"
                 onClick={async () => {
@@ -480,7 +480,7 @@ export default function Profile() {
                 }}
                 style={{marginTop:12,padding:'10px 0',background:'#e53e3e',color:'#fff',border:'none',borderRadius:14,fontWeight:700,fontSize:18,cursor:'pointer',width:'100%'}}
               >
-                Delete Item
+                Ürünü Sil
               </button>
             </form>
           </div>
@@ -488,7 +488,7 @@ export default function Profile() {
       )}
       {activeTab === 'users' && isAdmin() && (
         <div style={{marginTop:32}}>
-          <h3>Users</h3>
+          <h3>Kullanıcılar</h3>
           <div style={{maxWidth:700,margin:'32px auto'}}>
             {Array.isArray(users) ? (
               users.map(u => (
@@ -496,43 +496,43 @@ export default function Profile() {
                   <div style={{display:'flex',alignItems:'center',gap:24}}>
                     <img src={u.avatar || 'https://ui-avatars.com/api/?name='+encodeURIComponent(u.name)} alt="avatar" style={{width:48,height:48,borderRadius:12,objectFit:'cover',background:'#fff'}} />
                     <div>
-                      <div style={{fontWeight:600,fontSize:20}}>{u.name} {u.role === 'ADMIN' && <span style={{fontSize:14, fontWeight:400, color:'#f97316'}}>(Admin)</span>}</div>
+                      <div style={{fontWeight:600,fontSize:20}}>{u.name} {u.role === 'ADMIN' && <span style={{fontSize:14, fontWeight:400, color:'#f97316'}}>(Yönetici)</span>}</div>
                       <div style={{color:'#444',fontSize:17}}>{u.email}</div>
                     </div>
                   </div>
-                  <button onClick={()=>handleEditUser(u)} style={{padding:'8px 22px',border:'1.5px solid #bbb',borderRadius:8,background:'#fff',fontWeight:600,fontSize:16,cursor:'pointer'}}>Edit</button>
+                  <button onClick={()=>handleEditUser(u)} style={{padding:'8px 22px',border:'1.5px solid #bbb',borderRadius:8,background:'#fff',fontWeight:600,fontSize:16,cursor:'pointer'}}>Düzenle</button>
                 </div>
               ))
             ) : (
-              <div style={{color:'#f00',textAlign:'center'}}>مشکلی در دریافت کاربران وجود دارد.</div>
+              <div style={{color:'#f00',textAlign:'center'}}>Kullanıcılar yüklenirken bir sorun oluştu.</div>
             )}
           </div>
           {/* Edit Modal */}
           {editingUser && (
             <div style={{position:'fixed',top:0,left:0,right:0,bottom:0,background:'rgba(0,0,0,0.5)',display:'flex',alignItems:'center',justifyContent:'center'}}>
               <div style={{background:'#fff',padding:32,borderRadius:16,maxWidth:500,width:'100%',margin:24}}>
-                <h3 style={{marginBottom:24}}>Edit User</h3>
+                <h3 style={{marginBottom:24}}>Kullanıcı Düzenle</h3>
                 <form onSubmit={handleEditSave}>
-                  <label style={{display:'block',textAlign:'left',marginBottom:4,fontWeight:600,color:'#f7882f'}}>First and last name</label>
-                  <input type="text" name="name" placeholder="Name" value={editForm.name} onChange={handleEditFormChange} style={{width:'100%',marginBottom:12,padding:10,borderRadius:8,border:'1px solid #ddd'}} required />
-                  <label style={{display:'block',textAlign:'left',marginBottom:4,fontWeight:600,color:'#f7882f'}}>Email</label>
+                  <label style={{display:'block',textAlign:'left',marginBottom:4,fontWeight:600,color:'#f7882f'}}>Adı Soyadı</label>
+                  <input type="text" name="name" placeholder="Adı Soyadı" value={editForm.name} onChange={handleEditFormChange} style={{width:'100%',marginBottom:12,padding:10,borderRadius:8,border:'1px solid #ddd'}} required />
+                  <label style={{display:'block',textAlign:'left',marginBottom:4,fontWeight:600,color:'#f7882f'}}>E-posta</label>
                   <input type="email" name="email" value={editForm.email} disabled style={{width:'100%',marginBottom:12,padding:10,borderRadius:8,border:'1px solid #ddd',background:'#e5e7eb'}} />
-                  <label style={{display:'block',textAlign:'left',marginBottom:4,fontWeight:600,color:'#f7882f'}}>Phone</label>
-                  <input type="text" name="phone" placeholder="Phone" value={editForm.phone} onChange={handleEditFormChange} style={{width:'100%',marginBottom:16,padding:10,borderRadius:8,border:'1px solid #ddd'}} />
+                  <label style={{display:'block',textAlign:'left',marginBottom:4,fontWeight:600,color:'#f7882f'}}>Telefon</label>
+                  <input type="text" name="phone" placeholder="Telefon" value={editForm.phone} onChange={handleEditFormChange} style={{width:'100%',marginBottom:16,padding:10,borderRadius:8,border:'1px solid #ddd'}} />
                   <div style={{display:'flex',alignItems:'center',margin:'16px 0'}}>
                     <select name="role" value={editForm.role} onChange={handleEditFormChange} style={{width:'100%',padding:10,borderRadius:8,border:'1px solid #ddd'}}>
-                      <option value="USER">User</option>
-                      <option value="ADMIN">Admin</option>
+                      <option value="USER">Kullanıcı</option>
+                      <option value="ADMIN">Yönetici</option>
                     </select>
                   </div>
-                  <button type="submit" style={{padding:'10px 32px',background:'#f7882f',color:'#fff',border:'none',borderRadius:8,fontWeight:700,fontSize:16,cursor:'pointer',width:'100%'}}>Save</button>
+                  <button type="submit" style={{padding:'10px 32px',background:'#f7882f',color:'#fff',border:'none',borderRadius:8,fontWeight:700,fontSize:16,cursor:'pointer',width:'100%'}}>Kaydet</button>
                 </form>
                 <button
                   type="button"
                   onClick={() => handleDeleteUser(editingUser.id)}
                   style={{marginTop:12,padding:'10px 32px',background:'#e53e3e',color:'#fff',border:'none',borderRadius:8,fontWeight:700,fontSize:16,cursor:'pointer',width:'100%'}}
                 >
-                  Delete User
+                  Kullanıcıyı Sil
                 </button>
               </div>
             </div>

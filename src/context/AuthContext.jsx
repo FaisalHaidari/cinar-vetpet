@@ -1,14 +1,13 @@
 import React, { createContext, useState, useEffect } from 'react';
-import { useCart } from '../hooks/CartContext'; // این ایمپورت را نگه می‌داریم، چون ممکن است در آینده دوباره استفاده شود
+import { useCart } from '../hooks/CartContext';
 
 export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
-
-  // *** این خط را موقتاً حذف می‌کنیم ***
-  // const { clearCart } = useCart();
+  // Correctly calling useCart at the top level of the component and getting the full context
+  const cartContext = useCart();
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -37,8 +36,12 @@ export const AuthProvider = ({ children }) => {
     setIsLoggedIn(false);
     setUser(null);
     localStorage.removeItem('user');
-    // *** این خط را هم موقتاً حذف می‌کنیم ***
-    // clearCart();
+    // Safely call clearCart if the context and function are available
+    if (cartContext && cartContext.clearCart) {
+      cartContext.clearCart(); // Clear the cart when user logs out
+    } else {
+      console.error("Cart context or clearCart function not available.");
+    }
   };
 
   const updateUser = (newUser) => {
@@ -51,12 +54,10 @@ export const AuthProvider = ({ children }) => {
     localStorage.setItem('user', JSON.stringify({ ...user, ...newUser }));
   };
 
-
   // Helper function to check if the current user is admin
   const isAdmin = () => {
     return user?.role === 'ADMIN';
   };
-
 
   const authContextValue = {
     isLoggedIn,

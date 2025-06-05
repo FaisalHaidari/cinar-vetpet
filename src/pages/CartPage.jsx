@@ -103,7 +103,7 @@ function CartPage() {
           </div>
 
           <div className={styles.paymentColumn}>
-            <h2 className={styles.paymentTitle}>Ödeme</h2>
+            <h2 className={styles.paymentTitle}>Teslimat Adresi</h2>
             <form onSubmit={handlePaymentSubmit} className={styles.formGroup}>
               <div className={styles.formGroup}>
                 <label htmlFor="telefon" className={styles.formLabel}>Telefon</label>

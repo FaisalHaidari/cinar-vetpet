@@ -63,8 +63,10 @@ function HomePage() {
       <div className={styles.mainWrapper}>
         {/* Hero Section */}
         <section id="hakkimizda" className={styles.heroSection} style={{ background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '7rem 0 5.5rem 0' }}>
-          <img src="/src/images/vetpet.png" alt="Çınar Pet Veteriner Kliniği" style={{ width: 400, height: 350, objectFit: 'cover', borderRadius: 24, boxShadow: '0 4px 32px rgba(44,62,80,0.10)', marginRight: 48 }} />
-          <div style={{ maxWidth: 520 }}>
+          <div className={styles.heroImageContainer}>
+            <img src="/src/images/vetpet.png" alt="Çınar Pet Veteriner Kliniği" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          </div>
+          <div className={styles.heroContent}>
             <div style={{ background: '#F7882F', color: '#fff', display: 'inline-block', borderRadius: 18, fontWeight: 800, fontSize: 20, padding: '0.3em 1.2em', marginBottom: 18 }}>HAKKIMIZDA</div>
             <h1 style={{ color: '#1a237e', fontWeight: 900, fontSize: 48, margin: '0 0 1.2rem 0', lineHeight: 1.1 }}>Çınar Pet Veteriner Kliniği</h1>
             <p style={{ color: '#6B7A8F', fontSize: 20, marginBottom: 32, textAlign: 'justify', lineHeight: 1.7 }}>
@@ -78,9 +80,9 @@ function HomePage() {
         <section id="hizmetler" style={{ margin: '8rem 0 7rem 0', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
           <div style={{ background: '#F7882F', color: '#fff', display: 'inline-block', borderRadius: 18, fontWeight: 800, fontSize: 20, padding: '0.3em 1.2em', marginBottom: 18 }}>HİZMETLER</div>
           <h2 style={{ color: '#1a237e', fontWeight: 900, fontSize: 38, margin: '0 0 2.2rem 0', letterSpacing: 1, textAlign: 'center' }}>Hizmetler</h2>
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2.2rem', justifyContent: 'center' }}>
+          <div className={styles.serviceGrid}>
             {services.map(service => (
-              <div key={service.id} style={{ background: '#fff', borderRadius: 18, boxShadow: '0 4px 24px rgba(44,62,80,0.07)', padding: '2.2rem 2rem 1.5rem 2rem', minWidth: 220, maxWidth: 260, flex: '1 1 220px', display: 'flex', flexDirection: 'column', alignItems: 'center', transition: 'box-shadow 0.2s' }}>
+              <div key={service.id} className={styles.serviceCard}>
                 <div style={{ fontSize: 48, marginBottom: 18 }}>{service.icon}</div>
                 <div style={{ color: '#1a237e', fontWeight: 800, fontSize: 22, marginBottom: 10 }}>{service.title}</div>
                 <div style={{ color: '#6B7A8F', fontSize: 16, marginBottom: 18, textAlign: 'center' }}>{service.desc}</div>

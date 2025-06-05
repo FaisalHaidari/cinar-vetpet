@@ -31,10 +31,23 @@
   width: 100%;
   min-height: 380px;
   display: flex;
-  align-items: stretch;
+  align-items: center;
   justify-content: center;
   box-sizing: border-box;
   overflow-x: hidden;
+}
+
+.heroContent {
+  max-width: 520px;
+}
+
+.heroImageContainer {
+  width: 400px;
+  height: 350px;
+  object-fit: cover;
+  border-radius: 24px;
+  box-shadow: 0 4px 32px rgba(44,62,80,0.10);
+  margin-right: 48px;
 }
 
 .heroBgImage {
@@ -156,6 +169,13 @@
 .categoryCard h3 {
   font-size: 1.5rem;
   margin: 0;
+}
+
+.serviceGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.2rem;
+  justify-content: center;
 }
 
 /* Featured Products Section */
@@ -435,87 +455,134 @@
   color: var(--blueberry);
 }
 
-/* Responsive Design */
+/* Responsive adjustments */
 @media (max-width: 900px) {
   .mainWrapper {
     padding: 0 1rem;
   }
   .heroSection {
-    padding: 2.5rem 1.5rem 1.2rem 1.5rem;
+    flex-direction: column; /* Stack elements vertically */
+    padding: 4rem 1rem 3rem 1rem; /* Adjust padding */
   }
-  .section {
-    padding: 1.5rem 1rem;
+  .heroImageContainer {
+    margin-right: 0; /* Remove right margin when stacked */
+    margin-bottom: 2rem; /* Add bottom margin */
+    width: 80%; /* Adjust width */
+    height: auto; /* Allow height to adjust */
+    max-width: 300px; /* Set a max width */
   }
-  .categories,
-  .featuredProducts,
-  .specialOffers,
-  .newsletter {
-    padding: 2.5rem 1.5rem;
+  .heroContent {
+    max-width: 100%; /* Allow content to take full width */
+    text-align: center; /* Center text */
   }
-  .categoryGrid,
-  .productGrid {
+  .serviceGrid {
     gap: 1.5rem;
-    padding: 0 0.5rem;
+  }
+  .serviceCard {
+    padding: 1.8rem 1.5rem 1.2rem 1.5rem;
+    min-width: 200px; /* Adjust min-width */
+  }
+  .productSlider {
+    gap: 1.5rem;
+    padding: 0 1rem 1.5rem 1rem; /* Add horizontal padding */
   }
   .productCard {
-    min-width: 260px;
-    max-width: 280px;
+    min-width: 280px; /* Adjust min-width for smaller screens */
+    max-width: 300px;
   }
-  .heroContentOverlay {
-    padding: 2.5rem 1.5rem 1.2rem 1.5rem;
+  .categoryGrid {
+     gap: 1.5rem;
+     padding: 0 1rem; /* Add horizontal padding */
   }
-  .productImageOnly {
-    min-width: 140px;
-    max-width: 160px;
+  .categoryCard {
+    padding: 1.5rem 1rem;
   }
-  .sliderImage {
-    width: 110px;
-    height: 110px;
+  .offerCard {
+    flex-direction: column; /* Stack elements in offer cards */
+    align-items: center;
+    padding: 2rem 1.5rem; /* Adjust padding */
+  }
+  .offerContent {
+    text-align: center;
+  }
+  .newsletterForm {
+    flex-direction: column; /* Stack elements in newsletter form */
+  }
+  .newsletterForm input {
+    margin-right: 0; /* Remove right margin */
+    margin-bottom: 1rem; /* Add bottom margin */
   }
 }
+
 @media (max-width: 600px) {
   .mainWrapper {
     padding: 0 0.5rem;
   }
   .heroSection {
-    padding: 1.2rem 1rem 0.7rem 1rem;
+    padding: 3rem 0.5rem 2rem 0.5rem; /* Further adjust padding */
+  }
+  .heroImageContainer {
+     width: 90%; /* Adjust width for very small screens */
+     max-width: 250px;
+     margin-bottom: 1.5rem; /* Adjust margin */
+  }
+  .heroContent {
+    /* already 100% and centered */
   }
   .section {
-    padding: 0.7rem 0.5rem;
+    margin: 4rem 0 3rem 0;
   }
   .categories,
   .featuredProducts,
   .specialOffers,
   .newsletter {
-    padding: 1.5rem 1rem;
+    padding: 3rem 0.5rem;
   }
   .categoryGrid,
-  .productGrid {
+  .serviceGrid {
     gap: 1rem;
-    padding: 0;
+  }
+  .categoryCard,
+  .serviceCard {
+    min-width: 180px;
+    max-width: none; /* Allow cards to take available width */
+    padding: 1.2rem 0.8rem;
   }
   .offerCard {
-    padding: 2rem 1rem;
+    padding: 1.5rem 1rem; /* Further adjust padding */
   }
-  .newsletterForm {
-    flex-direction: column;
-    padding: 0;
+  .newsletterForm input {
+    /* margin-right: 0; already set */
+    margin-bottom: 0.8rem; /* Adjust margin */
+  }
+  .productSlider {
+    gap: 1rem;
+    padding: 0 0.5rem 1.5rem 0.5rem; /* Further reduce padding */
   }
   .productCard {
-    min-width: 200px;
-    max-width: 220px;
+    min-width: 250px; /* Further reduce min-width for small screens */
+    max-width: 280px;
   }
-  .heroContentOverlay {
-    padding: 1.2rem 1rem 0.7rem 1rem;
-  }
-  .productImageOnly {
-    min-width: 100px;
-    max-width: 120px;
-  }
-  .sliderImage {
-    width: 70px;
-    height: 70px;
-  }
+}
+
+/* Ensure images within responsive containers are also responsive */
+.heroImageContainer img,
+.offerCard img {
+  max-width: 100%;
+  height: auto;
+}
+
+.productImage img {
+  width: 100%;
+  height: 100%; /* Keep height fixed for product cards if desired */
+  object-fit: cover;
+}
+
+.productImage {
+  position: relative;
+  height: 250px;
+  overflow: hidden;
+  background: #fff;
 }
 
 .productImageOnly {
@@ -545,4 +612,22 @@
   border-radius: 16px;
   box-shadow: 0 2px 8px rgba(107, 122, 143, 0.08);
   background: #f9f9f9;
+}
+
+.serviceCard {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(44,62,80,0.07);
+  padding: 2.2rem 2rem 1.5rem 2rem;
+  min-width: 220px;
+  max-width: 260px;
+  flex: 1 1 220px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: box-shadow 0.2s;
+}
+
+.serviceCard:hover {
+  box-shadow: 0 8px 32px rgba(44,62,80,0.13);
 }

@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import ClinicIntroductionPage from './pages/ClinicIntroductionPage';
-import ClinicMissionPage from './pages/ClinicMissionPage';
 import OnlinePaymentPage from './pages/OnlinePaymentPage';
 import AdminPanelPage from './admin/pages/AdminPanelPage';
 import StoreHomePage from './pages/StoreHomePage';
@@ -42,7 +41,6 @@ function App() {
               <Route path="/admin/*" element={<AdminPanelPage />} />
             </Route>
             <Route path="/clinic/introduction" element={<ClinicIntroductionPage />} />
-            <Route path="/clinic/mission" element={<ClinicMissionPage />} />
             <Route path="/payment/online" element={<OnlinePaymentPage />} />
             <Route path="/store" element={<StoreHomePage />} />
             <Route path="/store/oyuncaklar" element={<StoreCategoryOyuncaklar />} />
