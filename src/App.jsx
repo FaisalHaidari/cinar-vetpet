@@ -3,7 +3,6 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import ClinicIntroductionPage from './pages/ClinicIntroductionPage';
 import OnlinePaymentPage from './pages/OnlinePaymentPage';
-import AdminPanelPage from './admin/pages/AdminPanelPage';
 import StoreHomePage from './pages/StoreHomePage';
 import AuthPage from './pages/AuthPage';
 import PrivateRoute from './components/layout/PrivateRoute';
@@ -38,7 +37,6 @@ function App() {
             <Route path="/auth" element={<AuthPage />} />
             <Route element={<PrivateRoute />}>
               <Route path="/profile" element={<Profile />} />
-              <Route path="/admin/*" element={<AdminPanelPage />} />
             </Route>
             <Route path="/clinic/introduction" element={<ClinicIntroductionPage />} />
             <Route path="/payment/online" element={<OnlinePaymentPage />} />

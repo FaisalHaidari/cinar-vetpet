@@ -1,6 +1,6 @@
 datasource db {
-  provider = "sqlite"
-  url      = "file:./dev.db"
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 generator client {
@@ -8,24 +8,24 @@ generator client {
 }
 
 model User {
-  id       Int    @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt @default(now())
-  name     String
-  email    String @unique
-  password String
-  phone    String?
-  avatar   String?
+  updatedAt DateTime @updatedAt
+  name      String
+  email     String   @unique
+  password  String
+  phone     String?
+  avatar    String?
   cartItems CartItem[]
   addresses Address[]
 }
 
 model Urun {
-  id       Int    @id @default(autoincrement())
-  name     String
-  price    Float
-  category String
-  image    String?
+  id        Int      @id @default(autoincrement())
+  name      String
+  price     Float
+  category  String
+  image     String?
   cartItems CartItem[]
 }
 

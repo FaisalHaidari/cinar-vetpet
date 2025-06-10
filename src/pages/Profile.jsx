@@ -10,7 +10,6 @@ export default function Profile() {
   const [name, setName] = useState(user?.name || "");
   const [email, setEmail] = useState(user?.email || "");
   const [phone, setPhone] = useState(user?.phone || "");
-  const [country, setCountry] = useState(user?.country || "");
   const [avatar, setAvatar] = useState(user?.avatar || "");
   const [activeTab, setActiveTab] = useState('profile');
   const [users, setUsers] = useState([]);
@@ -238,7 +237,7 @@ export default function Profile() {
           <div style={{marginBottom:18, position:'relative'}}>
             <img src={avatar || "https://ui-avatars.com/api/?name="+encodeURIComponent(name)} alt="avatar" style={{width:90,height:90,borderRadius:16,objectFit:'cover',marginBottom:8}} />
             <label htmlFor="avatar-upload" style={{
-              display:'inline-block',
+              display:'block',
               background:'#fff',
               color:'#f7882f',
               border:'1.5px solid #f7882f',
@@ -247,7 +246,7 @@ export default function Profile() {
               fontWeight:700,
               fontSize:16,
               cursor:'pointer',
-              marginTop:-8,
+              marginTop:10,
               boxShadow:'0 2px 8px rgba(0,0,0,0.06)'
             }}>Resmi Değiştir</label>
             <input id="avatar-upload" type="file" accept="image/*" style={{display:'none'}} onChange={handleAvatarUpload} />
@@ -256,8 +255,6 @@ export default function Profile() {
           <input type="text" placeholder="Adınız Soyadınız" value={name} onChange={e=>setName(e.target.value)} style={{width:'100%',marginBottom:12,padding:10,borderRadius:8,border:'1px solid #ddd'}} />
           <label style={{display:'block',textAlign:'left',marginBottom:4,fontWeight:600,color:'#f7882f'}}>E-posta</label>
           <input type="email" value={email} disabled style={{width:'100%',marginBottom:12,padding:10,borderRadius:8,border:'1px solid #ddd',background:'#e5e7eb'}} />
-          <label style={{display:'block',textAlign:'left',marginBottom:4,fontWeight:600,color:'#f7882f'}}>Ülke</label>
-          <input type="text" placeholder="Ülke" value={country} onChange={e=>setCountry(e.target.value)} style={{width:'100%',marginBottom:12,padding:10,borderRadius:8,border:'1px solid #ddd'}} />
           <label style={{display:'block',textAlign:'left',marginBottom:4,fontWeight:600,color:'#f7882f'}}>Telefon Numarası</label>
           <input type="text" placeholder="Telefon Numarası" value={phone} onChange={e=>setPhone(e.target.value)} style={{width:'100%',marginBottom:16,padding:10,borderRadius:8,border:'1px solid #ddd'}} />
           <button type="submit" style={{padding:'10px 32px',background:'#f7882f',color:'#fff',border:'none',borderRadius:8,fontWeight:700,fontSize:16,cursor:'pointer',width:'100%'}}>Kaydet</button>
