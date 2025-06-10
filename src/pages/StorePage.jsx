@@ -28,7 +28,7 @@ const products = [
   { id: 15, name: 'Kuş Oyuncağı', price: 250, imageUrl: '/src/images/image_1296.webp', category: 'bird', rating: 4.1, reviews: 15, stock: 35, description: 'Renkli kuş oyuncağı.' },
   { id: 16, name: 'Balık Akvaryum Filtresi', price: 800, imageUrl: '/src/images/da228978-8c95-47b8-afe5-8b08d08287e9.webp', category: 'fish', rating: 4.6, reviews: 21, stock: 8, description: 'Sessiz çalışan akvaryum filtresi.' },
   // ...
-  // Duplicate and slightly vary the above products to reach 48 total
+  // Yukarıdaki ürünleri çoğaltın ve toplam 48'e ulaşmak için hafifçe değiştirin
   ...Array.from({ length: 44 }, (_, i) => ({
     id: i + 5,
     name: `Ürün ${i + 5}`,
@@ -63,12 +63,12 @@ function StorePage() {
   useEffect(() => {
     let result = products;
 
-    // Apply category filter
+    // Kategori filtresi uygula
     if (selectedCategory !== 'all') {
       result = result.filter(product => product.category === selectedCategory);
     }
 
-    // Apply search filter
+    // Arama filtresi uygula
     if (searchQuery) {
       result = result.filter(product =>
         product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -76,12 +76,12 @@ function StorePage() {
       );
     }
 
-    // Apply price range filter
+    // Fiyat aralığı filtresi uygula
     result = result.filter(product =>
       product.price >= priceRange.min && product.price <= priceRange.max
     );
 
-    // Apply sorting
+    // Sıralama uygula
     switch (sortBy) {
       case 'price-asc':
         result.sort((a, b) => a.price - b.price);
@@ -114,12 +114,12 @@ function StorePage() {
   };
 
   const toggleFavorite = (productId) => {
-    // Implement favorite functionality
+    // Favori işlevselliğini uygula
   };
 
   return (
     <div className={styles.storePage}>
-      {/* Main Title */}
+      {/* Ana Başlık */}
       <h1 style={{
         textAlign: 'center',
         fontSize: 48,
@@ -128,9 +128,9 @@ function StorePage() {
         margin: '2.5rem 0 2.5rem 0',
         fontFamily: 'Montserrat, Arial, sans-serif',
         letterSpacing: 1
-      }}>Pet Shop</h1>
+      }}>Evcil Hayvan Dükkanı</h1>
 
-      {/* Search and Filter Bar */}
+      {/* Arama ve Filtre Çubuğu */}
       <div className={styles.searchFilterBar}>
         <div className={styles.searchContainer}>
           <FaSearch className={styles.searchIcon} />
@@ -160,7 +160,7 @@ function StorePage() {
         </select>
       </div>
 
-      {/* Filters Sidebar */}
+      {/* Filtre Kenar Çubuğu */}
       <div className={`${styles.filtersSidebar} ${showFilters ? styles.show : ''}`}>
         <button
           className={styles.closeFilters}
@@ -213,7 +213,7 @@ function StorePage() {
         </div>
       </div>
 
-      {/* Products Grid */}
+      {/* Ürün Izgarası */}
       <div className={styles.productsGrid}>
         {paginatedProducts.map(product => (
           <div key={product.id} className={styles.productCard}>
@@ -272,33 +272,16 @@ function StorePage() {
           </div>
         ))}
       </div>
-
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div style={{ display: 'flex', justifyContent: 'center', margin: '3rem 0 2rem 0', gap: '1rem' }}>
-          {[...Array(totalPages)].map((_, idx) => (
-            <button
-              key={idx + 1}
-              onClick={() => setCurrentPage(idx + 1)}
-              style={{
-                background: currentPage === idx + 1 ? '#F7882F' : '#fff',
-                color: currentPage === idx + 1 ? '#fff' : '#6B7A8F',
-                border: '2px solid #F7882F',
-                borderRadius: 10,
-                fontWeight: 700,
-                fontSize: 18,
-                padding: '0.7em 1.5em',
-                cursor: 'pointer',
-                boxShadow: currentPage === idx + 1 ? '0 2px 8px rgba(44,62,80,0.10)' : 'none',
-                transition: 'all 0.2s',
-                outline: 'none',
-              }}
-            >
-              {idx + 1}
-            </button>
-          ))}
-        </div>
-      )}
+      {/* Sayfalama */}
+      <div className={styles.pagination}>
+        <button onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))} disabled={currentPage === 1}>
+          <FaChevronLeft /> Önceki
+        </button>
+        <span>Sayfa {currentPage} / {totalPages}</span>
+        <button onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))} disabled={currentPage === totalPages}>
+          Sonraki <FaChevronRight />
+        </button>
+      </div>
 
       {/* Cart Preview */}
       {cart.length > 0 && (

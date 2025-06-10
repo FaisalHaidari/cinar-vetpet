@@ -26,7 +26,7 @@ export default function BackButton() {
       onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
     >
       <FaArrowLeft />
-      Geri
+      Geri Git {/* Geri */}
     </button>
   );
 } 

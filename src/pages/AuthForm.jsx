@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { AuthContext } from "../context/AuthContext";
 
-// اضافه کردن فونت مدرن از CDN (مثلاً Nunito)
+// Modern bir fontu CDN'den ekleme (örneğin Nunito)
 const fontLink = document.createElement('link');
 fontLink.href = 'https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap';
 fontLink.rel = 'stylesheet';
@@ -16,7 +16,7 @@ export default function AuthForm() {
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
 
-  // Sync isLogin with query string
+  // isLogin'ı sorgu dizesiyle senkronize et
   React.useEffect(() => {
     setIsLogin(!location.search.includes('register'));
   }, [location.search]);
@@ -43,16 +43,16 @@ export default function AuthForm() {
       });
       const data = await res.json();
       if (res.ok) {
-        // Set admin role for faisal@gmail.com
+        // faisal@gmail.com için yönetici rolü ayarla
         if (data.user && data.user.email === 'faisal@gmail.com') {
           data.user.role = 'ADMIN';
         }
         if (!isLogin) {
-          // Registration: log in and redirect
+          // Kayıt: giriş yap ve yönlendir
           login(data.user);
           navigate("/");
         } else {
-          // Login: log in and redirect
+          // Giriş: giriş yap ve yönlendir
           login(data.user);
           navigate("/");
         }

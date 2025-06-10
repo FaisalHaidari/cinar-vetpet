@@ -6,7 +6,7 @@ export default function Profile() {
   const { user, logout, updateUser, isAdmin } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // فیلدهای جدید برای ویرایش
+  // Düzenleme için yeni alanlar
   const [name, setName] = useState(user?.name || "");
   const [email, setEmail] = useState(user?.email || "");
   const [phone, setPhone] = useState(user?.phone || "");
@@ -50,7 +50,7 @@ export default function Profile() {
     }
   };
 
-  // تابع برای آپلود عکس
+  // Resim yükleme fonksiyonu
   const handleAvatarUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -62,7 +62,7 @@ export default function Profile() {
     }
   };
 
-  // Fetch users when Users tab is active
+  // Kullanıcılar sekmesi aktif olduğunda kullanıcıları getir
   useEffect(() => {
     if (activeTab === 'users' && isAdmin()) {
       fetch('http://localhost:3002/users')
@@ -71,17 +71,17 @@ export default function Profile() {
     }
   }, [activeTab, isAdmin]);
 
-  // Fetch menu items when Menu Items tab is active
+  // Menü öğeleri sekmesi aktif olduğunda menü öğelerini getir
   useEffect(() => {
     if (activeTab === 'menu' && isAdmin()) {
       fetch('http://localhost:3002/urunler')
         .then(res => res.json())
         .then(data => setUrunler(data))
-        .catch(err => console.error('Error fetching menu items:', err));
+        .catch(err => console.error('Menü öğeleri getirilirken hata:', err));
     }
   }, [activeTab, isAdmin]);
 
-  // Handle edit button
+  // Düzenle düğmesi
   const handleEditUser = (user) => {
     setEditingUser(user);
     setEditForm({
@@ -93,13 +93,13 @@ export default function Profile() {
     });
   };
 
-  // Handle edit form change
+  // Düzenleme formu değişikliği
   const handleEditFormChange = (e) => {
     const { name, value, type, checked } = e.target;
     setEditForm(f => ({ ...f, [name]: type === 'checkbox' ? checked : value }));
   };
 
-  // Handle avatar upload in edit
+  // Düzenleme sırasında avatar yükleme
   const handleEditAvatarUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -111,11 +111,11 @@ export default function Profile() {
     }
   };
 
-  // Handle save edit
+  // Düzenlemeyi kaydet
   const handleEditSave = async (e) => {
     e.preventDefault();
 
-    // Clean up phone and avatar values before sending
+    // Göndermeden önce telefon ve avatar değerlerini temizle
     const cleanedPhone = editForm.phone ? String(editForm.phone).replace(/[\\"]/g, '') : '';
     const cleanedAvatar = editForm.avatar ? String(editForm.avatar).replace(/[\\"]/g, '') : '';
 
@@ -135,51 +135,51 @@ export default function Profile() {
       const data = await res.json();
 
       if (res.ok) {
-        alert('User updated successfully!');
+        alert('Kullanıcı başarıyla güncellendi!');
         setEditingUser(null);
-        // Refresh the users list after update
+        // Güncellemeden sonra kullanıcı listesini yenile
         fetch('http://localhost:3002/users')
           .then(res => res.json())
           .then(data => setUsers(data))
-          .catch(err => console.error('Error fetching users after update:', err));
+          .catch(err => console.error('Güncelleme sonrası kullanıcılar getirilirken hata:', err));
       } else {
-        alert(data.message || 'Failed to update user!');
+        alert(data.message || 'Kullanıcı güncellenemedi!');
       }
     } catch (err) {
-      console.error('Error updating user:', err);
-      alert('Failed to connect to server.');
+      console.error('Kullanıcı güncellenirken hata:', err);
+      alert('Sunucuya bağlanılamadı!');
     }
   };
 
   const handleDeleteUser = async (userId) => {
-    if (window.confirm('Are you sure you want to delete this user?')) {
+    if (window.confirm('Bu kullanıcıyı silmek istediğinizden emin misiniz?')) {
       try {
         const res = await fetch(`http://localhost:3002/users/${userId}`, {
           method: 'DELETE',
         });
         const data = await res.json();
         if (res.ok) {
-          alert('User deleted successfully!');
-          // Refresh user list after successful deletion
+          alert('Kullanıcı başarıyla silindi!');
+          // Başarılı silme sonrası kullanıcı listesini yenile
           fetch('http://localhost:3002/users')
             .then(res => res.json())
             .then(data => setUsers(data))
-            .catch(err => console.error('Error fetching users after deletion:', err));
-          // Close modal
+            .catch(err => console.error('Silme sonrası kullanıcılar getirilirken hata:', err));
+          // Modalı kapat
           setEditingUser(null);
         } else {
-          alert(data.message || 'Failed to delete user!');
+          alert(data.message || 'Kullanıcı silinemedi!');
         }
       } catch (err) {
-        console.error('Error deleting user:', err);
-        alert('Failed to connect to server.');
+        console.error('Kullanıcı silinirken hata:', err);
+        alert('Sunucuya bağlanılamadı!');
       }
     }
   };
 
   return (
     <div style={{maxWidth:600,margin:"40px auto",padding:24,borderRadius:12,boxShadow:"0 2px 12px #eee",background:"#fff",textAlign:'center'}}>
-      {/* Admin Tabs */}
+      {/* Yönetici Sekmeleri */}
       <div style={{display:'flex',justifyContent:'center',gap:16,marginBottom:32}}>
         <button
           onClick={()=>setActiveTab('profile')}
@@ -231,10 +231,10 @@ export default function Profile() {
           </>
         )}
       </div>
-      {/* Tab Content */}
+      {/* Sekme İçeriği */}
       {activeTab === 'profile' && (
         <form onSubmit={handleSave}>
-          {/* عکس پروفایل */}
+          {/* Profil fotoğrafı */}
           <div style={{marginBottom:18, position:'relative'}}>
             <img src={avatar || "https://ui-avatars.com/api/?name="+encodeURIComponent(name)} alt="avatar" style={{width:90,height:90,borderRadius:16,objectFit:'cover',marginBottom:8}} />
             <label htmlFor="avatar-upload" style={{
@@ -248,18 +248,16 @@ export default function Profile() {
               fontSize:16,
               cursor:'pointer',
               marginTop:-8,
-              transition:'background 0.2s, color 0.2s',
-              position:'absolute',
-              left:'50%',
-              transform:'translateX(-50%)',
-              top:110
-            }}>Düzenle</label>
-            <input id="avatar-upload" type="file" accept="image/*" onChange={handleAvatarUpload} style={{display:'none'}} />
+              boxShadow:'0 2px 8px rgba(0,0,0,0.06)'
+            }}>Resmi Değiştir</label>
+            <input id="avatar-upload" type="file" accept="image/*" style={{display:'none'}} onChange={handleAvatarUpload} />
           </div>
           <label style={{display:'block',textAlign:'left',marginBottom:4,fontWeight:600,color:'#f7882f'}}>Ad Soyad</label>
-          <input type="text" placeholder="Ad Soyad" value={name} onChange={e=>setName(e.target.value)} style={{width:'100%',marginBottom:12,padding:10,borderRadius:8,border:'1px solid #ddd'}} required />
+          <input type="text" placeholder="Adınız Soyadınız" value={name} onChange={e=>setName(e.target.value)} style={{width:'100%',marginBottom:12,padding:10,borderRadius:8,border:'1px solid #ddd'}} />
           <label style={{display:'block',textAlign:'left',marginBottom:4,fontWeight:600,color:'#f7882f'}}>E-posta</label>
-          <input type="email" placeholder="E-posta" value={email} onChange={e=>setEmail(e.target.value)} style={{width:'100%',marginBottom:12,padding:10,borderRadius:8,border:'1px solid #ddd'}} required />
+          <input type="email" value={email} disabled style={{width:'100%',marginBottom:12,padding:10,borderRadius:8,border:'1px solid #ddd',background:'#e5e7eb'}} />
+          <label style={{display:'block',textAlign:'left',marginBottom:4,fontWeight:600,color:'#f7882f'}}>Ülke</label>
+          <input type="text" placeholder="Ülke" value={country} onChange={e=>setCountry(e.target.value)} style={{width:'100%',marginBottom:12,padding:10,borderRadius:8,border:'1px solid #ddd'}} />
           <label style={{display:'block',textAlign:'left',marginBottom:4,fontWeight:600,color:'#f7882f'}}>Telefon Numarası</label>
           <input type="text" placeholder="Telefon Numarası" value={phone} onChange={e=>setPhone(e.target.value)} style={{width:'100%',marginBottom:16,padding:10,borderRadius:8,border:'1px solid #ddd'}} />
           <button type="submit" style={{padding:'10px 32px',background:'#f7882f',color:'#fff',border:'none',borderRadius:8,fontWeight:700,fontSize:16,cursor:'pointer',width:'100%'}}>Kaydet</button>
@@ -289,12 +287,12 @@ export default function Profile() {
             <span style={{marginRight:16}}>Yeni Ürün Ekle</span>
             <span style={{fontSize:32,marginTop:2}}>&#8250;</span>
           </button>
-          {/* Modal for new menu item */}
+          {/* Yeni menü öğesi için modal */}
           {showNewMenuModal && (
             <div style={{position:'fixed',top:0,left:0,right:0,bottom:0,background:'rgba(0,0,0,0.13)',zIndex:1000,display:'flex',alignItems:'center',justifyContent:'center'}}>
               <div style={{background:'#fff',padding:36,borderRadius:18,minWidth:420,maxWidth:600,boxShadow:'0 4px 32px #bbb',position:'relative',display:'flex',gap:32}}>
                 <button onClick={()=>setShowNewMenuModal(false)} style={{position:'absolute',top:12,right:16,fontSize:22,background:'none',border:'none',cursor:'pointer',color:'#888'}}>×</button>
-                {/* Image upload */}
+                {/* Resim yükleme */}
                 <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:16}}>
                   <div style={{width:200,height:200,background:'#e5e7eb',borderRadius:18,display:'flex',alignItems:'center',justifyContent:'center',color:'#a0aec0',fontSize:22,marginBottom:8,overflow:'hidden'}}>
                     {newMenu.image ? <img src={newMenu.image} alt="item" style={{width:'100%',height:'100%',objectFit:'cover'}} /> : 'Resim Yok'}
@@ -321,9 +319,9 @@ export default function Profile() {
                     if (res.ok) {
                       setShowNewMenuModal(false);
                       setNewMenu({ image: '', name: '', price: '', category: '' });
-                      // Success message (optional)
+                      // Başarı mesajı (isteğe bağlı)
                       alert('Ürün başarıyla eklendi!');
-                      // Redirect to category page
+                      // Kategori sayfasına yönlendir
                       let cat = newMenu.category;
                       if (cat === 'Oyuncaklar') navigate('/store/oyuncaklar');
                       else if (cat === 'Sağlık ve Veteriner Ürünleri') navigate('/store/saglik');
@@ -354,7 +352,7 @@ export default function Profile() {
               </div>
             </div>
           )}
-          {/* Display existing menu items */}
+          {/* Mevcut menü öğelerini göster */}
           <div style={{ maxWidth: 420, margin: '32px auto' }}>
             <h4 style={{ textAlign: 'left', marginBottom: 16, color: '#f7882f' }}>Ürün Düzenle:</h4>
             {Array.isArray(urunler) && urunler.map(item => (
@@ -379,7 +377,7 @@ export default function Profile() {
                   }}
                   style={{ padding: '6px 18px', border: '1.5px solid #bbb', borderRadius: 8, background: '#fff', fontWeight: 600, fontSize: 15, cursor: 'pointer' }}
                 >
-                  Edit
+                  Düzenle
                 </button>
               </div>
             ))}
@@ -392,12 +390,12 @@ export default function Profile() {
           </div>
         </div>
       )}
-      {/* Edit Menu Item Modal */}
+      {/* Menü Öğesi Düzenle Modalı */}
       {showEditMenuModal && editingMenuItem && (
         <div style={{position:'fixed',top:0,left:0,right:0,bottom:0,background:'rgba(0,0,0,0.13)',zIndex:1000,display:'flex',alignItems:'center',justifyContent:'center'}}>
           <div style={{background:'#fff',padding:36,borderRadius:18,minWidth:420,maxWidth:600,boxShadow:'0 4px 32px #bbb',position:'relative',display:'flex',gap:32}}>
             <button onClick={()=>setShowEditMenuModal(false)} style={{position:'absolute',top:12,right:16,fontSize:22,background:'none',border:'none',cursor:'pointer',color:'#888'}}>×</button>
-            {/* Image upload */}
+            {/* Resim yükleme */}
             <div style={{display:'flex',flexDirection:'column',alignItems:'center',gap:16}}>
               <div style={{width:200,height:200,background:'#e5e7eb',borderRadius:18,display:'flex',alignItems:'center',justifyContent:'center',color:'#a0aec0',fontSize:22,marginBottom:8,overflow:'hidden'}}>
                 {editMenuForm.image ? <img src={editMenuForm.image} alt="item" style={{width:'100%',height:'100%',objectFit:'cover'}} /> : 'Resim Yok'}
@@ -425,11 +423,11 @@ export default function Profile() {
                   alert('Ürün başarıyla güncellendi!');
                   setShowEditMenuModal(false);
                   setEditingMenuItem(null);
-                  // Refresh the menu items list after update
+                  // Güncellemeden sonra menü öğeleri listesini yenile
                   fetch('http://localhost:3002/urunler')
                     .then(res => res.json())
                     .then(data => setUrunler(data))
-                    .catch(err => console.error('Error fetching menu items after update:', err));
+                    .catch(err => console.error('Güncelleme sonrası menü öğeleri getirilirken hata:', err));
                 } else {
                   const data = await res.json();
                   alert(data.message || 'Bir hata oluştu!');
@@ -438,7 +436,6 @@ export default function Profile() {
                 alert('Sunucuya bağlanılamadı!');
               }
             }}>
-              <h3 style={{marginBottom:8, color: '#f7882f'}}>Ürün Düzenle</h3>
               <label style={{fontWeight:600,marginBottom:2}}>Ürün Adı</label>
               <input type="text" value={editMenuForm.name} onChange={e=>setEditMenuForm(m=>({...m,name:e.target.value}))} style={{padding:12,borderRadius:12,border:'1.5px solid #e0e0e0',background:'#f6f7f9',fontSize:18,marginBottom:2}} required />
               <label style={{fontWeight:600,marginBottom:2}}>Taban Fiyat</label>
@@ -451,11 +448,11 @@ export default function Profile() {
                 <option value="Mama ve Besin Ürünleri">Mama ve Besin Ürünleri</option>
                 <option value="Kafesler ve Barınaklar">Kafesler ve Barınaklar</option>
               </select>
-              <button type="submit" style={{marginTop:18,padding:'14px 0',background:'#f7882f',color:'#fff',border:'none',borderRadius:14,fontWeight:700,fontSize:20,cursor:'pointer',width:'100%'}}>Değişiklikleri Kaydet</button>
+              <button type="submit" style={{marginTop:18,padding:'14px 0',background:'#f7882f',color:'#fff',border:'none',borderRadius:14,fontWeight:700,fontSize:20,cursor:'pointer',width:'100%'}}>Kaydet</button>
               <button
                 type="button"
                 onClick={async () => {
-                  if (window.confirm('Are you sure you want to delete this item?')) {
+                  if (window.confirm('Bu öğeyi silmek istediğinizden emin misiniz?')) {
                     try {
                       const res = await fetch(`http://localhost:3002/urunler/${editingMenuItem.id}`, {
                         method: 'DELETE',
@@ -464,11 +461,11 @@ export default function Profile() {
                         alert('Ürün başarıyla silindi!');
                         setShowEditMenuModal(false);
                         setEditingMenuItem(null);
-                        // Refresh the menu items list after deletion
+                        // Silme sonrası menü öğeleri listesini yenile
                         fetch('http://localhost:3002/urunler')
                           .then(res => res.json())
                           .then(data => setUrunler(data))
-                          .catch(err => console.error('Error fetching menu items after deletion:', err));
+                          .catch(err => console.error('Silme sonrası menü öğeleri getirilirken hata:', err));
                       } else {
                         const data = await res.json();
                         alert(data.message || 'Bir hata oluştu!');
@@ -507,7 +504,7 @@ export default function Profile() {
               <div style={{color:'#f00',textAlign:'center'}}>Kullanıcılar yüklenirken bir sorun oluştu.</div>
             )}
           </div>
-          {/* Edit Modal */}
+          {/* Düzenleme Modalı */}
           {editingUser && (
             <div style={{position:'fixed',top:0,left:0,right:0,bottom:0,background:'rgba(0,0,0,0.5)',display:'flex',alignItems:'center',justifyContent:'center'}}>
               <div style={{background:'#fff',padding:32,borderRadius:16,maxWidth:500,width:'100%',margin:24}}>
