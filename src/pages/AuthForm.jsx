@@ -29,8 +29,8 @@ export default function AuthForm() {
     e.preventDefault();
     setMessage("");
     const url = isLogin
-      ? "http://localhost:3002/login"
-      : "http://localhost:3002/register";
+      ? "https://cinar-vetpet-production.up.railway.app/login"
+      : "https://cinar-vetpet-production.up.railway.app/register";
     const body = isLogin
       ? { email: form.email, password: form.password }
       : form;

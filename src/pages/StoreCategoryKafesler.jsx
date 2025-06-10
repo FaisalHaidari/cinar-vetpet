@@ -7,7 +7,7 @@ export default function StoreCategoryKafesler() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch('http://localhost:3002/urunler?category=Kafesler ve Barınaklar')
+    fetch('https://cinar-vetpet-production.up.railway.app/urunler?category=Kafesler ve Barınaklar')
       .then(res => res.json())
       .then(data => setProducts(data));
   }, []);

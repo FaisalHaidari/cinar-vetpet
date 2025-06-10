@@ -32,7 +32,7 @@ export default function Profile() {
   const handleSave = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://localhost:3002/profile', {
+      const res = await fetch('https://cinar-vetpet-production.up.railway.app/profile', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, name, phone, avatar }),
@@ -64,7 +64,7 @@ export default function Profile() {
   // Kullanıcılar sekmesi aktif olduğunda kullanıcıları getir
   useEffect(() => {
     if (activeTab === 'users' && isAdmin()) {
-      fetch('http://localhost:3002/users')
+      fetch('https://cinar-vetpet-production.up.railway.app/users')
         .then(res => res.json())
         .then(data => setUsers(data));
     }
@@ -73,7 +73,7 @@ export default function Profile() {
   // Menü öğeleri sekmesi aktif olduğunda menü öğelerini getir
   useEffect(() => {
     if (activeTab === 'menu' && isAdmin()) {
-      fetch('http://localhost:3002/urunler')
+      fetch('https://cinar-vetpet-production.up.railway.app/urunler')
         .then(res => res.json())
         .then(data => setUrunler(data))
         .catch(err => console.error('Menü öğeleri getirilirken hata:', err));
@@ -125,7 +125,7 @@ export default function Profile() {
     };
 
     try {
-      const res = await fetch(`http://localhost:3002/users/${editingUser.id}`, {
+      const res = await fetch(`https://cinar-vetpet-production.up.railway.app/users/${editingUser.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dataToSend),
@@ -137,7 +137,7 @@ export default function Profile() {
         alert('Kullanıcı başarıyla güncellendi!');
         setEditingUser(null);
         // Güncellemeden sonra kullanıcı listesini yenile
-        fetch('http://localhost:3002/users')
+        fetch('https://cinar-vetpet-production.up.railway.app/users')
           .then(res => res.json())
           .then(data => setUsers(data))
           .catch(err => console.error('Güncelleme sonrası kullanıcılar getirilirken hata:', err));
@@ -153,14 +153,14 @@ export default function Profile() {
   const handleDeleteUser = async (userId) => {
     if (window.confirm('Bu kullanıcıyı silmek istediğinizden emin misiniz?')) {
       try {
-        const res = await fetch(`http://localhost:3002/users/${userId}`, {
+        const res = await fetch(`https://cinar-vetpet-production.up.railway.app/users/${userId}`, {
           method: 'DELETE',
         });
         const data = await res.json();
         if (res.ok) {
           alert('Kullanıcı başarıyla silindi!');
           // Başarılı silme sonrası kullanıcı listesini yenile
-          fetch('http://localhost:3002/users')
+          fetch('https://cinar-vetpet-production.up.railway.app/users')
             .then(res => res.json())
             .then(data => setUsers(data))
             .catch(err => console.error('Silme sonrası kullanıcılar getirilirken hata:', err));
@@ -308,7 +308,7 @@ export default function Profile() {
                 <form style={{flex:1,display:'flex',flexDirection:'column',gap:18,justifyContent:'center'}} onSubmit={async e=>{
                   e.preventDefault();
                   try {
-                    const res = await fetch('http://localhost:3002/urunler', {
+                    const res = await fetch('https://cinar-vetpet-production.up.railway.app/urunler', {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/json' },
                       body: JSON.stringify(newMenu),
@@ -411,7 +411,7 @@ export default function Profile() {
             <form style={{flex:1,display:'flex',flexDirection:'column',gap:18,justifyContent:'center'}} onSubmit={async e => {
               e.preventDefault();
               try {
-                const res = await fetch(`http://localhost:3002/urunler/${editingMenuItem.id}`, {
+                const res = await fetch(`https://cinar-vetpet-production.up.railway.app/urunler/${editingMenuItem.id}`, {
                   method: 'PUT',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify(editMenuForm),
@@ -421,7 +421,7 @@ export default function Profile() {
                   setShowEditMenuModal(false);
                   setEditingMenuItem(null);
                   // Güncellemeden sonra menü öğeleri listesini yenile
-                  fetch('http://localhost:3002/urunler')
+                  fetch('https://cinar-vetpet-production.up.railway.app/urunler')
                     .then(res => res.json())
                     .then(data => setUrunler(data))
                     .catch(err => console.error('Güncelleme sonrası menü öğeleri getirilirken hata:', err));
@@ -451,7 +451,7 @@ export default function Profile() {
                 onClick={async () => {
                   if (window.confirm('Bu öğeyi silmek istediğinizden emin misiniz?')) {
                     try {
-                      const res = await fetch(`http://localhost:3002/urunler/${editingMenuItem.id}`, {
+                      const res = await fetch(`https://cinar-vetpet-production.up.railway.app/urunler/${editingMenuItem.id}`, {
                         method: 'DELETE',
                       });
                       if (res.ok) {
@@ -459,7 +459,7 @@ export default function Profile() {
                         setShowEditMenuModal(false);
                         setEditingMenuItem(null);
                         // Silme sonrası menü öğeleri listesini yenile
-                        fetch('http://localhost:3002/urunler')
+                        fetch('https://cinar-vetpet-production.up.railway.app/urunler')
                           .then(res => res.json())
                           .then(data => setUrunler(data))
                           .catch(err => console.error('Silme sonrası menü öğeleri getirilirken hata:', err));
