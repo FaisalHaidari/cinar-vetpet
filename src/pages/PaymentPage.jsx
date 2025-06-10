@@ -39,7 +39,7 @@ function PaymentPage() {
     console.log('Submitting final order data:', finalOrderData);
 
     try {
-        const res = await fetch('https://cinar-vetpet-production.up.railway.app/submit-order', {
+        const res = await fetch(`${import.meta.env.VITE_API_URL}/submit-order`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

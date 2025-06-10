@@ -9,7 +9,7 @@ export default function StoreCategoryMama() {
   const { addToCart } = useCart();
 
   useEffect(() => {
-    fetch('https://cinar-vetpet-production.up.railway.app/urunler?category=Mama ve Besin Ürünleri')
+    fetch(`${import.meta.env.VITE_API_URL}/urunler?category=Mama ve Besin Ürünleri`)
       .then(res => res.json())
       .then(data => setProducts(data));
   }, []);

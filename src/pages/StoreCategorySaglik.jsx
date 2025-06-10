@@ -10,7 +10,7 @@ export default function StoreCategorySaglik() {
 
   useEffect(() => {
     // Fetch products for this category
-    fetch('https://cinar-vetpet-production.up.railway.app/urunler?category=Sağlık ve Veteriner Ürünleri') // Correct category name
+    fetch(`${import.meta.env.VITE_API_URL}/urunler?category=Sağlık ve Veteriner Ürünleri`) // Correct category name
       .then(res => res.json())
       .then(data => setProducts(data));
   }, []);

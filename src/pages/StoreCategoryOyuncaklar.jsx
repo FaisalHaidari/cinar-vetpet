@@ -9,7 +9,7 @@ export default function StoreCategoryOyuncaklar() {
   const { addToCart } = useCart();
 
   useEffect(() => {
-    fetch('https://cinar-vetpet-production.up.railway.app/urunler?category=Oyuncaklar')
+    fetch(`${import.meta.env.VITE_API_URL}/urunler?category=Oyuncaklar`)
       .then(res => res.json())
       .then(data => setProducts(data));
   }, []);

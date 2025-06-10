@@ -29,8 +29,8 @@ export default function AuthForm() {
     e.preventDefault();
     setMessage("");
     const url = isLogin
-      ? "https://cinar-vetpet-production.up.railway.app/login"
-      : "https://cinar-vetpet-production.up.railway.app/register";
+      ? `${import.meta.env.VITE_API_URL}/login`
+      : `${import.meta.env.VITE_API_URL}/register`;
     const body = isLogin
       ? { email: form.email, password: form.password }
       : form;
@@ -128,4 +128,4 @@ export default function AuthForm() {
       {message && <div style={{ marginTop: 20, color: "#d35400", textAlign: 'center', fontWeight: 600, fontFamily: "inherit" }}>{message}</div>}
     </div>
   );
-} 
+}

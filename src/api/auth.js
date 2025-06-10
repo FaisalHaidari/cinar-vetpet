@@ -9,11 +9,12 @@ const prisma = new PrismaClient();
 
 process.on('uncaughtException', (err) => {
   console.error('Yakalanmayan Hata:', err);
-  process.exit(1);
+  // process.exit(1); // Temporarily commented out for debugging
 });
 
 process.on('unhandledRejection', (reason, promise) => {
   console.error('İşlenmeyen Reddedilme:', promise, 'neden:', reason);
+  // process.exit(1); // Temporarily commented out for debugging
 });
 
 // 'exit' olayı için bir dinleyici ekle
@@ -22,13 +23,7 @@ process.on('exit', (code) => {
 });
 
 app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "http://localhost:5174",
-    "http://localhost:5175",
-    "https://cinar-vetpet-production.up.railway.app",
-    "https://cinar-vetpet-dlnq.vercel.app"
-  ],
+  origin: '*', // Temporarily set to '*' for debugging. Remember to revert to specific origins in production.
   credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"]
@@ -204,31 +199,41 @@ app.post('/submit-order', async (req, res) => {
         buildingNo: address.buildingNo,
         floor: address.floor,
         apartmentNo: address.apartmentNo,
-        addressNote: address.addressNote,
-        phoneNumber: address.phoneNumber,
+        city: address.city,
+        state: address.state,
+        zipCode: address.zipCode,
+        country: address.country,
       },
     });
 
-    for (const item of items) {
-      await prisma.cartItem.create({
-        data: {
-          userId: userId,
-          urunId: item.urunId,
-          quantity: item.quantity,
+    const order = await prisma.order.create({
+      data: {
+        userId: userId,
+        addressId: createdAddress.id,
+        orderItems: {
+          create: items.map(item => ({
+            urunId: item.urunId,
+            quantity: item.quantity,
+            price: item.price,
+          })),
         },
-      });
-    }
+      },
+    });
 
-    res.status(201).json({ message: 'Sipariş başarıyla gönderildi!', addressId: createdAddress.id });
-
+    res.status(201).json({ message: 'Sipariş başarıyla oluşturuldu!', order });
   } catch (err) {
-    console.error('Sipariş gönderilirken hata:', err);
-    res.status(500).json({ message: 'Sipariş gönderilemedi', error: err.message });
+    console.error("Sipariş oluşturulurken hata:", err);
+    res.status(500).json({ message: 'Sipariş oluşturulamadı', error: err.message });
   }
 });
 
-const PORT = process.env.PORT || 3002;
 
+const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => {
-  console.log(`Yetkilendirme API'sı http://localhost:${PORT} üzerinde çalışıyor`);
+  console.log(`Server is running on port ${PORT}`);
 });
+
+// Keep the process alive for debugging
+setInterval(() => {
+  // Do nothing, just keep the event loop busy
+}, 10000); // Keep alive every 10 seconds
