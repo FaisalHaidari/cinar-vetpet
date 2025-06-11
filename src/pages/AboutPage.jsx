@@ -20,7 +20,7 @@ export default function AboutPage() {
         marginBottom: '4rem'
       }}>
         <img
-          src="/src/images/vetpet.png"
+          src="/images/vetpet.png"
           alt="Çınar Pet Veteriner Kliniği"
           style={{
             width: 420,

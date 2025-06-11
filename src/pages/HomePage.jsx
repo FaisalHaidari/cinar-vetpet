@@ -12,21 +12,21 @@ const services = [
 ];
 
 const petShopProducts = [
-  { id: 1, title: 'Oyuncaklar', image: '/src/images/oyuncu.jpg', desc: 'Kedi ve köpek oyuncakları', link: '/petshop/oyuncaklar' },
-  { id: 2, title: 'Sağlık ve Veteriner Ürünleri', image: '/src/images/saglik.jpg', desc: 'Sağlık ürünleri', link: '/petshop/saglik' },
-  { id: 3, title: 'Kafesler ve Barınaklar', image: '/src/images/kafesler-ve-barinaklsar-1024x680.jpg', desc: 'Kafes ve barınak çeşitleri', link: '/petshop/kafesler' },
-  { id: 4, title: 'Mama ve Besin Ürünleri', image: '/src/images/mamsi.png', desc: 'Kedi ve köpek mamaları', link: '/petshop/Mama ve Besin Ürünleri' },
+  { id: 1, title: 'Oyuncaklar', image: '/images/oyuncu.jpg', desc: 'Kedi ve köpek oyuncakları', link: '/petshop/oyuncaklar' },
+  { id: 2, title: 'Sağlık ve Veteriner Ürünleri', image: '/images/saglik.jpg', desc: 'Sağlık ürünleri', link: '/petshop/saglik' },
+  { id: 3, title: 'Kafesler ve Barınaklar', image: '/images/kafesler-ve-barinaklsar-1024x680.jpg', desc: 'Kafes ve barınak çeşitleri', link: '/petshop/kafesler' },
+  { id: 4, title: 'Mama ve Besin Ürünleri', image: '/images/mamsi.png', desc: 'Kedi ve köpek mamaları', link: '/petshop/Mama ve Besin Ürünleri' },
 ];
 
 const featuredProducts = [
-  { id: 1, name: 'Ürün 1', imageUrl: '/src/images/da228978-8c95-47b8-afe5-8b08d08287e9.webp' },
-  { id: 2, name: 'Ürün 2', imageUrl: '/src/images/image_1296.webp' },
-  { id: 3, name: 'Ürün 3', imageUrl: '/src/images/da228978-8c95-47b8-afe5-8b08d08287e9.webp' },
-  { id: 4, name: 'Ürün 4', imageUrl: '/src/images/image_1296.webp' },
-  { id: 5, name: 'Ürün 5', imageUrl: '/src/images/da228978-8c95-47b8-afe5-8b08d08287e9.webp' },
-  { id: 6, name: 'Ürün 6', imageUrl: '/src/images/image_1296.webp' },
-  { id: 7, name: 'Ürün 7', imageUrl: '/src/images/da228978-8c95-47b8-afe5-8b08d08287e9.webp' },
-  { id: 8, name: 'Ürün 8', imageUrl: '/src/images/image_1296.webp' },
+  { id: 1, name: 'Ürün 1', imageUrl: '/images/da228978-8c95-47b8-afe5-8b08d08287e9.webp' },
+  { id: 2, name: 'Ürün 2', imageUrl: '/images/image_1296.webp' },
+  { id: 3, name: 'Ürün 3', imageUrl: '/images/da228978-8c95-47b8-afe5-8b08d08287e9.webp' },
+  { id: 4, name: 'Ürün 4', imageUrl: '/images/image_1296.webp' },
+  { id: 5, name: 'Ürün 5', imageUrl: '/images/da228978-8c95-47b8-afe5-8b08d08287e9.webp' },
+  { id: 6, name: 'Ürün 6', imageUrl: '/images/image_1296.webp' },
+  { id: 7, name: 'Ürün 7', imageUrl: '/images/da228978-8c95-47b8-afe5-8b08d08287e9.webp' },
+  { id: 8, name: 'Ürün 8', imageUrl: '/images/image_1296.webp' },
 ];
 
 function HomePage() {
@@ -64,7 +64,7 @@ function HomePage() {
         {/* Hero Section */}
         <section id="hakkimizda" className={styles.heroSection} style={{ background: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '7rem 0 5.5rem 0' }}>
           <div className={styles.heroImageContainer}>
-            <img src="/src/images/vetpet.png" alt="Çınar Pet Veteriner Kliniği" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <img src="/images/vetpet.png" alt="Çınar Pet Veteriner Kliniği" style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
           <div className={styles.heroContent}>
             <div style={{ background: '#F7882F', color: '#fff', display: 'inline-block', borderRadius: 18, fontWeight: 800, fontSize: 20, padding: '0.3em 1.2em', marginBottom: 18 }}>HAKKIMIZDA</div>

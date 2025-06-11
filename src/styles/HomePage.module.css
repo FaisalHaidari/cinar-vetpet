@@ -7,7 +7,7 @@
 
 .homePage {
   min-height: 100vh;
-  background: url('./src/images/vetpet.png') center center/cover no-repeat;
+  background: url('/images/vetpet.png') center center/cover no-repeat;
   margin: 0;
   padding: 0;
   width: 100%;

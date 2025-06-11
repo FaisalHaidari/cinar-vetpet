@@ -21,7 +21,7 @@ function NavigationBar() {
     <nav className={styles.navbar}>
       <div className={styles.logoContainer}>
         <Link to="/" className={styles.logoLink}>
-          <img src="./src/images/1.png" alt="Logo" className={styles.logo} />
+          <img src="/images/1.png" alt="Logo" className={styles.logo} />
           <span className={styles.clinicName} style={{color: '#556B2F'}}>Çınar Pet<br />Veteriner Kliniği</span>
         </Link>
       </div>

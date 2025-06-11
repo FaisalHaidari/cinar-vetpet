@@ -112,7 +112,7 @@ function OnlinePaymentPage() {
             {isPaying ? 'Ödeme Yapılıyor...' : 'Şimdi Öde'}
           </button>
           <div className={styles.trustBadges}>
-            <img src="/src/images/secure-payment.png" alt="Güvenli Ödeme" />
+            <img src="/images/secure-payment.png" alt="Güvenli Ödeme" />
             <span>256-bit SSL ile korunmaktadır</span>
           </div>
         </form>

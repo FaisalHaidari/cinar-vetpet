@@ -8,7 +8,7 @@
 .authPage {
   min-height: 100vh;
   width: 100vw;
-  background: url('./src/images/bg_3.jpg.webp') center center/cover no-repeat;
+  background: url('/images/bg_3.jpg.webp') center center/cover no-repeat;
   display: flex;
   align-items: center;
   justify-content: center;
