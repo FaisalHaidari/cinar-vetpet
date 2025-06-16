@@ -145,10 +145,10 @@ app.get('/urunler', async (req, res) => {
 });
 
 app.post('/urunler', async (req, res) => {
-  const { name, price, category, image } = req.body;
+  const { name, price, category, image, stock } = req.body;
 
-  if (!name || !category || price === undefined || price === null) {
-    return res.status(400).json({ message: 'Geçersiz ürün verileri: Ad, kategori ve fiyat gereklidir.' });
+  if (!name || !category || price === undefined || price === null || stock === undefined || stock === null) {
+    return res.status(400).json({ message: 'Geçersiz ürün verileri: Ad, kategori, fiyat ve stok gereklidir.' });
   }
 
   const parsedPrice = parseFloat(price);
@@ -156,8 +156,21 @@ app.post('/urunler', async (req, res) => {
     return res.status(400).json({ message: 'Geçersiz fiyat değeri. Fiyat bir sayı olmalıdır.' });
   }
 
+  const parsedStock = parseInt(stock);
+  if (isNaN(parsedStock) || parsedStock < 0) {
+    return res.status(400).json({ message: 'Geçersiz stok değeri. Stok pozitif bir sayı olmalıdır.' });
+  }
+
   try {
-    const urun = await prisma.urun.create({ data: { name, price: parsedPrice, category, image: image || null } });
+    const urun = await prisma.urun.create({
+      data: {
+        name,
+        price: parsedPrice,
+        category,
+        image: image || null,
+        stock: parsedStock
+      }
+    });
     res.status(201).json({ message: 'Ürün başarıyla eklendi!', urun });
   } catch (err) {
     console.error("Ürün oluşturulurken hata:", err);
@@ -167,7 +180,7 @@ app.post('/urunler', async (req, res) => {
 
 app.put('/urunler/:id', async (req, res) => {
   const { id } = req.params;
-  const { name, price, category, image } = req.body;
+  const { name, price, category, image, stock } = req.body;
 
   const updateData = {};
   if (name !== undefined) updateData.name = name;
@@ -180,6 +193,14 @@ app.put('/urunler/:id', async (req, res) => {
       return res.status(400).json({ message: 'Geçersiz fiyat değeri. Fiyat bir sayı olmalıdır.' });
     }
     updateData.price = parsedPrice;
+  }
+
+  if (stock !== undefined) {
+    const parsedStock = parseInt(stock);
+    if (isNaN(parsedStock) || parsedStock < 0) {
+      return res.status(400).json({ message: 'Geçersiz stok değeri. Stok pozitif bir sayı olmalıdır.' });
+    }
+    updateData.stock = parsedStock;
   }
 
   try {
