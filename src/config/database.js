@@ -1,23 +1,25 @@
-const mysql = require('mysql2/promise');
+import { neon } from '@neondatabase/serverless';
+import { Pool } from 'pg';
 
-const pool = mysql.createPool({
-  host: process.env.DB_HOST || 'localhost',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || 'vetpet_db',
-  waitForConnections: true,
-  connectionLimit: 10,
-  queueLimit: 0
+// Create a connection pool
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
 // Test the connection
-pool.getConnection()
-  .then(connection => {
-    console.log('Database connected successfully');
-    connection.release();
+pool.connect()
+  .then(client => {
+    console.log('Neon PostgreSQL database connected successfully');
+    client.release();
   })
   .catch(err => {
-    console.error('Error connecting to the database:', err);
+    console.error('Error connecting to the Neon PostgreSQL database:', err);
   });
 
-module.exports = pool; 
+// Create a direct connection for transactions
+const sql = neon(process.env.DIRECT_URL);
+
+export { pool, sql }; 

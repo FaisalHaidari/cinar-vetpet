@@ -1,97 +1,113 @@
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 generator client {
-  provider = "prisma-client-js"
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
 }
 
+// User Model
 model User {
+  id            Int       @id @default(autoincrement())
+  email         String    @unique
+  password      String
+  name          String
+  phone         String?
+  role          Role      @default(USER)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  orders        Order[]
+  cart          CartItem[]
+  addresses     Address[]
+}
+
+// Product Model
+model Product {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String?
+  price       Float
+  image       String?
+  category    String
+  stock       Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  cartItems   CartItem[]
+  orderItems  OrderItem[]
+}
+
+// Cart Item Model
+model CartItem {
   id        Int      @id @default(autoincrement())
+  userId    Int
+  productId Int
+  quantity  Int      @default(1)
+  user      User     @relation(fields: [userId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  name      String
-  email     String   @unique
-  password  String
-  phone     String?
-  avatar    String?
-  cartItems CartItem[]
-  addresses Address[]
-  orders    Order[]
+
+  @@unique([userId, productId])
 }
 
-model Urun {
-  id             Int       @id @default(autoincrement())
-  name           String
-  price          Float
-  description    String?
-  image          String?
-  category       String
-  stock          Int
-  createdAt      DateTime  @default(now())
-  updatedAt      DateTime  @updatedAt
-  orderItems     OrderItem[]
-  cartItems      CartItem[]
+// Order Model
+model Order {
+  id          Int         @id @default(autoincrement())
+  userId      Int
+  addressId   Int
+  status      OrderStatus @default(PENDING)
+  totalAmount Float
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  user        User        @relation(fields: [userId], references: [id])
+  address     Address     @relation(fields: [addressId], references: [id])
+  items       OrderItem[]
 }
 
-model CartItem {
-  id       Int @id @default(autoincrement())
-  userId   Int
-  urunId   Int
-  quantity Int @default(1)
-  user     User @relation(fields: [userId], references: [id])
-  urun     Urun @relation(fields: [urunId], references: [id])
+// Order Item Model
+model OrderItem {
+  id        Int      @id @default(autoincrement())
+  orderId   Int
+  productId Int
+  quantity  Int
+  price     Float
+  order     Order    @relation(fields: [orderId], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
-  @@unique([userId, urunId])
+  @@unique([orderId, productId])
 }
 
+// Address Model
 model Address {
-  id          Int     @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   userId      Int
   street      String
-  buildingNo  String
-  floor       String?
-  apartmentNo String
-  addressNote String?
-  phoneNumber String?
-  city        String?
-  state       String?
-  zipCode     String?
-  country     String?
-  user        User    @relation(fields: [userId], references: [id])
+  city        String
+  state       String
+  postalCode  String
+  country     String
+  isDefault   Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id])
   orders      Order[]
-
-  @@unique([userId, id])
 }
 
-model Order {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  userId    Int
-  addressId Int
-  user      User     @relation(fields: [userId], references: [id])
-  address   Address  @relation(fields: [addressId], references: [id])
-  orderItems OrderItem[]
-  totalAmount Float?
-  status      OrderStatus @default(PENDING)
+// Enums
+enum Role {
+  USER
+  ADMIN
 }
 
 enum OrderStatus {
   PENDING
-  COMPLETED
-  CANCELLED
   PROCESSING
-}
-
-model OrderItem {
-  id        Int      @id @default(autoincrement())
-  orderId   Int
-  urunId    Int
-  quantity  Int
-  price     Float
-  order     Order    @relation(fields: [orderId], references: [id])
-  urun      Urun     @relation(fields: [urunId], references: [id])
-
-  @@unique([orderId, urunId])
+  SHIPPED
+  DELIVERED
+  CANCELLED
 } 

@@ -1,87 +1,44 @@
-import { PrismaClient } from '@prisma/client';
+const { PrismaClient } = require('@prisma/client');
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.user.deleteMany(); 
-  await prisma.urun.deleteMany();
-
-  await prisma.user.createMany({
-    data: [
-      {
-        name: 'Faisal Majid',
-        email: 'faisal@gmail.com',
-        password: '123456',
-        phone: '05075056645',
-        avatar: '',
-      },
-      {
-        name: 'Faisal',
-        email: 'faisalfaisal@gmail.com',
-        password: '123456',
-        phone: '09000000000',
-        avatar: '',
-      }
-    ]
+  // Create admin user
+  const admin = await prisma.user.create({
+    data: {
+      email: 'admin@example.com',
+      password: '$2a$10$K7L1OJ45/4Y2nIvhRVpCe.FSmhDdWoXehVzJptJ/op0lSsvqNu9Uu', // hashed password
+      name: 'Admin User',
+      role: 'ADMIN',
+    },
   });
 
-  await prisma.urun.createMany({
-    data: [
-      {
-        name: 'Kedi Oyuncağı',
-        price: 60.0,
-        category: 'Oyuncaklar',
-        image: '',
+  // Create sample products
+  const products = await Promise.all([
+    prisma.product.create({
+      data: {
+        name: 'Product 1',
+        description: 'Description for product 1',
+        price: 99.99,
+        category: 'Category 1',
+        stock: 100,
       },
-      {
-        name: 'Köpek Oyuncağı',
-        price: 80.0,
-        category: 'Oyuncaklar',
-        image: '',
+    }),
+    prisma.product.create({
+      data: {
+        name: 'Product 2',
+        description: 'Description for product 2',
+        price: 149.99,
+        category: 'Category 2',
+        stock: 50,
       },
-      {
-        name: 'Veteriner Şampuanı',
-        price: 150.0,
-        category: 'Sağlık ve Veteriner Ürünleri',
-        image: '',
-      },
-      {
-        name: 'Vitamin Takviyesi',
-        price: 120.0,
-        category: 'Sağlık ve Veteriner Ürünleri',
-        image: '',
-      },
-      {
-        name: 'Kedi Maması',
-        price: 120.0,
-        category: 'Mama ve Besin Ürünleri',
-        image: '',
-      },
-      {
-        name: 'Köpek Maması',
-        price: 150.0,
-        category: 'Mama ve Besin Ürünleri',
-        image: '',
-      },
-      {
-        name: 'Kuş Kafesi',
-        price: 250.0,
-        category: 'Kafesler ve Barınaklar',
-        image: '',
-      },
-      {
-        name: 'Köpek Kulübesi',
-        price: 300.0,
-        category: 'Kafesler ve Barınaklar',
-        image: '',
-      },
-    ]
-  });
+    }),
+  ]);
 
-  console.log('Test users and products created!');
+  console.log('Seed data created successfully');
 }
 
 main()
-  .catch(e => {
+  .catch((e) => {
     console.error(e);
     process.exit(1);
   })
