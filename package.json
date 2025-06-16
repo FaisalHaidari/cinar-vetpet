@@ -12,13 +12,9 @@
     "preview": "vite preview",
     "seed": "node prisma/seed.js",
     "start": "node src/api/auth.js",
-    "vercel-build": "npx prisma migrate deploy && vite build",
-    "db:push": "prisma db push",
-    "db:migrate": "prisma migrate dev"
+    "vercel-build": "vite build"
   },
   "dependencies": {
-    "@neondatabase/serverless": "^0.7.2",
-    "@neondatabase/vite-plugin-postgres": "^0.1.4",
     "@prisma/client": "^6.9.0",
     "axios": "^1.9.0",
     "bcryptjs": "^3.0.2",
@@ -27,7 +23,6 @@
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
-    "pg": "^8.11.3",
     "prisma": "^6.9.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

@@ -1,25 +1,15 @@
-import { neon } from '@neondatabase/serverless';
-import { Pool } from 'pg';
+const { PrismaClient } = require('@prisma/client');
+const prisma = new PrismaClient();
 
-// Create a connection pool
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false
+async function testConnection() {
+  try {
+    await prisma.$connect();
+    console.log('Prisma connected to MongoDB successfully');
+  } catch (error) {
+    console.error('Error connecting Prisma to MongoDB:', error);
   }
-});
+}
 
-// Test the connection
-pool.connect()
-  .then(client => {
-    console.log('Neon PostgreSQL database connected successfully');
-    client.release();
-  })
-  .catch(err => {
-    console.error('Error connecting to the Neon PostgreSQL database:', err);
-  });
+testConnection(); // Run test on startup
 
-// Create a direct connection for transactions
-const sql = neon(process.env.DIRECT_URL);
-
-export { pool, sql }; 
+module.exports = prisma; // Export the prisma client instance 
