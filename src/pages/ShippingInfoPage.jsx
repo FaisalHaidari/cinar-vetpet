@@ -18,8 +18,8 @@ function ShippingInfoPage() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // اطلاعات جدید را ذخیره کنید
-    console.log('اطلاعات ارسال ثبت شد:', { phoneNumber, street, buildingNo, floor, apartmentNo, addressNote });
+    // Kargo bilgileri kaydedildi
+    console.log('Kargo bilgileri kaydedildi:', { phoneNumber, street, buildingNo, floor, apartmentNo, addressNote });
     navigate('/payment/online', {
       state: {
         phoneNumber,

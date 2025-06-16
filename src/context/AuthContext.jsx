@@ -19,6 +19,7 @@ export const AuthProvider = ({ children }) => {
       }
       setUser(parsedUser);
       setIsLoggedIn(true);
+      console.log("AuthContext useEffect: User from localStorage", parsedUser);
     }
   }, []); // Dependency array is empty, so this runs only once on mount
 
@@ -30,6 +31,7 @@ export const AuthProvider = ({ children }) => {
     setIsLoggedIn(true);
     setUser(userData);
     localStorage.setItem('user', JSON.stringify(userData));
+    console.log("AuthContext login: User data after login", userData);
   };
 
   const logout = () => {
@@ -42,6 +44,7 @@ export const AuthProvider = ({ children }) => {
     } else {
       console.error("Cart context or clearCart function not available.");
     }
+    console.log("AuthContext logout: User logged out");
   };
 
   const updateUser = (newUser) => {
@@ -52,11 +55,14 @@ export const AuthProvider = ({ children }) => {
     setUser(prev => ({ ...prev, ...newUser }));
     // Update localStorage with the new user data including role
     localStorage.setItem('user', JSON.stringify({ ...user, ...newUser }));
+    console.log("AuthContext updateUser: User data after update", { ...user, ...newUser });
   };
 
   // Helper function to check if the current user is admin
   const isAdmin = () => {
-    return user?.role === 'ADMIN';
+    const adminStatus = user?.role === 'ADMIN';
+    console.log("AuthContext isAdmin(): Checking admin status for user", user, "Result:", adminStatus);
+    return adminStatus;
   };
 
   const authContextValue = {

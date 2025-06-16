@@ -34,7 +34,7 @@ function ProductCard({ product, onAddToCart }) {
         <button onClick={handleIncrement} className={styles.quantityButton}>+</button>
       </div>
       <button onClick={handleAddToCartClick} className={styles.addToCartButton}>
-        افزودن به سبد خرید {product.discount ? `(${Math.round(product.discount)}% تخفیف)` : ''}
+        Sepete Ekle {product.discount ? `(%${Math.round(product.discount)} indirim)` : ''}
       </button>
     </div>
   );

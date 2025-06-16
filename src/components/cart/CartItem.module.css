@@ -4,15 +4,15 @@
     justify-content: space-between;
     padding: 12px;
     margin-bottom: 10px;
-    border-bottom: 1px solid #b0c4de; /* آبی روشن */
-    background-color: #fff; /* سفید */
+    border-bottom: 1px solid #b0c4de; /* Açık mavi */
+    background-color: #fff; /* Beyaz */
     border-radius: 4px;
   }
   
   .itemName {
     flex-grow: 1;
     margin-right: 15px;
-    color: #1e3a8a; /* آبی تیره */
+    color: #1e3a8a; /* Koyu mavi */
   }
   
   .quantityControl {
@@ -21,9 +21,9 @@
   }
   
   .quantityButton {
-    background-color: #e0f2f7; /* آبی خیلی روشن */
-    border: 1px solid #64b5f6; /* آبی متوسط */
-    color: #1e3a8a; /* آبی تیره */
+    background-color: #e0f2f7; /* Çok açık mavi */
+    border: 1px solid #64b5f6; /* Orta mavi */
+    color: #1e3a8a; /* Koyu mavi */
     padding: 6px 10px;
     margin: 0 8px;
     cursor: pointer;
@@ -32,18 +32,18 @@
   
   .quantity {
     margin: 0 12px;
-    color: #1e3a8a; /* آبی تیره */
+    color: #1e3a8a; /* Koyu mavi */
     font-weight: bold;
   }
   
   .itemPrice {
     margin-left: auto;
     margin-right: 15px;
-    color: #1976d2; /* آبی متوسط تیره */
+    color: #1976d2; /* Koyu orta mavi */
     font-weight: bold;
   }
   
   .itemTotalPrice {
-    color: #1976d2; /* آبی متوسط تیره */
+    color: #1976d2; /* Koyu orta mavi */
     font-weight: bold;
   }

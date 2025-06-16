@@ -10,11 +10,11 @@
 .checkoutPage {
   display: flex;
   flex-direction: column;
-  align-items: center; /* محتوا را به صورت افقی در وسط قرار می‌دهد */
-  justify-content: flex-start; /* محتوا را از بالای صفحه شروع می‌کند */
-  min-height: 100vh; /* اطمینان حاصل می‌کند که صفحه حداقل ارتفاع کل viewport را دارد */
+  align-items: center; /* İçeriği yatayda ortalar */
+  justify-content: flex-start; /* İçeriği sayfanın üstünden başlatır */
+  min-height: 100vh; /* Sayfanın en az viewport yüksekliğinde olmasını sağlar */
   padding: 40px;
-  background-color: #f8f8f8; /* یک پس‌زمینه ملایم */
+  background-color: #f8f8f8; /* Yumuşak bir arka plan */
 }
 
 h2 {
@@ -127,7 +127,7 @@ h2 {
 
 .cartSummary,
 .checkoutForm {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* سایه ملایم برای جدا کردن از پس‌زمینه */
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1); /* Arka plandan ayırmak için hafif gölge */
 }
 
 .emptyCartMessage {

@@ -23,7 +23,7 @@ function CartPage() {
     e.preventDefault();
 
     if (!user) {
-      alert('برای ثبت سفارش باید وارد حساب کاربری خود شوید.');
+      alert('Ödeme işlemi için önce giriş yapmalısınız.');
       return;
     }
 
@@ -35,11 +35,12 @@ function CartPage() {
         floor: kat,
         apartmentNo: daireNo,
         addressNote: adresTarifi,
-        phoneNumber: telefon, // Include phone number in address data
+        phoneNumber: telefon,
       },
       items: cart.map(item => ({
         urunId: item.id,
         quantity: item.quantity,
+        price: item.price,
       })),
       totalAmount: cartTotal,
     };
@@ -57,7 +58,7 @@ function CartPage() {
       </h1>
 
       {cart.length === 0 ? (
-        <p className={styles.emptyCartMessage}>سبد خرید شما خالی است.</p>
+        <p className={styles.emptyCartMessage}>Sepetiniz boş.</p>
       ) : (
         <div className={styles.cartContent}>
           <div className={styles.cartItemsColumn}>

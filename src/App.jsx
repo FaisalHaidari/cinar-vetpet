@@ -25,41 +25,46 @@ import StoreCategoryKafesler from './pages/StoreCategoryKafesler';
 import { CartProvider } from './hooks/CartContext';
 import CartPage from './pages/CartPage';
 import PaymentPage from './pages/PaymentPage';
+import OrderSuccessPage from './pages/OrderSuccessPage';
 
 function App() {
   return (
-    <CartProvider>
+    <Router>
       <AuthProvider>
-        <Router>
+        <CartProvider>
           <NavigationBar />
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/auth" element={<AuthPage />} />
-            <Route element={<PrivateRoute />}>
-              <Route path="/profile" element={<Profile />} />
-            </Route>
-            <Route path="/clinic/introduction" element={<ClinicIntroductionPage />} />
-            <Route path="/payment/online" element={<OnlinePaymentPage />} />
+            <Route path="/clinic-introduction" element={<ClinicIntroductionPage />} />
+            <Route path="/online-payment" element={<OnlinePaymentPage />} />
             <Route path="/store" element={<StoreHomePage />} />
+            <Route path="/auth" element={<AuthPage />} />
+            <Route path="/product/:productId" element={<ProductDetailsPage />} />
+            <Route path="/shipping-info" element={<ShippingInfoPage />} />
+            <Route path="/cerrahi-hizmetler" element={<CerrahiHizmetler />} />
+            <Route path="/ortopedi" element={<Ortopedi />} />
+            <Route path="/dahiliye" element={<Dahiliye />} />
+            <Route path="/mrg" element={<Mrg />} />
+            <Route path="/endoskopi" element={<Endoskopi />} />
+            <Route path="/yogun-bakim" element={<YogunBakim />} />
+            <Route path="/profile" element={<Profile />} />
             <Route path="/store/oyuncaklar" element={<StoreCategoryOyuncaklar />} />
             <Route path="/store/saglik" element={<StoreCategorySaglik />} />
             <Route path="/store/mama" element={<StoreCategoryMama />} />
             <Route path="/store/kafesler" element={<StoreCategoryKafesler />} />
-            <Route path="/store/product/:id" element={<ProductDetailsPage />} />
-            <Route path="/shipping-info" element={<ShippingInfoPage />} />
-            <Route path="/services/1" element={<CerrahiHizmetler />} />
-            <Route path="/services/2" element={<Ortopedi />} />
-            <Route path="/services/3" element={<Dahiliye />} />
-            <Route path="/services/7" element={<Mrg />} />
-            <Route path="/services/8" element={<Endoskopi />} />
-            <Route path="/services/9" element={<YogunBakim />} />
             <Route path="/cart" element={<CartPage />} />
             <Route path="/payment" element={<PaymentPage />} />
+            <Route path="/order-success" element={<OrderSuccessPage />} />
+
+            {/* Private Routes for authenticated users */}
+            <Route element={<PrivateRoute />}>
+              {/* Other authenticated routes can go here if needed */}
+            </Route>
           </Routes>
           <Footer />
-        </Router>
+        </CartProvider>
       </AuthProvider>
-    </CartProvider>
+    </Router>
   );
 }
 

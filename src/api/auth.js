@@ -184,17 +184,38 @@ app.delete('/urunler/:id', async (req, res) => {
   }
 });
 
-app.post('/submit-order', async (req, res) => {
+console.log("Registering /api/submit-order route...");
+app.post('/api/submit-order', async (req, res) => {
   const { userId, address, items } = req.body;
 
+  console.log("Received order submission:", { userId, address, items });
+
   if (!userId || !address || !items || items.length === 0) {
+    console.error("Missing order data in /api/submit-order:", { userId, address, items });
     return res.status(400).json({ message: 'Sipariş verileri eksik.' });
   }
 
   try {
+    const parsedUserId = Number(userId);
+
+    // Log each item's price and quantity for debugging
+    items.forEach((item, index) => {
+      console.log(`Debug Item ${index}: urunId=${item.urunId}, quantity=${item.quantity}, price=${item.price}, Type of price: ${typeof item.price}, Type of quantity: ${typeof item.quantity}`);
+    });
+
+    // Calculate total amount ensuring price and quantity are numbers
+    const totalAmountCalculated = items.reduce((sum, item) => {
+      const itemPrice = parseFloat(item.price) || 0; // Ensure price is a number, default to 0 if invalid
+      const itemQuantity = parseInt(item.quantity) || 0; // Ensure quantity is an integer, default to 0 if invalid
+      console.log(`Debug Calculating item total for urunId ${item.urunId}: ${itemPrice} * ${itemQuantity} = ${itemPrice * itemQuantity}`);
+      return sum + (itemPrice * itemQuantity);
+    }, 0);
+
+    console.log("Debug Calculated total amount:", totalAmountCalculated);
+
     const createdAddress = await prisma.address.create({
       data: {
-        userId: userId,
+        userId: parsedUserId,
         street: address.street,
         buildingNo: address.buildingNo,
         floor: address.floor,
@@ -203,18 +224,20 @@ app.post('/submit-order', async (req, res) => {
         state: address.state,
         zipCode: address.zipCode,
         country: address.country,
+        phoneNumber: address.phoneNumber, // Ensure phone number is passed if available
       },
     });
 
     const order = await prisma.order.create({
       data: {
-        userId: userId,
+        userId: parsedUserId,
         addressId: createdAddress.id,
+        totalAmount: totalAmountCalculated, // Use the calculated total amount
         orderItems: {
           create: items.map(item => ({
             urunId: item.urunId,
-            quantity: item.quantity,
-            price: item.price,
+            quantity: parseInt(item.quantity) || 0, // Ensure quantity is an integer
+            price: parseFloat(item.price) || 0,    // Ensure price is a number
           })),
         },
       },
@@ -222,11 +245,10 @@ app.post('/submit-order', async (req, res) => {
 
     res.status(201).json({ message: 'Sipariş başarıyla oluşturuldu!', order });
   } catch (err) {
-    console.error("Sipariş oluşturulurken hata:", err);
+    console.error("Error creating order in /api/submit-order:", err);
     res.status(500).json({ message: 'Sipariş oluşturulamadı', error: err.message });
   }
 });
-
 
 const PORT = process.env.PORT || 3002;
 app.listen(PORT, () => {

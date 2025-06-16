@@ -2,7 +2,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 
 async function main() {
-  await prisma.user.deleteMany(); // پاک‌سازی کاربران قبلی
+  await prisma.user.deleteMany(); 
   await prisma.urun.deleteMany();
 
   await prisma.user.createMany({

@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
+
 export default function Profile() {
   const { user, logout, updateUser, isAdmin } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -532,6 +533,10 @@ export default function Profile() {
             </div>
           )}
         </div>
+      )}
+      {isAdmin() && activeTab === 'orders' && (
+        // Placeholder for OrdersPage content until it's properly implemented
+        null
       )}
     </div>
   );

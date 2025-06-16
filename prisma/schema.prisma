@@ -18,6 +18,7 @@ model User {
   avatar    String?
   cartItems CartItem[]
   addresses Address[]
+  orders    Order[]
 }
 
 model Urun {
@@ -27,6 +28,7 @@ model Urun {
   category  String
   image     String?
   cartItems CartItem[]
+  orderItems OrderItem[]
 }
 
 model CartItem {
@@ -49,7 +51,35 @@ model Address {
   apartmentNo String
   addressNote String?
   phoneNumber String?
+  city        String?
+  state       String?
+  zipCode     String?
+  country     String?
   user        User    @relation(fields: [userId], references: [id])
+  orders      Order[]
 
   @@unique([userId, id])
+}
+
+model Order {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  userId    Int
+  addressId Int
+  user      User     @relation(fields: [userId], references: [id])
+  address   Address  @relation(fields: [addressId], references: [id])
+  orderItems OrderItem[]
+  totalAmount Float?
+}
+
+model OrderItem {
+  id        Int      @id @default(autoincrement())
+  orderId   Int
+  urunId    Int
+  quantity  Int
+  price     Float
+  order     Order    @relation(fields: [orderId], references: [id])
+  urun      Urun     @relation(fields: [urunId], references: [id])
+
+  @@unique([orderId, urunId])
 } 

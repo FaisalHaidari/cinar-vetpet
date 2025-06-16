@@ -1,11 +1,14 @@
 // src/pages/CheckoutPage.jsx
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import styles from '../styles/OnlinePaymentPage.module.css'; // فایل CSS برای این صفحه
 import { useLocation, useNavigate } from 'react-router-dom';
+import axios from 'axios'; // Import axios
+import { AuthContext } from '../context/AuthContext'; // Import AuthContext
 
 function OnlinePaymentPage() {
   const location = useLocation();
   const navigate = useNavigate();
+  const { user } = useContext(AuthContext); // Get user from AuthContext
   const { cartItems = [], totalPrice = 0, phoneNumber, street, buildingNo, floor, apartmentNo, addressNote } = location.state || {};
 
   const [cardNumber, setCardNumber] = useState('');
@@ -15,7 +18,7 @@ function OnlinePaymentPage() {
   const [error, setError] = useState('');
   const [isPaying, setIsPaying] = useState(false);
 
-  const handlePay = (e) => {
+  const handlePay = async (e) => {
     e.preventDefault();
     if (!cardNumber || !expiry || !cvv || !cardName) {
       setError('Lütfen tüm kart bilgilerini doldurun.');
@@ -23,10 +26,45 @@ function OnlinePaymentPage() {
     }
     setError('');
     setIsPaying(true);
-    setTimeout(() => {
+
+    try {
+      const response = await axios.post('http://localhost:3002/api/submit-order', {
+        userId: user.id,
+        address: {
+          phoneNumber,
+          street,
+          buildingNo,
+          floor,
+          apartmentNo,
+          addressNote,
+          city: 'N/A',
+          state: 'N/A',
+          zipCode: 'N/A',
+          country: 'Turkey',
+        },
+        items: cartItems.map(item => ({
+          urunId: item.id,
+          quantity: item.quantity,
+          price: item.price,
+        })),
+        paymentInfo: {
+          cardNumber,
+          expiry,
+          cvv,
+          cardName,
+        },
+      });
+
+      if (response.status === 201) {
+        navigate('/order-success', { state: { cartItems, totalPrice } });
+      } else {
+        setError('Ödeme sırasında bir hata oluştu.');
+        setIsPaying(false);
+      }
+    } catch (error) {
+      setError('Ödeme sırasında bir hata oluştu.');
       setIsPaying(false);
-      navigate('/order-success', { state: { cartItems, totalPrice } });
-    }, 2000);
+    }
   };
 
   return (
