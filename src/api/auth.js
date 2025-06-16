@@ -146,12 +146,19 @@ app.get('/urunler', async (req, res) => {
 
 app.post('/urunler', async (req, res) => {
   const { name, price, category, image } = req.body;
-  if (!name || !price || !category) {
-    return res.status(400).json({ message: 'Tüm alanlar zorunludur.' });
+
+  if (!name || !category || price === undefined || price === null) {
+    return res.status(400).json({ message: 'Geçersiz ürün verileri: Ad, kategori ve fiyat gereklidir.' });
   }
+
+  const parsedPrice = parseFloat(price);
+  if (isNaN(parsedPrice)) {
+    return res.status(400).json({ message: 'Geçersiz fiyat değeri. Fiyat bir sayı olmalıdır.' });
+  }
+
   try {
-    const urun = await prisma.urun.create({ data: { name, price: parseFloat(price), category, image } });
-    res.status(201).json({ message: 'Ürün eklendi!', urun });
+    const urun = await prisma.urun.create({ data: { name, price: parsedPrice, category, image: image || null } });
+    res.status(201).json({ message: 'Ürün başarıyla eklendi!', urun });
   } catch (err) {
     console.error("Ürün oluşturulurken hata:", err);
     res.status(500).json({ message: 'Ürün eklenemedi', error: err.message });
@@ -161,10 +168,24 @@ app.post('/urunler', async (req, res) => {
 app.put('/urunler/:id', async (req, res) => {
   const { id } = req.params;
   const { name, price, category, image } = req.body;
+
+  const updateData = {};
+  if (name !== undefined) updateData.name = name;
+  if (category !== undefined) updateData.category = category;
+  if (image !== undefined) updateData.image = image || null;
+
+  if (price !== undefined) {
+    const parsedPrice = parseFloat(price);
+    if (isNaN(parsedPrice)) {
+      return res.status(400).json({ message: 'Geçersiz fiyat değeri. Fiyat bir sayı olmalıdır.' });
+    }
+    updateData.price = parsedPrice;
+  }
+
   try {
     const urun = await prisma.urun.update({
       where: { id: Number(id) },
-      data: { name, price: parseFloat(price), category, image },
+      data: updateData,
     });
     res.json({ message: 'Ürün güncellendi!', urun });
   } catch (err) {
@@ -181,6 +202,70 @@ app.delete('/urunler/:id', async (req, res) => {
   } catch (err) {
     console.error("Ürün silinirken hata:", err);
     res.status(500).json({ message: 'Ürün silinemedi', error: err.message });
+  }
+});
+
+// Tüm siparişleri getiren yeni API endpoint'i
+app.get('/orders', async (req, res) => {
+  try {
+    const orders = await prisma.order.findMany({
+      include: {
+        user: {
+          select: { id: true, name: true, email: true, phone: true }
+        },
+        orderItems: {
+          include: {
+            urun: {
+              select: { name: true }
+            }
+          }
+        }
+      },
+      orderBy: {
+        createdAt: 'desc'
+      }
+    });
+
+    const formattedOrders = orders.map(order => ({
+      id: order.id,
+      userId: order.userId,
+      addressId: order.addressId,
+      total: order.totalAmount,
+      createdAt: order.createdAt,
+      status: 'completed', // Varsayılan olarak tamamlandı, gerçek statü alanınız varsa onu kullanın
+      user: order.user,
+      items: order.orderItems.map(item => ({
+        name: item.urun.name,
+        quantity: item.quantity,
+        price: item.price,
+      })),
+    }));
+
+    res.json(formattedOrders);
+  } catch (err) {
+    console.error("Siparişler getirilirken hata:", err);
+    res.status(500).json({ message: 'Siparişler alınamadı', error: err.message });
+  }
+});
+
+// Sipariş durumunu güncelleyen yeni API endpoint'i
+app.put('/orders/:id/status', async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  if (!status) {
+    return res.status(400).json({ message: 'Durum belirtilmelidir.' });
+  }
+
+  try {
+    const updatedOrder = await prisma.order.update({
+      where: { id: Number(id) },
+      data: { status: status },
+    });
+    res.json({ message: 'Sipariş durumu başarıyla güncellendi!', order: updatedOrder });
+  } catch (err) {
+    console.error("Sipariş durumu güncellenirken hata:", err);
+    res.status(500).json({ message: 'Sipariş durumu güncellenemedi', error: err.message });
   }
 });
 

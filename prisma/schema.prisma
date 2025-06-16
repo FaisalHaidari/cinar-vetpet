@@ -26,7 +26,7 @@ model Urun {
   name      String
   price     Float
   category  String
-  image     String?
+  image     String? @db.Text
   cartItems CartItem[]
   orderItems OrderItem[]
 }
@@ -70,6 +70,14 @@ model Order {
   address   Address  @relation(fields: [addressId], references: [id])
   orderItems OrderItem[]
   totalAmount Float?
+  status      OrderStatus @default(PENDING)
+}
+
+enum OrderStatus {
+  PENDING
+  COMPLETED
+  CANCELLED
+  PROCESSING
 }
 
 model OrderItem {

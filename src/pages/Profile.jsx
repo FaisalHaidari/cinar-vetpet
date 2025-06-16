@@ -22,6 +22,7 @@ export default function Profile() {
   const [editingMenuItem, setEditingMenuItem] = useState(null);
   const [showEditMenuModal, setShowEditMenuModal] = useState(false);
   const [editMenuForm, setEditMenuForm] = useState({ image: '', name: '', price: '', category: '' });
+  const [orders, setOrders] = useState([]);
 
   const handleLogout = () => {
     logout();
@@ -64,22 +65,59 @@ export default function Profile() {
 
   // Kullanıcılar sekmesi aktif olduğunda kullanıcıları getir
   useEffect(() => {
-    if (activeTab === 'users' && isAdmin()) {
+    if (isAdmin()) {
       fetch('https://cinar-vetpet-production.up.railway.app/users')
         .then(res => res.json())
-        .then(data => setUsers(data));
+        .then(data => setUsers(data))
+        .catch(err => console.error('Kullanıcılar getirilirken hata:', err));
     }
-  }, [activeTab, isAdmin]);
+  }, [isAdmin]);
 
   // Menü öğeleri sekmesi aktif olduğunda menü öğelerini getir
   useEffect(() => {
-    if (activeTab === 'menu' && isAdmin()) {
+    if (isAdmin()) {
       fetch('https://cinar-vetpet-production.up.railway.app/urunler')
         .then(res => res.json())
         .then(data => setUrunler(data))
         .catch(err => console.error('Menü öğeleri getirilirken hata:', err));
     }
-  }, [activeTab, isAdmin]);
+  }, [isAdmin]);
+
+  // Siparişleri getir
+  useEffect(() => {
+    if (isAdmin()) {
+      fetch('https://cinar-vetpet-production.up.railway.app/orders')
+        .then(res => res.json())
+        .then(data => setOrders(data))
+        .catch(err => console.error('Siparişler getirilirken hata:', err));
+    }
+  }, [isAdmin]);
+
+  // Sipariş durumunu güncelle
+  const handleUpdateOrderStatus = async (orderId, newStatus) => {
+    try {
+      const res = await fetch(`https://cinar-vetpet-production.up.railway.app/orders/${orderId}/status`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status: newStatus }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        alert('Sipariş durumu başarıyla güncellendi!');
+        // Sipariş listesini güncelleyelim
+        setOrders(prevOrders =>
+          prevOrders.map(order =>
+            order.id === orderId ? { ...order, status: newStatus } : order
+          )
+        );
+      } else {
+        alert(data.message || 'Sipariş durumu güncellenemedi!');
+      }
+    } catch (err) {
+      console.error('Sipariş durumu güncellenirken hata:', err);
+      alert('Sunucuya bağlanılamadı!');
+    }
+  };
 
   // Düzenle düğmesi
   const handleEditUser = (user) => {
@@ -199,21 +237,6 @@ export default function Profile() {
         {isAdmin() && (
           <>
             <button
-              onClick={()=>setActiveTab('menu')}
-              style={{
-                padding:'12px 32px',
-                borderRadius:24,
-                border:'none',
-                fontWeight:600,
-                fontSize:18,
-                background: activeTab==='menu' ? '#f7882f' : '#f3f4f6',
-                color: activeTab==='menu' ? '#fff' : '#222',
-                cursor:'pointer',
-                transition:'all 0.2s',
-                outline:'none',
-              }}
-            >Ürün Yönetimi</button>
-            <button
               onClick={()=>setActiveTab('users')}
               style={{
                 padding:'12px 32px',
@@ -228,6 +251,36 @@ export default function Profile() {
                 outline:'none',
               }}
             >Kullanıcılar</button>
+            <button
+              onClick={()=>setActiveTab('menu')}
+              style={{
+                padding:'12px 32px',
+                borderRadius:24,
+                border:'none',
+                fontWeight:600,
+                fontSize:18,
+                background: activeTab==='menu' ? '#f7882f' : '#f3f4f6',
+                color: activeTab==='menu' ? '#fff' : '#222',
+                cursor:'pointer',
+                transition:'all 0.2s',
+                outline:'none',
+              }}
+            >Ürünler</button>
+            <button
+              onClick={()=>setActiveTab('orders')}
+              style={{
+                padding:'12px 32px',
+                borderRadius:24,
+                border:'none',
+                fontWeight:600,
+                fontSize:18,
+                background: activeTab==='orders' ? '#f7882f' : '#f3f4f6',
+                color: activeTab==='orders' ? '#fff' : '#222',
+                cursor:'pointer',
+                transition:'all 0.2s',
+                outline:'none',
+              }}
+            >Tüm Siparişler</button>
           </>
         )}
       </div>
@@ -535,8 +588,157 @@ export default function Profile() {
         </div>
       )}
       {isAdmin() && activeTab === 'orders' && (
-        // Placeholder for OrdersPage content until it's properly implemented
-        null
+        <div style={{marginTop: 24}}>
+          <h2 style={{marginBottom: 24, color: '#333', fontSize: '24px', fontWeight: 'bold'}}>Tüm Siparişler</h2>
+          <div style={{
+            display: 'grid',
+            gap: 16,
+            maxHeight: '600px',
+            overflowY: 'auto',
+            padding: '0 16px'
+          }}>
+            {orders.length === 0 ? (
+              <div style={{
+                textAlign: 'center',
+                padding: '40px',
+                background: '#f8f9fa',
+                borderRadius: '12px',
+                color: '#666'
+              }}>
+                Henüz sipariş bulunmamaktadır.
+              </div>
+            ) : (
+              orders.map((order) => (
+                <div key={order.id} style={{
+                  background: '#f8f9fa',
+                  borderRadius: 12,
+                  padding: 20,
+                  textAlign: 'left',
+                  boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
+                  border: '1px solid #eee'
+                }}>
+                  <div style={{display: 'flex', justifyContent: 'space-between', marginBottom: 12}}>
+                    <h3 style={{margin: 0, color: '#333', fontSize: '18px'}}>Sipariş No: #{order.id}</h3>
+                    <span style={{
+                      padding: '6px 16px',
+                      borderRadius: 20,
+                      background: order.status === 'COMPLETED' ? '#4CAF50' : order.status === 'PENDING' ? '#FFA726' : '#607D8B',
+                      color: '#fff',
+                      fontSize: 14,
+                      fontWeight: 'bold'
+                    }}>
+                      {order.status === 'COMPLETED' ? 'Tamamlandı' : order.status === 'PENDING' ? 'Beklemede' : 'İşlemde'}
+                    </span>
+                  </div>
+                  <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                    gap: '12px',
+                    marginBottom: '16px',
+                    padding: '12px',
+                    background: '#fff',
+                    borderRadius: '8px'
+                  }}>
+                    <div>
+                      <strong style={{color: '#666'}}>Müşteri Adı:</strong>
+                      <div>{order.user?.name || 'Belirtilmemiş'}</div>
+                    </div>
+                    <div>
+                      <strong style={{color: '#666'}}>E-posta:</strong>
+                      <div>{order.user?.email || 'Belirtilmemiş'}</div>
+                    </div>
+                    <div>
+                      <strong style={{color: '#666'}}>Telefon:</strong>
+                      <div>{order.user?.phone || 'Belirtilmemiş'}</div>
+                    </div>
+                    <div>
+                      <strong style={{color: '#666'}}>Sipariş Tarihi:</strong>
+                      <div>{new Date(order.createdAt).toLocaleDateString('tr-TR', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        hour: '2-digit',
+                        minute: '2-digit'
+                      })}</div>
+                    </div>
+                  </div>
+                  <div style={{marginTop: 16}}>
+                    <strong style={{color: '#333', fontSize: '16px'}}>Sipariş Detayları:</strong>
+                    <div style={{
+                      marginTop: 8,
+                      padding: 16,
+                      background: '#fff',
+                      borderRadius: 8,
+                      border: '1px solid #eee'
+                    }}>
+                      {order.items?.map((item, index) => (
+                        <div key={index} style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          padding: '12px 0',
+                          borderBottom: index !== order.items.length - 1 ? '1px solid #eee' : 'none',
+                          fontSize: '14px'
+                        }}>
+                          <span style={{flex: 2}}>{item.name}</span>
+                          <span style={{flex: 1, textAlign: 'center'}}>{item.quantity} adet</span>
+                          <span style={{flex: 1, textAlign: 'right'}}>{item.price.toLocaleString('tr-TR')} ₺</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                  <div style={{
+                    marginTop: 16,
+                    padding: 16,
+                    background: '#fff',
+                    borderRadius: 8,
+                    textAlign: 'right',
+                    fontWeight: 'bold',
+                    fontSize: '18px',
+                    color: '#f7882f',
+                    border: '1px solid #eee'
+                  }}>
+                    Toplam Tutar: {order.total.toLocaleString('tr-TR')} ₺
+                  </div>
+                  <div style={{
+                    marginTop: 16,
+                    display: 'flex',
+                    gap: '12px',
+                    justifyContent: 'flex-end'
+                  }}>
+                    <button
+                      onClick={() => handleUpdateOrderStatus(order.id, 'COMPLETED')}
+                      style={{
+                        padding: '8px 16px',
+                        borderRadius: '6px',
+                        border: 'none',
+                        background: '#4CAF50',
+                        color: '#fff',
+                        cursor: 'pointer',
+                        fontSize: '14px'
+                      }}
+                    >
+                      Tamamlandı Olarak İşaretle
+                    </button>
+                    <button
+                      onClick={() => handleUpdateOrderStatus(order.id, 'PROCESSING')}
+                      style={{
+                        padding: '8px 16px',
+                        borderRadius: '6px',
+                        border: 'none',
+                        background: '#FFA726',
+                        color: '#fff',
+                        cursor: 'pointer',
+                        fontSize: '14px'
+                      }}
+                    >
+                      İşleme Al
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
+        </div>
       )}
     </div>
   );
