@@ -22,13 +22,17 @@ model User {
 }
 
 model Urun {
-  id        Int      @id @default(autoincrement())
-  name      String
-  price     Float
-  category  String
-  image     String? @db.Text
-  cartItems CartItem[]
-  orderItems OrderItem[]
+  id             Int       @id @default(autoincrement())
+  name           String    @db.VarChar(255)
+  price          Float
+  description    String?   @db.Text
+  image          String?   @db.LongText
+  category       String
+  stock          Int
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+  orderItems     OrderItem[]
+  cartItems      CartItem[]
 }
 
 model CartItem {
