@@ -81,14 +81,25 @@ function HomePage() {
           <div style={{ background: '#F7882F', color: '#fff', display: 'inline-block', borderRadius: 18, fontWeight: 800, fontSize: 20, padding: '0.3em 1.2em', marginBottom: 18 }}>HİZMETLER</div>
           <h2 style={{ color: '#1a237e', fontWeight: 900, fontSize: 38, margin: '0 0 2.2rem 0', letterSpacing: 1, textAlign: 'center' }}>Hizmetler</h2>
           <div className={styles.serviceGrid}>
-            {services.map(service => (
-              <div key={service.id} className={styles.serviceCard}>
-                <div style={{ fontSize: 48, marginBottom: 18 }}>{service.icon}</div>
-                <div style={{ color: '#1a237e', fontWeight: 800, fontSize: 22, marginBottom: 10 }}>{service.title}</div>
-                <div style={{ color: '#6B7A8F', fontSize: 16, marginBottom: 18, textAlign: 'center' }}>{service.desc}</div>
-                <Link to={`/services/${service.id}`} style={{ background: '#F7882F', color: '#fff', borderRadius: 24, fontWeight: 700, fontSize: 16, padding: '0.6em 1.5em', textDecoration: 'none', boxShadow: '0 2px 8px rgba(44,62,80,0.07)', transition: 'background 0.2s' }}>DETAY</Link>
-              </div>
-            ))}
+            {services.map(service => {
+              const servicePath = service.title
+                .toLowerCase()
+                .replace(/ğ/g, 'g')
+                .replace(/ü/g, 'u')
+                .replace(/ş/g, 's')
+                .replace(/ı/g, 'i')
+                .replace(/ö/g, 'o')
+                .replace(/ç/g, 'c')
+                .replace(/ /g, '-');
+              return (
+                <div key={service.id} className={styles.serviceCard}>
+                  <div style={{ fontSize: 48, marginBottom: 18 }}>{service.icon}</div>
+                  <div style={{ color: '#1a237e', fontWeight: 800, fontSize: 22, marginBottom: 10 }}>{service.title}</div>
+                  <div style={{ color: '#6B7A8F', fontSize: 16, marginBottom: 18, textAlign: 'center' }}>{service.desc}</div>
+                  <Link to={`/clinic/${servicePath}`} style={{ background: '#F7882F', color: '#fff', borderRadius: 24, fontWeight: 700, fontSize: 16, padding: '0.6em 1.5em', textDecoration: 'none', boxShadow: '0 2px 8px rgba(44,62,80,0.07)', transition: 'background 0.2s' }}>DETAY</Link>
+                </div>
+              );
+            })}
           </div>
         </section>
 

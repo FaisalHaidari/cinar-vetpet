@@ -35,18 +35,18 @@ function App() {
           <NavigationBar />
           <Routes>
             <Route path="/" element={<HomePage />} />
-            <Route path="/clinic-introduction" element={<ClinicIntroductionPage />} />
+            <Route path="/clinic/introduction" element={<ClinicIntroductionPage />} />
             <Route path="/online-payment" element={<OnlinePaymentPage />} />
             <Route path="/store" element={<StoreHomePage />} />
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/product/:productId" element={<ProductDetailsPage />} />
             <Route path="/shipping-info" element={<ShippingInfoPage />} />
-            <Route path="/cerrahi-hizmetler" element={<CerrahiHizmetler />} />
-            <Route path="/ortopedi" element={<Ortopedi />} />
-            <Route path="/dahiliye" element={<Dahiliye />} />
-            <Route path="/mrg" element={<Mrg />} />
-            <Route path="/endoskopi" element={<Endoskopi />} />
-            <Route path="/yogun-bakim" element={<YogunBakim />} />
+            <Route path="/clinic/cerrahi-hizmetler" element={<CerrahiHizmetler />} />
+            <Route path="/clinic/ortopedi" element={<Ortopedi />} />
+            <Route path="/clinic/dahiliye" element={<Dahiliye />} />
+            <Route path="/clinic/mrg" element={<Mrg />} />
+            <Route path="/clinic/endoskopi" element={<Endoskopi />} />
+            <Route path="/clinic/yogun-bakim" element={<YogunBakim />} />
             <Route path="/profile" element={<Profile />} />
             <Route path="/store/oyuncaklar" element={<StoreCategoryOyuncaklar />} />
             <Route path="/store/saglik" element={<StoreCategorySaglik />} />
