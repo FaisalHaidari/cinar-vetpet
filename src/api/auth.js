@@ -396,9 +396,9 @@ app.post('/api/upload-avatar', upload.single('avatar'), async (req, res) => {
     if (!userId) {
       return res.status(400).json({ message: 'userId الزامی است.' });
     }
-    // مسیر نسبی برای ذخیره در دیتابیس
+    // Veritabanında saklamak için göreceli yol
     const avatarPath = `/uploads/avatars/${req.file.filename}`;
-    // بروزرسانی کاربر
+    // Kullanıcıyı güncelle
     const user = await prisma.user.update({
       where: { id: Number(userId) },
       data: { avatar: avatarPath },

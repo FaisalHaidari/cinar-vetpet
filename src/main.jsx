@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import { AuthProvider } from './context/AuthContext'; // ایمپورت AuthProvider
+import { AuthProvider } from './context/AuthContext'; // AuthProvider'ı içe aktar
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>

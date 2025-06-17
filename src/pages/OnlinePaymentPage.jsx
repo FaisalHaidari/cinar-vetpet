@@ -1,14 +1,14 @@
 // src/pages/CheckoutPage.jsx
 import React, { useState, useContext } from 'react';
-import styles from '../styles/OnlinePaymentPage.module.css'; // فایل CSS برای این صفحه
+import styles from '../styles/OnlinePaymentPage.module.css'; // Bu sayfa için CSS dosyası
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios'; // Import axios
-import { AuthContext } from '../context/AuthContext'; // Import AuthContext
+import axios from 'axios'; // Axios'u içe aktar
+import { AuthContext } from '../context/AuthContext'; // AuthContext'i içe aktar
 
 function OnlinePaymentPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const { user } = useContext(AuthContext); // Get user from AuthContext
+  const { user } = useContext(AuthContext); // AuthContext'ten kullanıcıyı al
   const { cartItems = [], totalPrice = 0, phoneNumber, street, buildingNo, floor, apartmentNo, addressNote } = location.state || {};
 
   const [cardNumber, setCardNumber] = useState('');

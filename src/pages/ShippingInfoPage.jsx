@@ -42,7 +42,7 @@ function ShippingInfoPage() {
   };
 
   const handleGoBack = () => {
-    navigate(-1); // با -1 به صفحه قبلی در تاریخچه مرورگر برمی‌گردد
+    navigate(-1); // Tarayıcı geçmişinde bir önceki sayfaya döner
   };
 
   return (

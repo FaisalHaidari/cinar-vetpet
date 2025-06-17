@@ -28,7 +28,7 @@ export default function StoreCategorySaglik() {
     <div style={{padding:40}} className={styles.storePage}> {/* Apply storePage class */}
       <div style={{display:'flex',alignItems:'center',gap:16,marginBottom:24}}>
         <BackButton />
-        <h1 style={{color:'#f7882f',fontWeight:800,fontSize:32,margin:0,flex:1,textAlign:'center'}}>Sağlık و Veteriner Ürünleri</h1>
+        <h1 style={{color:'#f7882f',fontWeight:800,fontSize:32,margin:0,flex:1,textAlign:'center'}}>Sağlık ve Veteriner Ürünleri</h1>
       </div>
       {/* Apply productsGrid class for layout */}
       <div className={styles.productsGrid}>

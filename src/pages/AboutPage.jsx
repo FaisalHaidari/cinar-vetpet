@@ -79,7 +79,7 @@ export default function AboutPage() {
         }}>
           <h2 style={{ color: '#fff', fontWeight: 900, fontSize: 28, marginBottom: 12 }}>Misyon</h2>
           <p style={{ fontSize: 20, margin: 0 }}>
-            Evcil hayvanların sağlığını، mutluluğunu ve güvenliğini هر zaman ön planda tutan bir anlayışla، en yüksek standartlarda veteriner hizmetی sunmak. Uzman kadromuz، sürekli gelişen altyapımız ve şefkatli yaklaşımımızla، hem patili dostlarımıza hem de sahiplerine güven veren bir sağlık hizmeti sunmayı ilke ediniyoruz.
+            Evcil hayvanların sağlığını, mutluluğunu ve güvenliğini her zaman ön planda tutan bir anlayışla, en yüksek standartlarda veteriner hizmeti sunmak. Uzman kadromuz, sürekli gelişen altyapımız ve şefkatli yaklaşımımızla, hem patili dostlarımıza hem de sahiplerine güven veren bir sağlık hizmeti sunmayı ilke ediniyoruz.
           </p>
         </div>
       </div>

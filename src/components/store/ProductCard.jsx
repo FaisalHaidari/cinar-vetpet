@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styles from './ProductCard.module.css'; // ایجاد این فایل در کنار کامپوننت
+import styles from './ProductCard.module.css'; // Bu dosyayı bileşenin yanında oluşturun
 
 function ProductCard({ product, onAddToCart }) {
   const [quantity, setQuantity] = useState(1);
@@ -15,7 +15,7 @@ function ProductCard({ product, onAddToCart }) {
   };
 
   const handleAddToCartClick = () => {
-    onAddToCart(product, quantity); // ارسال محصول و تعداد به تابع
+    onAddToCart(product, quantity); // Ürün ve miktarı fonksiyona gönder
   };
 
   return (

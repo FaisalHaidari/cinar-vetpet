@@ -22,7 +22,7 @@ h2 {
   margin-bottom: 30px;
   font-size: 2.5em;
   font-weight: bold;
-  text-align: center; /* عنوان را در وسط قرار می‌دهد */
+  text-align: center; /* Başlığı ortalar */
 }
 
 .cartSummary {
@@ -31,8 +31,8 @@ h2 {
   border-radius: 8px;
   padding: 20px;
   margin-bottom: 30px;
-  width: 80%; /* عرض خلاصه سبد خرید */
-  max-width: 600px; /* حداکثر عرض برای جلوگیری از پهن شدن بیش از حد */
+  width: 80%; /* Sepet özeti genişliği */
+  max-width: 600px; /* Aşırı genişlemeyi önlemek için maksimum genişlik */
 }
 
 .cartSummary h3 {
@@ -72,11 +72,11 @@ h2 {
   border: 1px solid #ddd;
   border-radius: 8px;
   padding: 30px;
-  width: 80%; /* عرض فرم پرداخت */
-  max-width: 600px; /* حداکثر عرض برای جلوگیری از پهن شدن بیش از حد */
+  width: 80%; /* Ödeme formu genişliği */
+  max-width: 600px; /* Aşırı genişlemeyi önlemek için maksimum genişlik */
   display: flex;
   flex-direction: column;
-  gap: 20px; /* فاصله بین عناصر فرم */
+  gap: 20px; /* Form öğeleri arasındaki boşluk */
 }
 
 .checkoutForm h3 {
@@ -142,8 +142,6 @@ h2 {
   color: #777;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
-/* styles/OnlinePaymentPage.module.css */
-/* ... استایل‌های قبلی ... */
 
 .goBackButton {
   background-color: #f0f0f0;
