@@ -7,7 +7,7 @@ export default function StoreCategoryKafesler() {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/urunler?category=Kafesler ve Barınaklar`)
+    fetch(`/api/urunler?category=Kafesler ve Barınaklar`)
       .then(res => res.json())
       .then(data => setProducts(data));
   }, []);

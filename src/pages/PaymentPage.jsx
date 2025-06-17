@@ -5,15 +5,26 @@ import { useCart } from '../hooks/CartContext';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
 
-// Added a comment to force a re-write
-
 function PaymentPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const { clearCart } = useCart();
   const { user } = useContext(AuthContext);
 
-  const { orderData } = location.state || {};
+  // Destructure all expected state values from location.state
+  const { 
+    cartItems = [], 
+    totalPrice = 0, 
+    phoneNumber = '', 
+    street = '', 
+    buildingNo = '', 
+    floor = '', 
+    apartmentNo = '', 
+    city = '', 
+    state = '', 
+    postalCode = '', 
+    country = '' 
+  } = location.state || {};
 
   // State for card details inputs
   const [cardName, setCardName] = useState('');
@@ -31,26 +42,30 @@ function PaymentPage() {
       return;
     }
 
-    if (!orderData) {
+    if (!cartItems || cartItems.length === 0) {
         setError('Sipariş bilgileri bulunamadı. Lütfen sepetten tekrar başlayın.');
         navigate('/cart');
         return;
     }
 
-    // Ensure orderData has necessary address fields that backend expects
+    // Construct the full address object
     const fullAddress = {
-      ...orderData.address,
-      city: orderData.address.city || 'N/A',
-      state: orderData.address.state || 'N/A',
-      zipCode: orderData.address.zipCode || 'N/A',
-      country: orderData.address.country || 'Turkey',
+      phoneNumber,
+      street,
+      buildingNo,
+      floor,
+      apartmentNo,
+      city,
+      state,
+      postalCode,
+      country,
     };
 
     const submitPayload = {
       userId: user.id,
       address: fullAddress,
-      items: orderData.items.map(item => ({
-        urunId: item.urunId,
+      items: cartItems.map(item => ({
+        productId: item.id,
         quantity: item.quantity,
         price: item.price,
       })),
@@ -60,17 +75,18 @@ function PaymentPage() {
           expiry: cardExpiry,
           cvv: cardCVV,
       },
+      totalAmount: totalPrice, // Ensure totalAmount is sent
     };
 
     console.log('Submitting final order data:', submitPayload);
     setIsPaying(true);
 
     try {
-        const response = await axios.post('http://localhost:3002/api/submit-order', submitPayload);
+        const response = await axios.post('/api/submit-order', submitPayload);
 
         if (response.status === 201) {
-          clearCart();
-          navigate('/order-success', { state: { cartItems: orderData.items, totalPrice: orderData.totalAmount } });
+          clearCart(); // Clear cart on successful order
+          navigate('/order-success', { state: { cartItems: cartItems, totalPrice: totalPrice } });
         } else {
           setError(response.data.message || 'Ödeme veya sipariş sırasında hata oluştu.');
         }

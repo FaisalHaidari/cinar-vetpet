@@ -9,7 +9,7 @@ export default function StoreCategoryOyuncaklar() {
   const { addToCart } = useCart();
 
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/urunler?category=Oyuncaklar`)
+    fetch(`/api/urunler?category=Oyuncaklar`)
       .then(res => res.json())
       .then(data => setProducts(data));
   }, []);

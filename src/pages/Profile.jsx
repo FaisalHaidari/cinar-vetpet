@@ -23,6 +23,20 @@ export default function Profile() {
   const [showEditMenuModal, setShowEditMenuModal] = useState(false);
   const [editMenuForm, setEditMenuForm] = useState({ image: '', name: '', price: '', category: '' });
   const [orders, setOrders] = useState([]);
+  const [message, setMessage] = useState(null);
+  const [messageType, setMessageType] = useState(null); // 'success' or 'error'
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [confirmAction, setConfirmAction] = useState(null);
+  const [confirmMessage, setConfirmMessage] = useState("");
+
+  const showMessage = (msg, type) => {
+    setMessage(msg);
+    setMessageType(type);
+    setTimeout(() => {
+      setMessage(null);
+      setMessageType(null);
+    }, 3000); // Hide message after 3 seconds
+  };
 
   const handleLogout = () => {
     logout();
@@ -34,7 +48,7 @@ export default function Profile() {
   const handleSave = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/profile`, {
+      const res = await fetch(`/api/profile`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, name, phone, avatar }),
@@ -42,12 +56,12 @@ export default function Profile() {
       const data = await res.json();
       if (res.ok) {
         updateUser(data.user);
-        alert('Profil başarıyla güncellendi!');
+        showMessage('Profil başarıyla güncellendi!', 'success');
       } else {
-        alert(data.message || 'Bir hata oluştu!');
+        showMessage(data.message || 'Bir hata oluştu!', 'error');
       }
     } catch (err) {
-      alert('Sunucuya bağlanılamadı!');
+      showMessage('Sunucuya bağlanılamadı!', 'error');
     }
   };
 
@@ -66,7 +80,7 @@ export default function Profile() {
   // Kullanıcılar sekmesi aktif olduğunda kullanıcıları getir
   useEffect(() => {
     if (isAdmin()) {
-      fetch(`${import.meta.env.VITE_API_URL}/users`)
+      fetch(`/api/users`)
         .then(res => res.json())
         .then(data => setUsers(data))
         .catch(err => console.error('Kullanıcılar getirilirken hata:', err));
@@ -76,7 +90,7 @@ export default function Profile() {
   // Menü öğeleri sekmesi aktif olduğunda menü öğelerini getir
   useEffect(() => {
     if (isAdmin()) {
-      fetch(`${import.meta.env.VITE_API_URL}/urunler`)
+      fetch(`/api/urunler`)
         .then(res => res.json())
         .then(data => setUrunler(data))
         .catch(err => console.error('Menü öğeleri getirilirken hata:', err));
@@ -86,7 +100,7 @@ export default function Profile() {
   // Siparişleri getir
   useEffect(() => {
     if (isAdmin()) {
-      fetch(`${import.meta.env.VITE_API_URL}/orders`)
+      fetch(`/api/orders`)
         .then(res => res.json())
         .then(data => setOrders(data))
         .catch(err => console.error('Siparişler getirilirken hata:', err));
@@ -96,14 +110,14 @@ export default function Profile() {
   // Sipariş durumunu güncelle
   const handleUpdateOrderStatus = async (orderId, newStatus) => {
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/orders/${orderId}/status`, {
+      const res = await fetch(`/api/orders/${orderId}/status`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ status: newStatus }),
       });
       const data = await res.json();
       if (res.ok) {
-        alert('Sipariş durumu başarıyla güncellendi!');
+        showMessage('Sipariş durumu başarıyla güncellendi!', 'success');
         // Sipariş listesini güncelleyelim
         setOrders(prevOrders =>
           prevOrders.map(order =>
@@ -111,11 +125,11 @@ export default function Profile() {
           )
         );
       } else {
-        alert(data.message || 'Sipariş durumu güncellenemedi!');
+        showMessage(data.message || 'Sipariş durumu güncellenemedi!', 'error');
       }
     } catch (err) {
       console.error('Sipariş durumu güncellenirken hata:', err);
-      alert('Sunucuya bağlanılamadı!');
+      showMessage('Sunucuya bağlanılamadı!', 'error');
     }
   };
 
@@ -164,7 +178,7 @@ export default function Profile() {
     };
 
     try {
-      const res = await fetch(`${import.meta.env.VITE_API_URL}/users/${editingUser.id}`, {
+      const res = await fetch(`/api/users/${editingUser.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(dataToSend),
@@ -173,50 +187,70 @@ export default function Profile() {
       const data = await res.json();
 
       if (res.ok) {
-        alert('Kullanıcı başarıyla güncellendi!');
+        showMessage('Kullanıcı başarıyla güncellendi!', 'success');
         setEditingUser(null);
         // Güncellemeden sonra kullanıcı listesini yenile
-        fetch(`${import.meta.env.VITE_API_URL}/users`)
+        fetch(`/api/users`)
           .then(res => res.json())
           .then(data => setUsers(data))
           .catch(err => console.error('Güncelleme sonrası kullanıcılar getirilirken hata:', err));
       } else {
-        alert(data.message || 'Kullanıcı güncellenemedi!');
+        showMessage(data.message || 'Kullanıcı güncellenemedi!', 'error');
       }
     } catch (err) {
       console.error('Kullanıcı güncellenirken hata:', err);
-      alert('Sunucuya bağlanılamadı!');
+      showMessage('Sunucuya bağlanılamadı!', 'error');
     }
   };
 
   const handleDeleteUser = async (userId) => {
-    if (window.confirm('Bu kullanıcıyı silmek istediğinizden emin misiniz?')) {
+    setConfirmMessage('Bu kullanıcıyı silmek istediğinizden emin misiniz?');
+    setConfirmAction(() => async () => {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/users/${userId}`, {
+        const res = await fetch(`/api/users/${userId}`, {
           method: 'DELETE',
         });
         const data = await res.json();
         if (res.ok) {
-          alert('Kullanıcı başarıyla silindi!');
+          showMessage('Kullanıcı başarıyla silindi!', 'success');
           // Başarılı silme sonrası kullanıcı listesini yenile
-          fetch(`${import.meta.env.VITE_API_URL}/users`)
+          fetch(`/api/users`)
             .then(res => res.json())
             .then(data => setUsers(data))
             .catch(err => console.error('Silme sonrası kullanıcılar getirilirken hata:', err));
           // Modalı kapat
           setEditingUser(null);
         } else {
-          alert(data.message || 'Kullanıcı silinemedi!');
+          showMessage(data.message || 'Kullanıcı silinemedi!', 'error');
         }
       } catch (err) {
         console.error('Kullanıcı silinirken hata:', err);
-        alert('Sunucuya bağlanılamadı!');
+        showMessage('Sunucuya bağlanılamadı!', 'error');
       }
-    }
+      setShowConfirmModal(false); // Close modal after action
+    });
+    setShowConfirmModal(true);
   };
 
   return (
     <div style={{maxWidth:600,margin:"40px auto",padding:24,borderRadius:12,boxShadow:"0 2px 12px #eee",background:"#fff",textAlign:'center'}}>
+      {message && (
+        <div
+          style={{
+            padding: '12px 20px',
+            marginBottom: '20px',
+            borderRadius: '8px',
+            fontWeight: 'bold',
+            color: messageType === 'success' ? '#155724' : '#721c24',
+            backgroundColor: messageType === 'success' ? '#d4edda' : '#f8d7da',
+            borderColor: messageType === 'success' ? '#c3e6cb' : '#f5c6cb',
+            border: '1px solid',
+            textAlign: 'center',
+          }}
+        >
+          {message}
+        </div>
+      )}
       {/* Yönetici Sekmeleri */}
       <div style={{display:'flex',justifyContent:'center',gap:16,marginBottom:32}}>
         <button
@@ -362,7 +396,7 @@ export default function Profile() {
                 <form style={{flex:1,display:'flex',flexDirection:'column',gap:18,justifyContent:'center'}} onSubmit={async e=>{
                   e.preventDefault();
                   try {
-                    const res = await fetch(`${import.meta.env.VITE_API_URL}/urunler`, {
+                    const res = await fetch(`/api/urunler`, {
                       method: 'POST',
                       headers: { 'Content-Type': 'application/json' },
                       body: JSON.stringify(newMenu),
@@ -371,7 +405,7 @@ export default function Profile() {
                       setShowNewMenuModal(false);
                       setNewMenu({ image: '', name: '', price: '', category: '' });
                       // Başarı mesajı (isteğe bağlı)
-                      alert('Ürün başarıyla eklendi!');
+                      showMessage('Ürün başarıyla eklendi!', 'success');
                       // Kategori sayfasına yönlendir
                       let cat = newMenu.category;
                       if (cat === 'Oyuncaklar') navigate('/store/oyuncaklar');
@@ -380,10 +414,10 @@ export default function Profile() {
                       else if (cat === 'Kafesler ve Barınaklar') navigate('/store/kafesler');
                     } else {
                       const data = await res.json();
-                      alert(data.message || 'Bir hata oluştu!');
+                      showMessage(data.message || 'Bir hata oluştu!', 'error');
                     }
                   } catch (err) {
-                    alert('Sunucuya bağlanılamadı!');
+                    showMessage('Sunucuya bağlanılamadı!', 'error');
                   }
                 }}>
                   <label style={{fontWeight:600,marginBottom:2}}>Ürün Adı</label>
@@ -423,7 +457,7 @@ export default function Profile() {
                       image: item.image || '',
                       name: item.name || '',
                       price: item.price || '',
-                      category: item.category || ''
+                      category: item.category || '',
                     });
                   }}
                   style={{ padding: '6px 18px', border: '1.5px solid #bbb', borderRadius: 8, background: '#fff', fontWeight: 600, fontSize: 15, cursor: 'pointer' }}
@@ -465,26 +499,26 @@ export default function Profile() {
             <form style={{flex:1,display:'flex',flexDirection:'column',gap:18,justifyContent:'center'}} onSubmit={async e => {
               e.preventDefault();
               try {
-                const res = await fetch(`${import.meta.env.VITE_API_URL}/urunler/${editingMenuItem.id}`, {
+                const res = await fetch(`/api/urunler/${editingMenuItem.id}`, {
                   method: 'PUT',
                   headers: { 'Content-Type': 'application/json' },
                   body: JSON.stringify(editMenuForm),
                 });
                 if (res.ok) {
-                  alert('Ürün başarıyla güncellendi!');
+                  showMessage('Ürün başarıyla güncellendi!', 'success');
                   setShowEditMenuModal(false);
                   setEditingMenuItem(null);
                   // Güncellemeden sonra menü öğeleri listesini yenile
-                  fetch(`${import.meta.env.VITE_API_URL}/urunler`)
+                  fetch(`/api/urunler`)
                     .then(res => res.json())
                     .then(data => setUrunler(data))
                     .catch(err => console.error('Güncelleme sonrası menü öğeleri getirilirken hata:', err));
                 } else {
                   const data = await res.json();
-                  alert(data.message || 'Bir hata oluştu!');
+                  showMessage(data.message || 'Bir hata oluştu!', 'error');
                 }
               } catch (err) {
-                alert('Sunucuya bağlanılamadı!');
+                showMessage('Sunucuya bağlanılamadı!', 'error');
               }
             }}>
               <label style={{fontWeight:600,marginBottom:2}}>Ürün Adı</label>
@@ -503,28 +537,31 @@ export default function Profile() {
               <button
                 type="button"
                 onClick={async () => {
-                  if (window.confirm('Bu öğeyi silmek istediğinizden emin misiniz?')) {
+                  setConfirmMessage('Bu öğeyi silmek istediğinizden emin misiniz?');
+                  setConfirmAction(() => async () => {
                     try {
-                      const res = await fetch(`${import.meta.env.VITE_API_URL}/urunler/${editingMenuItem.id}`, {
+                      const res = await fetch(`/api/urunler/${editingMenuItem.id}`, {
                         method: 'DELETE',
                       });
                       if (res.ok) {
-                        alert('Ürün başarıyla silindi!');
+                        showMessage('Ürün başarıyla silindi!', 'success');
                         setShowEditMenuModal(false);
                         setEditingMenuItem(null);
                         // Silme sonrası menü öğeleri listesini yenile
-                        fetch(`${import.meta.env.VITE_API_URL}/urunler`)
+                        fetch(`/api/urunler`)
                           .then(res => res.json())
                           .then(data => setUrunler(data))
                           .catch(err => console.error('Silme sonrası menü öğeleri getirilirken hata:', err));
                       } else {
                         const data = await res.json();
-                        alert(data.message || 'Bir hata oluştu!');
+                        showMessage(data.message || 'Bir hata oluştu!', 'error');
                       }
                     } catch (err) {
-                      alert('Sunucuya bağlanılamadı!');
+                      showMessage('Sunucuya bağlanılamadı!', 'error');
                     }
-                  }
+                    setShowConfirmModal(false); // Close modal after action
+                  });
+                  setShowConfirmModal(true);
                 }}
                 style={{marginTop:12,padding:'10px 0',background:'#e53e3e',color:'#fff',border:'none',borderRadius:14,fontWeight:700,fontSize:18,cursor:'pointer',width:'100%'}}
               >
@@ -737,6 +774,30 @@ export default function Profile() {
                 </div>
               ))
             )}
+          </div>
+        </div>
+      )}
+      {/* Custom Confirmation Modal */}
+      {showConfirmModal && (
+        <div style={{position:'fixed',top:0,left:0,right:0,bottom:0,background:'rgba(0,0,0,0.4)',zIndex:1001,display:'flex',alignItems:'center',justifyContent:'center'}}>
+          <div style={{background:'#fff',padding:30,borderRadius:12,boxShadow:'0 4px 20px rgba(0,0,0,0.2)',maxWidth:400,textAlign:'center'}}>
+            <p style={{fontSize:18,marginBottom:25}}>{confirmMessage}</p>
+            <div style={{display:'flex',justifyContent:'center',gap:15}}>
+              <button
+                onClick={() => {
+                  if (confirmAction) confirmAction();
+                }}
+                style={{padding:'10px 25px',background:'#e53e3e',color:'#fff',border:'none',borderRadius:8,fontWeight:600,cursor:'pointer'}}
+              >
+                Evet
+              </button>
+              <button
+                onClick={() => setShowConfirmModal(false)}
+                style={{padding:'10px 25px',background:'#ccc',color:'#333',border:'none',borderRadius:8,fontWeight:600,cursor:'pointer'}}
+              >
+                Hayır
+              </button>
+            </div>
           </div>
         </div>
       )}

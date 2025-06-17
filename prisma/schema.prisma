@@ -1,6 +1,6 @@
 datasource db {
-  provider = "mongodb"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 generator client {
@@ -9,69 +9,67 @@ generator client {
 
 // User Model
 model User {
-  id            String    @id @map("_id") @db.ObjectId
+  id            Int       @id @default(autoincrement())
   email         String    @unique
   password      String
   name          String
   phone         String?
+  avatar        String? // Added for User profile image
   role          Role      @default(USER)
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
-  orders        Order[]
-  cart          CartItem[]
-  cartItemIds   String[]  @db.ObjectId
-  addresses     Address[]
-  addressIds    String[]  @db.ObjectId
+  orders        Order[] // User has many Orders
+  cartItems     CartItem[] // User has many CartItems
+  addresses     Address[] // User has many Addresses
 }
 
 // Product Model
 model Product {
-  id          String    @id @map("_id") @db.ObjectId
+  id          Int       @id @default(autoincrement())
   name        String
   description String?
   price       Float
   image       String?
   category    String
-  stock       Int       @default(0)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
-  cartItems   CartItem[]
-  orderItems  OrderItem[]
+  cartItems   CartItem[] // Product has many CartItems
+  orderItems  OrderItem[] // Product has many OrderItems
 }
 
-// Cart Item Model
+// Cart Item Model (Many-to-One with User and Product)
 model CartItem {
-  id        String    @id @map("_id") @db.ObjectId
-  userId    String    @db.ObjectId
-  productId String    @db.ObjectId
+  id        Int       @id @default(autoincrement())
+  userId    Int // Foreign key to User
+  productId Int // Foreign key to Product
   quantity  Int       @default(1)
   user      User      @relation(fields: [userId], references: [id])
   product   Product   @relation(fields: [productId], references: [id])
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
-  @@unique([userId, productId])
+  @@unique([userId, productId]) // Ensure a user doesn't have duplicate products in cart
 }
 
-// Order Model
+// Order Model (Many-to-One with User and Address, One-to-Many with OrderItem)
 model Order {
-  id          String      @id @map("_id") @db.ObjectId
-  userId      String      @db.ObjectId
-  addressId   String      @db.ObjectId
+  id          Int         @id @default(autoincrement())
+  userId      Int // Foreign key to User
+  addressId   Int // Foreign key to Address
   status      OrderStatus @default(PENDING)
   totalAmount Float
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   user        User        @relation(fields: [userId], references: [id])
   address     Address     @relation(fields: [addressId], references: [id])
-  items       OrderItem[]
+  items       OrderItem[] // Order has many OrderItems
 }
 
-// Order Item Model
+// Order Item Model (Many-to-One with Order and Product)
 model OrderItem {
-  id        String    @id @map("_id") @db.ObjectId
-  orderId   String    @db.ObjectId
-  productId String    @db.ObjectId
+  id        Int       @id @default(autoincrement())
+  orderId   Int // Foreign key to Order
+  productId Int // Foreign key to Product
   quantity  Int
   price     Float
   order     Order     @relation(fields: [orderId], references: [id])
@@ -79,23 +77,28 @@ model OrderItem {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
-  @@unique([orderId, productId])
+  @@unique([orderId, productId]) // Ensure no duplicate items in an order
 }
 
-// Address Model
+// Address Model (Many-to-One with User, One-to-Many with Order)
 model Address {
-  id          String    @id @map("_id") @db.ObjectId
-  userId      String    @db.ObjectId
+  id          Int       @id @default(autoincrement())
+  userId      Int // Foreign key to User
   street      String
+  buildingNo  String?
+  floor       String?
+  apartmentNo String?
   city        String
   state       String
-  postalCode  String
+  postalCode  String?
+  zipCode     String?
   country     String
+  phoneNumber String?
   isDefault   Boolean   @default(false)
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @updatedAt
   user        User      @relation(fields: [userId], references: [id])
-  orders      Order[]
+  orders      Order[] // Address has many Orders
 }
 
 // Enums
@@ -110,4 +113,5 @@ enum OrderStatus {
   SHIPPED
   DELIVERED
   CANCELLED
-} 
+  COMPLETED
+}

@@ -53,6 +53,7 @@ export const CartProvider = ({ children }) => {
 
   const clearCart = () => {
     setCart([]);
+    localStorage.removeItem('cart');
   };
 
   const cartTotal = cart.reduce((total, item) => total + (item.price || 0) * (item.quantity || 0), 0);

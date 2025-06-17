@@ -27,28 +27,28 @@ function CartPage() {
       return;
     }
 
-    const orderData = {
-      userId: user.id,
-      address: {
+    // Directly pass the necessary data to the payment page
+    navigate('/payment', {
+      state: {
+        cartItems: cart.map(item => ({
+          productId: item.id, // Changed urunId to productId
+          quantity: item.quantity,
+          price: item.price,
+        })),
+        totalPrice: cartTotal,
+        phoneNumber: telefon,
         street: adres,
         buildingNo: binaNo,
         floor: kat,
         apartmentNo: daireNo,
         addressNote: adresTarifi,
-        phoneNumber: telefon,
-      },
-      items: cart.map(item => ({
-        urunId: item.id,
-        quantity: item.quantity,
-        price: item.price,
-      })),
-      totalAmount: cartTotal,
-    };
-
-    // console.log('Submitting order data:', orderData);
-
-    // Navigate to the payment page with order data
-    navigate('/payment', { state: { orderData } });
+        // These fields are not collected in CartPage, passing as empty strings to avoid undefined errors in PaymentPage
+        city: '',
+        state: '',
+        postalCode: '',
+        country: '',
+      }
+    });
   };
 
   return (

@@ -15,11 +15,15 @@ function ShippingInfoPage() {
   const [floor, setFloor] = useState('');
   const [apartmentNo, setApartmentNo] = useState('');
   const [addressNote, setAddressNote] = useState('');
+  const [city, setCity] = useState('');
+  const [state, setState] = useState('');
+  const [postalCode, setPostalCode] = useState('');
+  const [country, setCountry] = useState('');
 
   const handleSubmit = (event) => {
     event.preventDefault();
     // Kargo bilgileri kaydedildi
-    console.log('Kargo bilgileri kaydedildi:', { phoneNumber, street, buildingNo, floor, apartmentNo, addressNote });
+    console.log('Kargo bilgileri kaydedildi:', { phoneNumber, street, buildingNo, floor, apartmentNo, addressNote, city, state, postalCode, country });
     navigate('/payment/online', {
       state: {
         phoneNumber,
@@ -27,7 +31,10 @@ function ShippingInfoPage() {
         buildingNo,
         floor,
         apartmentNo,
-        addressNote,
+        city,
+        state,
+        postalCode,
+        country,
         cartItems,
         totalPrice
       }
@@ -63,6 +70,26 @@ function ShippingInfoPage() {
             <div className={styles.formGroup}>
               <label htmlFor="apartmentNo">Daire No</label>
               <input type="text" id="apartmentNo" name="apartmentNo" value={apartmentNo} onChange={(e) => setApartmentNo(e.target.value)} required placeholder="Daire No" />
+            </div>
+          </div>
+          <div className={styles.formRow}>
+            <div className={styles.formGroup}>
+              <label htmlFor="city">Şehir</label>
+              <input type="text" id="city" name="city" value={city} onChange={(e) => setCity(e.target.value)} required placeholder="Şehir" />
+            </div>
+            <div className={styles.formGroup}>
+              <label htmlFor="state">İlçe</label>
+              <input type="text" id="state" name="state" value={state} onChange={(e) => setState(e.target.value)} required placeholder="İlçe" />
+            </div>
+          </div>
+          <div className={styles.formRow}>
+            <div className={styles.formGroup}>
+              <label htmlFor="postalCode">Posta Kodu</label>
+              <input type="text" id="postalCode" name="postalCode" value={postalCode} onChange={(e) => setPostalCode(e.target.value)} required placeholder="Posta Kodu" />
+            </div>
+            <div className={styles.formGroup}>
+              <label htmlFor="country">Ülke</label>
+              <input type="text" id="country" name="country" value={country} onChange={(e) => setCountry(e.target.value)} required placeholder="Ülke" />
             </div>
           </div>
           <div className={styles.formGroup}>

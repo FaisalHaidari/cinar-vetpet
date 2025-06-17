@@ -7,6 +7,16 @@
       "config": {
         "distDir": "dist"
       }
+    },
+    {
+      "src": "src/api/auth.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "/src/api/auth.js"
     }
   ]
 } 

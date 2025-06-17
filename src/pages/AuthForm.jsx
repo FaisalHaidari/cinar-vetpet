@@ -29,8 +29,8 @@ export default function AuthForm() {
     e.preventDefault();
     setMessage("");
     const url = isLogin
-      ? `${import.meta.env.VITE_API_URL}/login`
-      : `${import.meta.env.VITE_API_URL}/register`;
+      ? `/api/login`
+      : `/api/register`;
     const body = isLogin
       ? { email: form.email, password: form.password }
       : form;

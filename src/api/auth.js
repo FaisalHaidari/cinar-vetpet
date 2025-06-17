@@ -1,11 +1,13 @@
 import express from 'express';
-import { PrismaClient } from '@prisma/client';
+import prisma from '../config/database.js'; // Import prisma instance
 import cors from 'cors';
+import multer from 'multer';
+import path from 'path';
 
 console.log("auth.js betiği başlatılıyor...");
 
 const app = express();
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient(); // Removed as prisma is imported from database.js
 
 process.on('uncaughtException', (err) => {
   console.error('Yakalanmayan Hata:', err);
@@ -31,6 +33,18 @@ app.use(cors({
 
 app.use(express.json({ limit: '50mb' }));
 app.use(express.urlencoded({ limit: '50mb', extended: true }));
+
+// Multer config for avatar uploads
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, path.join('public', 'uploads', 'avatars'));
+  },
+  filename: function (req, file, cb) {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+    cb(null, uniqueSuffix + path.extname(file.originalname));
+  }
+});
+const upload = multer({ storage });
 
 app.post('/register', async (req, res) => {
   const { name, email, password } = req.body;
@@ -136,8 +150,8 @@ app.get('/urunler', async (req, res) => {
   try {
     const { category } = req.query;
     const where = category ? { category } : undefined;
-    const urunler = await prisma.urun.findMany({ where });
-    res.json(urunler);
+    const products = await prisma.product.findMany({ where });
+    res.json(products);
   } catch (err) {
     console.error("Ürünler getirilirken hata:", err);
     res.status(500).json({ message: 'Ürünler alınamadı', error: err.message });
@@ -145,10 +159,10 @@ app.get('/urunler', async (req, res) => {
 });
 
 app.post('/urunler', async (req, res) => {
-  const { name, price, category, image, stock } = req.body;
+  const { name, price, category, image } = req.body;
 
-  if (!name || !category || price === undefined || price === null || stock === undefined || stock === null) {
-    return res.status(400).json({ message: 'Geçersiz ürün verileri: Ad, kategori, fiyat ve stok gereklidir.' });
+  if (!name || !category || price === undefined || price === null) {
+    return res.status(400).json({ message: 'Geçersiz ürün verileri: Ad, kategori ve fiyat gereklidir.' });
   }
 
   const parsedPrice = parseFloat(price);
@@ -156,22 +170,16 @@ app.post('/urunler', async (req, res) => {
     return res.status(400).json({ message: 'Geçersiz fiyat değeri. Fiyat bir sayı olmalıdır.' });
   }
 
-  const parsedStock = parseInt(stock);
-  if (isNaN(parsedStock) || parsedStock < 0) {
-    return res.status(400).json({ message: 'Geçersiz stok değeri. Stok pozitif bir sayı olmalıdır.' });
-  }
-
   try {
-    const urun = await prisma.urun.create({
+    const product = await prisma.product.create({
       data: {
         name,
         price: parsedPrice,
         category,
         image: image || null,
-        stock: parsedStock
       }
     });
-    res.status(201).json({ message: 'Ürün başarıyla eklendi!', urun });
+    res.status(201).json({ message: 'Ürün başarıyla eklendi!', product });
   } catch (err) {
     console.error("Ürün oluşturulurken hata:", err);
     res.status(500).json({ message: 'Ürün eklenemedi', error: err.message });
@@ -180,7 +188,7 @@ app.post('/urunler', async (req, res) => {
 
 app.put('/urunler/:id', async (req, res) => {
   const { id } = req.params;
-  const { name, price, category, image, stock } = req.body;
+  const { name, price, category, image } = req.body;
 
   const updateData = {};
   if (name !== undefined) updateData.name = name;
@@ -195,20 +203,12 @@ app.put('/urunler/:id', async (req, res) => {
     updateData.price = parsedPrice;
   }
 
-  if (stock !== undefined) {
-    const parsedStock = parseInt(stock);
-    if (isNaN(parsedStock) || parsedStock < 0) {
-      return res.status(400).json({ message: 'Geçersiz stok değeri. Stok pozitif bir sayı olmalıdır.' });
-    }
-    updateData.stock = parsedStock;
-  }
-
   try {
-    const urun = await prisma.urun.update({
+    const product = await prisma.product.update({
       where: { id: Number(id) },
       data: updateData,
     });
-    res.json({ message: 'Ürün güncellendi!', urun });
+    res.json({ message: 'Ürün güncellendi!', product });
   } catch (err) {
     console.error("Ürün güncellenirken hata:", err);
     res.status(500).json({ message: 'Ürün güncellenemedi', error: err.message });
@@ -218,7 +218,7 @@ app.put('/urunler/:id', async (req, res) => {
 app.delete('/urunler/:id', async (req, res) => {
   const { id } = req.params;
   try {
-    await prisma.urun.delete({ where: { id: Number(id) } });
+    await prisma.product.delete({ where: { id: Number(id) } });
     res.json({ message: 'Ürün silindi!' });
   } catch (err) {
     console.error("Ürün silinirken hata:", err);
@@ -234,9 +234,12 @@ app.get('/orders', async (req, res) => {
         user: {
           select: { id: true, name: true, email: true, phone: true }
         },
-        orderItems: {
+        address: {
+          select: { street: true, city: true, state: true, country: true, phoneNumber: true }
+        },
+        items: {
           include: {
-            urun: {
+            product: {
               select: { name: true }
             }
           }
@@ -253,10 +256,17 @@ app.get('/orders', async (req, res) => {
       addressId: order.addressId,
       total: order.totalAmount,
       createdAt: order.createdAt,
-      status: 'completed', // Varsayılan olarak tamamlandı, gerçek statü alanınız varsa onu kullanın
+      status: order.status,
       user: order.user,
-      items: order.orderItems.map(item => ({
-        name: item.urun.name,
+      phoneNumber: order.address.phoneNumber,
+      addressDetails: {
+        street: order.address.street,
+        city: order.address.city,
+        state: order.address.state,
+        country: order.address.country,
+      },
+      items: order.items.map(item => ({
+        name: item.product.name,
         quantity: item.quantity,
         price: item.price,
       })),
@@ -278,10 +288,12 @@ app.put('/orders/:id/status', async (req, res) => {
     return res.status(400).json({ message: 'Durum belirtilmelidir.' });
   }
 
+  console.log(`Received status: ${status}, Uppercased status: ${status.toUpperCase()}`); // Debug log
+
   try {
     const updatedOrder = await prisma.order.update({
       where: { id: Number(id) },
-      data: { status: status },
+      data: { status: status.toUpperCase() }, // Convert to uppercase to match enum members
     });
     res.json({ message: 'Sipariş durumu başarıyla güncellendi!', order: updatedOrder });
   } catch (err) {
@@ -290,8 +302,8 @@ app.put('/orders/:id/status', async (req, res) => {
   }
 });
 
-console.log("Registering /api/submit-order route...");
-app.post('/api/submit-order', async (req, res) => {
+console.log("Registering /submit-order route...");
+app.post('/submit-order', async (req, res) => {
   const { userId, address, items } = req.body;
 
   console.log("Received order submission:", { userId, address, items });
@@ -301,8 +313,19 @@ app.post('/api/submit-order', async (req, res) => {
     return res.status(400).json({ message: 'Sipariş verileri eksik.' });
   }
 
+  // Validate required address fields
+  const requiredAddressFields = ['street', 'city', 'state', 'country'];
+  for (const field of requiredAddressFields) {
+    if (!address[field] || address[field].trim() === '') {
+      return res.status(400).json({ message: `Adres bilgileri eksik: ${field} zorunludur.` });
+    }
+  }
+
   try {
     const parsedUserId = Number(userId);
+
+    // Clean and validate phone number (remove non-numeric characters)
+    const cleanPhoneNumber = address.phoneNumber ? address.phoneNumber.replace(/\D/g, '') : null;
 
     // Log each item's price and quantity for debugging
     items.forEach((item, index) => {
@@ -330,7 +353,7 @@ app.post('/api/submit-order', async (req, res) => {
         state: address.state,
         zipCode: address.zipCode,
         country: address.country,
-        phoneNumber: address.phoneNumber, // Ensure phone number is passed if available
+        phoneNumber: cleanPhoneNumber, // Use the cleaned phone number
       },
     });
 
@@ -339,12 +362,19 @@ app.post('/api/submit-order', async (req, res) => {
         userId: parsedUserId,
         addressId: createdAddress.id,
         totalAmount: totalAmountCalculated, // Use the calculated total amount
-        orderItems: {
-          create: items.map(item => ({
-            urunId: item.urunId,
-            quantity: parseInt(item.quantity) || 0, // Ensure quantity is an integer
-            price: parseFloat(item.price) || 0,    // Ensure price is a number
-          })),
+        items: {
+          create: items.map(item => {
+            // Use a dummy product ID (e.g., 1) if urunId is undefined or null
+            const productIdToUse = item.urunId !== undefined && item.urunId !== null ? item.urunId : 1; // Assuming product with ID 1 exists
+            
+            return {
+              quantity: item.quantity,
+              price: item.price,
+              product: {
+                connect: { id: productIdToUse } // Connect to the product
+              }
+            };
+          }),
         },
       },
     });
@@ -356,12 +386,38 @@ app.post('/api/submit-order', async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 3002;
+// Avatar upload endpoint
+app.post('/api/upload-avatar', upload.single('avatar'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: 'هیچ فایلی ارسال نشده است.' });
+    }
+    const { userId } = req.body;
+    if (!userId) {
+      return res.status(400).json({ message: 'userId الزامی است.' });
+    }
+    // مسیر نسبی برای ذخیره در دیتابیس
+    const avatarPath = `/uploads/avatars/${req.file.filename}`;
+    // بروزرسانی کاربر
+    const user = await prisma.user.update({
+      where: { id: Number(userId) },
+      data: { avatar: avatarPath },
+    });
+    res.json({ message: 'عکس پروفایل با موفقیت آپلود شد.', avatar: avatarPath, user });
+  } catch (err) {
+    console.error('خطا در آپلود عکس پروفایل:', err);
+    res.status(500).json({ message: 'خطا در آپلود عکس پروفایل', error: err.message });
+  }
+});
+
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Backend server is running on port ${PORT}`);
 });
 
 // Keep the process alive for debugging
 setInterval(() => {
   // Do nothing, just keep the event loop busy
 }, 10000); // Keep alive every 10 seconds
+
+export default app;
