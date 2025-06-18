@@ -9,7 +9,7 @@ function OnlinePaymentPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const { user } = useContext(AuthContext); // AuthContext'ten kullanıcıyı al
-  const { cartItems = [], totalPrice = 0, phoneNumber, street, buildingNo, floor, apartmentNo, addressNote } = location.state || {};
+  const { cartItems = [], totalPrice = 0, phoneNumber, street, buildingNo, floor, apartmentNo, addressNote, city, state, postalCode, country } = location.state || {};
 
   const [cardNumber, setCardNumber] = useState('');
   const [expiry, setExpiry] = useState('');
@@ -28,7 +28,7 @@ function OnlinePaymentPage() {
     setIsPaying(true);
 
     try {
-      const response = await axios.post('http://localhost:3002/api/submit-order', {
+      const response = await axios.post('/api/submit-order', {
         userId: user.id,
         address: {
           phoneNumber,
@@ -36,33 +36,27 @@ function OnlinePaymentPage() {
           buildingNo,
           floor,
           apartmentNo,
-          addressNote,
-          city: 'N/A',
-          state: 'N/A',
-          zipCode: 'N/A',
-          country: 'Turkey',
+          city: city || 'N/A',
+          state: state || 'N/A',
+          postalCode: postalCode || 'N/A',
+          country: country || 'Turkey',
         },
         items: cartItems.map(item => ({
-          urunId: item.id,
+          productId: item.id,
           quantity: item.quantity,
-          price: item.price,
-        })),
-        paymentInfo: {
-          cardNumber,
-          expiry,
-          cvv,
-          cardName,
-        },
+          price: item.price
+        }))
       });
 
-      if (response.status === 201) {
+      if (response.status === 200) {
         navigate('/order-success', { state: { cartItems, totalPrice } });
       } else {
         setError('Ödeme sırasında bir hata oluştu.');
         setIsPaying(false);
       }
     } catch (error) {
-      setError('Ödeme sırasında bir hata oluştu.');
+      console.error('Payment error:', error);
+      setError(error.response?.data?.message || 'Ödeme sırasında bir hata oluştu.');
       setIsPaying(false);
     }
   };

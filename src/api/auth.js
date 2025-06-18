@@ -303,86 +303,104 @@ app.put('/orders/:id/status', async (req, res) => {
 });
 
 console.log("Registering /submit-order route...");
-app.post('/submit-order', async (req, res) => {
-  const { userId, address, items } = req.body;
-
-  console.log("Received order submission:", { userId, address, items });
-
-  if (!userId || !address || !items || items.length === 0) {
-    console.error("Missing order data in /api/submit-order:", { userId, address, items });
-    return res.status(400).json({ message: 'Sipariş verileri eksik.' });
-  }
-
-  // Validate required address fields
-  const requiredAddressFields = ['street', 'city', 'state', 'country'];
-  for (const field of requiredAddressFields) {
-    if (!address[field] || address[field].trim() === '') {
-      return res.status(400).json({ message: `Adres bilgileri eksik: ${field} zorunludur.` });
-    }
-  }
-
+app.post('/api/submit-order', async (req, res) => {
   try {
-    const parsedUserId = Number(userId);
+    const { userId, address, items } = req.body;
 
-    // Clean and validate phone number (remove non-numeric characters)
-    const cleanPhoneNumber = address.phoneNumber ? address.phoneNumber.replace(/\D/g, '') : null;
+    if (!userId || !address || !items || !Array.isArray(items) || items.length === 0) {
+      return res.status(400).json({ message: 'Geçersiz sipariş verileri.' });
+    }
 
-    // Log each item's price and quantity for debugging
-    items.forEach((item, index) => {
-      console.log(`Debug Item ${index}: urunId=${item.urunId}, quantity=${item.quantity}, price=${item.price}, Type of price: ${typeof item.price}, Type of quantity: ${typeof item.quantity}`);
+    // Validate user exists
+    const user = await prisma.user.findUnique({
+      where: { id: userId }
     });
 
-    // Calculate total amount ensuring price and quantity are numbers
-    const totalAmountCalculated = items.reduce((sum, item) => {
-      const itemPrice = parseFloat(item.price) || 0; // Ensure price is a number, default to 0 if invalid
-      const itemQuantity = parseInt(item.quantity) || 0; // Ensure quantity is an integer, default to 0 if invalid
-      console.log(`Debug Calculating item total for urunId ${item.urunId}: ${itemPrice} * ${itemQuantity} = ${itemPrice * itemQuantity}`);
-      return sum + (itemPrice * itemQuantity);
+    if (!user) {
+      return res.status(404).json({ message: 'Kullanıcı bulunamadı.' });
+    }
+
+    // Get cart items
+    const cartItems = await prisma.cartItem.findMany({
+      where: { userId: userId },
+      include: { product: true }
+    });
+
+    if (!cartItems.length) {
+      return res.status(400).json({ message: 'Sepetiniz boş.' });
+    }
+
+    // Calculate total amount from cart items
+    const totalAmount = cartItems.reduce((total, item) => {
+      return total + (item.product.price * item.quantity);
     }, 0);
 
-    console.log("Debug Calculated total amount:", totalAmountCalculated);
-
-    const createdAddress = await prisma.address.create({
+    // Create address with validation
+    const newAddress = await prisma.address.create({
       data: {
-        userId: parsedUserId,
-        street: address.street,
-        buildingNo: address.buildingNo,
-        floor: address.floor,
-        apartmentNo: address.apartmentNo,
-        city: address.city,
-        state: address.state,
-        zipCode: address.zipCode,
-        country: address.country,
-        phoneNumber: cleanPhoneNumber, // Use the cleaned phone number
-      },
+        userId: userId,
+        street: address.street || '',
+        buildingNo: address.buildingNo || '',
+        floor: address.floor || '',
+        apartmentNo: address.apartmentNo || '',
+        city: address.city || '',
+        state: address.state || '',
+        zipCode: address.postalCode || '',
+        country: address.country || '',
+        phoneNumber: address.phoneNumber || '',
+        isDefault: false
+      }
     });
 
-    const order = await prisma.order.create({
-      data: {
-        userId: parsedUserId,
-        addressId: createdAddress.id,
-        totalAmount: totalAmountCalculated, // Use the calculated total amount
-        items: {
-          create: items.map(item => {
-            // Use a dummy product ID (e.g., 1) if urunId is undefined or null
-            const productIdToUse = item.urunId !== undefined && item.urunId !== null ? item.urunId : 1; // Assuming product with ID 1 exists
-            
-            return {
+    // Create order with transaction
+    const newOrder = await prisma.$transaction(async (prisma) => {
+      // Create the order
+      const order = await prisma.order.create({
+        data: {
+          userId: userId,
+          addressId: newAddress.id,
+          totalAmount: totalAmount,
+          status: 'PENDING',
+          items: {
+            create: cartItems.map(item => ({
               quantity: item.quantity,
-              price: item.price,
+              price: item.product.price,
               product: {
-                connect: { id: productIdToUse } // Connect to the product
+                connect: { id: item.productId }
               }
-            };
-          }),
+            }))
+          }
         },
-      },
+        include: {
+          items: true,
+          address: true
+        }
+      });
+
+      // Clear cart after successful order creation
+      await prisma.cartItem.deleteMany({
+        where: { userId: userId }
+      });
+
+      return order;
     });
 
-    res.status(201).json({ message: 'Sipariş başarıyla oluşturuldu!', order });
-  } catch (err) {
-    console.error("Error creating order in /api/submit-order:", err);
-    res.status(500).json({ message: 'Sipariş oluşturulamadı', error: err.message });
+    res.status(200).json({
+      message: 'Sipariş başarıyla oluşturuldu',
+      order: {
+        id: newOrder.id,
+        totalAmount: newOrder.totalAmount,
+        status: newOrder.status,
+        items: newOrder.items
+      }
+    });
+
+  } catch (error) {
+    console.error('Error creating order:', error);
+    res.status(500).json({ 
+      message: 'Sipariş oluşturulurken bir hata oluştu.',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
+    });
   }
 });
 

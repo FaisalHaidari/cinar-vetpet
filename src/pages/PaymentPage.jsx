@@ -84,7 +84,7 @@ function PaymentPage() {
     try {
         const response = await axios.post('/api/submit-order', submitPayload);
 
-        if (response.status === 201) {
+        if (response.status === 200) {
           clearCart(); // Clear cart on successful order
           navigate('/order-success', { state: { cartItems: cartItems, totalPrice: totalPrice } });
         } else {

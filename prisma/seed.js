@@ -164,7 +164,7 @@ async function main() {
       addressId: address1.id,
       status: 'PENDING',
       totalAmount: products[0].price * 1 + products[1].price * 1, // Smartphone + Laptop
-      orderItems: {
+      items: {
         create: [
           {
             productId: products[0].id,
@@ -189,7 +189,7 @@ async function main() {
       addressId: address2.id,
       status: 'DELIVERED',
       totalAmount: products[3].price * 1 + products[4].price * 2, // T-Shirt + Blender * 2
-      orderItems: {
+      items: {
         create: [
           {
             productId: products[3].id,
