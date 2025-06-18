@@ -4,6 +4,7 @@ import { AuthContext } from "../context/AuthContext";
 import { FaShoppingCart, FaTrash } from 'react-icons/fa';
 import styles from './CartPage.module.css';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function CartPage() {
   const { cart, removeFromCart, updateQuantity, clearCart, cartTotal } = useCart();
@@ -27,28 +28,29 @@ function CartPage() {
       return;
     }
 
-    // Directly pass the necessary data to the payment page
-    navigate('/payment', {
-      state: {
-        cartItems: cart.map(item => ({
-          productId: item.id, // Changed urunId to productId
-          quantity: item.quantity,
-          price: item.price,
-        })),
-        totalPrice: cartTotal,
+    const response = await axios.post('/api/submit-order', {
+      userId: user.id,
+      address: {
         phoneNumber: telefon,
         street: adres,
         buildingNo: binaNo,
         floor: kat,
-        apartmentNo: daireNo,
-        addressNote: adresTarifi,
-        // These fields are not collected in CartPage, passing as empty strings to avoid undefined errors in PaymentPage
-        city: '',
-        state: '',
-        postalCode: '',
-        country: '',
-      }
+        apartmentNo: daireNo
+      },
+      items: cart.map(item => ({
+        productId: item.id,
+        quantity: item.quantity,
+        price: item.price,
+      })),
     });
+
+    if (response.data.success) {
+      alert('Ödeme işlemi başarılı!');
+      clearCart();
+      navigate('/');
+    } else {
+      alert('Ödeme işlemi sırasında bir hata oluştu.');
+    }
   };
 
   return (
