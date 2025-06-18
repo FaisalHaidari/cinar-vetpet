@@ -20,7 +20,8 @@ function CartPage() {
 
   const navigate = useNavigate(); // Initialize useNavigate
 
-  const handlePaymentSubmit = async (e) => {
+  // Ödeme sayfasına yönlendir (sadece gerekli alanları gönder)
+  const handleGoToPayment = (e) => {
     e.preventDefault();
 
     if (!user) {
@@ -28,29 +29,26 @@ function CartPage() {
       return;
     }
 
-    const response = await axios.post('/api/submit-order', {
-      userId: user.id,
-      address: {
+    // Sadece gerekli alanları ve default değerleri gönder
+    navigate('/payment', {
+      state: {
+        cartItems: cart,
+        totalPrice: cartTotal,
+        userId: user.id,
         phoneNumber: telefon,
         street: adres,
         buildingNo: binaNo,
         floor: kat,
-        apartmentNo: daireNo
-      },
-      items: cart.map(item => ({
-        productId: item.id,
-        quantity: item.quantity,
-        price: item.price,
-      })),
+        apartmentNo: daireNo,
+        addressNote: adresTarifi,
+        city: 'İstanbul', // default
+        state: 'İstanbul', // default
+        country: 'Turkey', // default
+        zipCode: '', // default boş
+        postalCode: '', // default boş
+        isDefault: false // default
+      }
     });
-
-    if (response.data.success) {
-      alert('Ödeme işlemi başarılı!');
-      clearCart();
-      navigate('/');
-    } else {
-      alert('Ödeme işlemi sırasında bir hata oluştu.');
-    }
   };
 
   return (
@@ -107,7 +105,7 @@ function CartPage() {
 
           <div className={styles.paymentColumn}>
             <h2 className={styles.paymentTitle}>Teslimat Adresi</h2>
-            <form onSubmit={handlePaymentSubmit} className={styles.formGroup}>
+            <form onSubmit={handleGoToPayment} className={styles.formGroup}>
               <div className={styles.formGroup}>
                 <label htmlFor="telefon" className={styles.formLabel}>Telefon</label>
                 <input

@@ -2,7 +2,6 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './pages/HomePage';
 import ClinicIntroductionPage from './pages/ClinicIntroductionPage';
-import OnlinePaymentPage from './pages/OnlinePaymentPage';
 import StoreHomePage from './pages/StoreHomePage';
 import AuthPage from './pages/AuthPage';
 import PrivateRoute from './components/layout/PrivateRoute';
@@ -36,7 +35,6 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/clinic/introduction" element={<ClinicIntroductionPage />} />
-            <Route path="/online-payment" element={<OnlinePaymentPage />} />
             <Route path="/store" element={<StoreHomePage />} />
             <Route path="/auth" element={<AuthPage />} />
             <Route path="/product/:productId" element={<ProductDetailsPage />} />

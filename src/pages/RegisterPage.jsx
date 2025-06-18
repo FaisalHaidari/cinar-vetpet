@@ -72,7 +72,7 @@ function RegisterPage() {
     if (validateForm()) {
       setIsLoading(true);
       try {
-        const response = await axios.post('/api/auth/register', {
+        const response = await axios.post('/api/register', {
           firstName: formData.firstName,
           lastName: formData.lastName,
           email: formData.email,

@@ -11,22 +11,26 @@ function PaymentPage() {
   const { clearCart } = useCart();
   const { user } = useContext(AuthContext);
 
-  // Destructure all expected state values from location.state
-  const { 
-    cartItems = [], 
-    totalPrice = 0, 
-    phoneNumber = '', 
-    street = '', 
-    buildingNo = '', 
-    floor = '', 
-    apartmentNo = '', 
-    city = '', 
-    state = '', 
-    postalCode = '', 
-    country = '' 
+  // location.state'den sadece gerekli alanları al
+  const {
+    cartItems = [],
+    totalPrice = 0,
+    userId,
+    phoneNumber = '',
+    street = '',
+    buildingNo = '',
+    floor = '',
+    apartmentNo = '',
+    addressNote = '',
+    city = 'İstanbul',
+    state: stateVal = 'İstanbul',
+    country = 'Turkey',
+    zipCode = '',
+    postalCode = '',
+    isDefault = false
   } = location.state || {};
 
-  // State for card details inputs
+  // Kart bilgileri için state
   const [cardName, setCardName] = useState('');
   const [cardNumber, setCardNumber] = useState('');
   const [cardExpiry, setCardExpiry] = useState('');
@@ -34,6 +38,7 @@ function PaymentPage() {
   const [error, setError] = useState('');
   const [isPaying, setIsPaying] = useState(false);
 
+  // Ödeme işlemini başlat
   const handleSubmitPayment = async (e) => {
     e.preventDefault();
 
@@ -43,59 +48,68 @@ function PaymentPage() {
     }
 
     if (!cartItems || cartItems.length === 0) {
-        setError('Sipariş bilgileri bulunamadı. Lütfen sepetten tekrar başlayın.');
-        navigate('/cart');
-        return;
+      setError('Sipariş bilgileri bulunamadı. Lütfen sepetten tekrar başlayın.');
+      navigate('/cart');
+      return;
     }
 
-    // Construct the full address object
+    // Sadece backend'in beklediği alanları gönder
     const fullAddress = {
-      phoneNumber,
+      userId: userId || user.id,
       street,
       buildingNo,
       floor,
       apartmentNo,
       city,
-      state,
+      state: stateVal,
       postalCode,
+      zipCode,
       country,
+      phoneNumber,
+      isDefault
     };
 
-    const submitPayload = {
-      userId: user.id,
-      address: fullAddress,
-      items: cartItems.map(item => ({
-        productId: item.id,
-        quantity: item.quantity,
-        price: item.price,
-      })),
-      paymentInfo: {
+    setIsPaying(true);
+    setError('');
+
+    try {
+      // 1. Adresi kaydet (yeni adres için)
+      const addressRes = await axios.post('/api/addresses', fullAddress);
+      const addressId = addressRes.data.id;
+
+      // 2. Sadece addressId ile ödeme isteği gönder
+      const paymentPayload = {
+        userId: userId || user.id,
+        addressId: addressId, // Sadece id gönderiyoruz
+        items: cartItems.map(item => ({
+          productId: item.id,
+          quantity: item.quantity,
+          price: item.price,
+        })),
+        paymentInfo: {
           cardName,
           cardNumber,
           expiry: cardExpiry,
           cvv: cardCVV,
-      },
-      totalAmount: totalPrice, // Ensure totalAmount is sent
-    };
+        },
+        totalAmount: totalPrice,
+      };
 
-    console.log('Submitting final order data:', submitPayload);
-    setIsPaying(true);
+      // Ödeme isteğini gönder
+      const response = await axios.post('/api/payment/process', paymentPayload);
 
-    try {
-        const response = await axios.post('/api/submit-order', submitPayload);
-
-        if (response.status === 200) {
-          clearCart(); // Clear cart on successful order
-          navigate('/order-success', { state: { cartItems: cartItems, totalPrice: totalPrice } });
-        } else {
-          setError(response.data.message || 'Ödeme veya sipariş sırasında hata oluştu.');
-        }
-      } catch (error) {
-        console.error('Error submitting payment and order:', error);
-        setError(error.response?.data?.message || 'Sunucuya bağlanırken hata oluştu.');
-      } finally {
-        setIsPaying(false);
+      if (response.status === 201 || response.status === 200) {
+        clearCart(); // Sepeti temizle
+        navigate('/order-success', { state: { cartItems: cartItems, totalPrice: totalPrice } });
+      } else {
+        setError(response.data.message || 'Ödeme veya sipariş sırasında hata oluştu.');
       }
+    } catch (error) {
+      console.error('Ödeme sırasında hata:', error);
+      setError(error.response?.data?.message || 'Sunucuya bağlanırken hata oluştu.');
+    } finally {
+      setIsPaying(false);
+    }
   };
 
   return (
@@ -104,7 +118,6 @@ function PaymentPage() {
       <form onSubmit={handleSubmitPayment} className={styles.paymentForm}>
         {error && <div className={styles.error}>{error}</div>}
          <div className={styles.cardDetailsSection}>
-            {/* <h4>Kart Bilgileri</h4> */}
             <div className={styles.cardInputGroup}>
                 <label htmlFor="cardName">Kart Üzerindeki İsim</label>
                 <input

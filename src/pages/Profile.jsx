@@ -2,12 +2,14 @@ import React, { useContext, useState, useEffect } from "react";
 import { AuthContext } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
-
 export default function Profile() {
   const { user, logout, updateUser, isAdmin } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  // Düzenleme için yeni alanlar
+  // Tüm hook'lar (useState, useEffect, vs.) her zaman component fonksiyonunun en başında olmalı.
+  // React'ın kuralı: Hook'lar koşullu (if, return, vs.) blokların içinde çağrılmaz!
+  // Böylece her render'da hook sırası değişmez ve hata alınmaz.
+
   const [name, setName] = useState(user?.name || "");
   const [email, setEmail] = useState(user?.email || "");
   const [phone, setPhone] = useState(user?.phone || "");
@@ -24,10 +26,14 @@ export default function Profile() {
   const [editMenuForm, setEditMenuForm] = useState({ image: '', name: '', price: '', category: '' });
   const [orders, setOrders] = useState([]);
   const [message, setMessage] = useState(null);
-  const [messageType, setMessageType] = useState(null); // 'success' or 'error'
+  const [messageType, setMessageType] = useState(null); // 'success' veya 'error'
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [confirmAction, setConfirmAction] = useState(null);
   const [confirmMessage, setConfirmMessage] = useState("");
+
+  // Kullanıcı yoksa, giriş yapmadınız mesajı göster (hook'lardan sonra!)
+  // Bu sayede hook kuralları bozulmaz.
+  if (!user) return <div style={{textAlign:'center',marginTop:40}}>Giriş yapmadınız.</div>;
 
   const showMessage = (msg, type) => {
     setMessage(msg);
@@ -42,8 +48,6 @@ export default function Profile() {
     logout();
     navigate("/auth");
   };
-
-  if (!user) return <div style={{textAlign:'center',marginTop:40}}>Giriş yapmadınız.</div>;
 
   const handleSave = async (e) => {
     e.preventDefault();
@@ -718,7 +722,7 @@ export default function Profile() {
                         }}>
                           <span style={{flex: 2}}>{item.name}</span>
                           <span style={{flex: 1, textAlign: 'center'}}>{item.quantity} adet</span>
-                          <span style={{flex: 1, textAlign: 'right'}}>{item.price.toLocaleString('tr-TR')} ₺</span>
+                          <span style={{flex: 1, textAlign: 'right'}}>{typeof item.price === 'number' ? item.price.toLocaleString('tr-TR') : '0'} ₺</span>
                         </div>
                       ))}
                     </div>
@@ -734,7 +738,7 @@ export default function Profile() {
                     color: '#f7882f',
                     border: '1px solid #eee'
                   }}>
-                    Toplam Tutar: {order.total.toLocaleString('tr-TR')} ₺
+                    Toplam Tutar: {typeof order.totalAmount === 'number' ? order.totalAmount.toLocaleString('tr-TR') : '0'} ₺
                   </div>
                   <div style={{
                     marginTop: 16,
