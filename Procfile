@@ -1,1 +1,1 @@
-web: node src/api/auth.js 
+web: node src/main-backend.js 

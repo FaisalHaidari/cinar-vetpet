@@ -1,44 +1,42 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
 
-generator client {
-  provider = "prisma-client-js"
-}
-
-// User Model
 model User {
-  id            Int       @id @default(autoincrement())
-  email         String    @unique
-  password      String    @db.VarChar(255)
-  name          String    @db.VarChar(100)
-  phone         String?   @db.VarChar(20)
-  avatar        String?   @db.VarChar(255)
-  role          Role      @default(USER)
-  isActive      Boolean   @default(true)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  orders        Order[]
-  cartItems     CartItem[]
-  addresses     Address[]
+  id        Int        @id @default(autoincrement())
+  email     String     @unique
+  password  String     @db.VarChar(255)
+  name      String     @db.VarChar(100)
+  phone     String?    @db.VarChar(20)
+  avatar    String?    @db.VarChar(255)
+  role      Role       @default(USER)
+  isActive  Boolean    @default(true)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  addresses Address[]
+  cartItems CartItem[]
+  orders    Order[]
 
   @@index([email])
   @@index([phone])
 }
 
-// Product Model
 model Product {
-  id          Int       @id @default(autoincrement())
-  name        String    @db.VarChar(100)
-  description String?   @db.Text
-  price       Decimal   @db.Decimal(10, 2)
-  image       String?   @db.VarChar(255)
-  category    String    @db.VarChar(50)
-  stock       Int       @default(0)
-  isActive    Boolean   @default(true)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
+  id          Int         @id @default(autoincrement())
+  name        String      @db.VarChar(100)
+  description String?     @db.Text
+  price       Decimal     @db.Decimal(10, 2)
+  image       String?     @db.VarChar(255)
+  category    String      @db.VarChar(50)
+  stock       Int         @default(0)
+  isActive    Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
   cartItems   CartItem[]
   orderItems  OrderItem[]
 
@@ -46,23 +44,21 @@ model Product {
   @@index([name])
 }
 
-// Cart Item Model
 model CartItem {
-  id        Int       @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   userId    Int
   productId Int
-  quantity  Int       @default(1)
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  product   Product   @relation(fields: [productId], references: [id], onDelete: Cascade)
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  quantity  Int      @default(1)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, productId])
   @@index([userId])
   @@index([productId])
 }
 
-// Order Model
 model Order {
   id          Int         @id @default(autoincrement())
   userId      Int
@@ -71,57 +67,55 @@ model Order {
   totalAmount Decimal     @db.Decimal(10, 2)
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
-  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   address     Address     @relation(fields: [addressId], references: [id])
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
   items       OrderItem[]
 
   @@index([userId])
   @@index([status])
+  @@index([addressId], map: "Order_addressId_fkey")
 }
 
-// Order Item Model
 model OrderItem {
-  id        Int       @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   orderId   Int
   productId Int
   quantity  Int
-  price     Decimal   @db.Decimal(10, 2)
-  order     Order     @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  product   Product   @relation(fields: [productId], references: [id])
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  price     Decimal  @db.Decimal(10, 2)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id])
 
   @@unique([orderId, productId])
   @@index([orderId])
   @@index([productId])
 }
 
-// Address Model
 model Address {
-  id          Int       @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   userId      Int
-  street      String    @db.VarChar(255)
-  buildingNo  String?   @db.VarChar(20)
-  floor       String?   @db.VarChar(20)
-  apartmentNo String?   @db.VarChar(20)
-  city        String    @db.VarChar(100) @default("")
-  state       String    @db.VarChar(100) @default("")
-  postalCode  String?   @db.VarChar(20)
-  zipCode     String?   @db.VarChar(20)
-  country     String    @db.VarChar(100) @default("")
-  phoneNumber String?   @db.VarChar(20)
-  isDefault   Boolean   @default(false)
-  isActive    Boolean   @default(true)
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  street      String   @db.VarChar(255)
+  buildingNo  String?  @db.VarChar(20)
+  floor       String?  @db.VarChar(20)
+  apartmentNo String?  @db.VarChar(20)
+  city        String   @default("") @db.VarChar(100)
+  state       String   @default("") @db.VarChar(100)
+  postalCode  String?  @db.VarChar(20)
+  zipCode     String?  @db.VarChar(20)
+  country     String   @default("") @db.VarChar(100)
+  phoneNumber String?  @db.VarChar(20)
+  isDefault   Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   orders      Order[]
 
   @@index([userId])
   @@index([isDefault])
 }
 
-// Enums
 enum Role {
   USER
   ADMIN
