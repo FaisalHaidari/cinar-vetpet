@@ -568,28 +568,4 @@ router.delete('/api/users/:id', async (req, res) => {
 // Use router
 app.use(router);
 
-// Graceful shutdown
-process.on('SIGINT', async () => {
-  console.log('\nShutting down gracefully...');
-  await prisma.$disconnect();
-  process.exit(0);
-});
-
-process.on('SIGTERM', async () => {
-  console.log('\nShutting down gracefully...');
-  await prisma.$disconnect();
-  process.exit(0);
-});
-
-// Start server
-const PORT = process.env.PORT || 3001;
-const server = app.listen(PORT, () => {
-  console.log(`🚀 Backend server is running on port ${PORT}`);
-  console.log(`📡 Test endpoint: http://localhost:${PORT}/api/test`);
-});
-
-// Handle server errors
-server.on('error', (error) => {
-  console.error('Server error:', error);
-  process.exit(1);
-}); 
+export default router; 
